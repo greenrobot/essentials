@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.greenrobot</groupId>
+	<artifactId>java-common-modules</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	
+	<parent>
+		<groupId>de.greenrobot.build</groupId>
+		<artifactId>parent-pom-with-checks</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	
+	<repositories>
+		<repository>
+			<id>dummy</id>
+			<url>https://dummy/</url>
+		</repository>
+	</repositories>
+
+	<modules>
+		<module>apk-inspector</module>
+	</modules>
+	
+	<dependencies>
+	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
