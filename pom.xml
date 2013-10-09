@@ -1,38 +1,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.greenrobot</groupId>
-	<artifactId>java-common-modules</artifactId>
-	<version>1.0.1</version>
-	<packaging>pom</packaging>
-	
-	<parent>
-		<groupId>de.greenrobot.build</groupId>
-		<artifactId>parent-pom-with-checks</artifactId>
-		<version>1.2.1</version>
-	</parent>
-	
-	<repositories>
-		<repository>
-			<id>dummy</id>
-			<url>https://dummy/</url>
-		</repository>
-	</repositories>
+    <groupId>de.greenrobot</groupId>
+    <artifactId>java-common-modules</artifactId>
+    <version>1.0.2</version>
+    <packaging>pom</packaging>
 
-	<modules>
+    <parent>
+        <groupId>de.greenrobot.build</groupId>
+        <artifactId>parent-pom-with-checks</artifactId>
+        <version>1.2.1</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>dummy</id>
+            <url>https://dummy/</url>
+        </repository>
+    </repositories>
+
+    <modules>
         <module>apk-inspector</module>
         <module>java-common</module>
-	</modules>
-	
-	<dependencies>
-	</dependencies>
-	
-	<build>
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-	</build>
+    </modules>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <configuration>
+                        <maxAllowedViolations>5</maxAllowedViolations>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
