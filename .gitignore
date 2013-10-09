@@ -1,3 +1,8 @@
 /.settings
 /.project
 /target
+/.idea
+/build
+/bin
+/doc
+*.iml
