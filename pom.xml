@@ -21,8 +21,8 @@
     </repositories>
 
     <modules>
-        <module>apk-inspector</module>
         <module>java-common</module>
+        <module>apk-inspector</module>
     </modules>
 
     <dependencies>
