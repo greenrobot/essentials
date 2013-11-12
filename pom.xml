@@ -4,13 +4,14 @@
 
     <groupId>de.greenrobot</groupId>
     <artifactId>java-common-modules</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>de.greenrobot.build</groupId>
         <artifactId>parent-pom-with-checks</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.2</version>
+        <relativePath>build-common/parent-pom-with-checks.xml</relativePath>
     </parent>
 
     <repositories>
@@ -21,6 +22,7 @@
     </repositories>
 
     <modules>
+        <module>build-common</module>
         <module>java-common</module>
         <module>apk-inspector</module>
     </modules>

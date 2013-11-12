@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.greenrobot.build</groupId>
+	<artifactId>parent-pom-with-checks</artifactId>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>de.greenrobot.build</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>1.2.2</version>
+		<relativePath>parent-pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<findbugs-version>2.5.2</findbugs-version>
+		<checkstyle-version>2.10</checkstyle-version>
+		<checkstyle-rules-version>1.2.1</checkstyle-rules-version>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- http://maven.apache.org/plugins/maven-checkstyle-plugin/check-mojo.html -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>de.greenrobot.build</groupId>
+						<artifactId>checkstyle-rules</artifactId>
+						<version>${checkstyle-rules-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>checkstyle-greenrobot.xml</configLocation>
+					<consoleOutput>true</consoleOutput>
+					<maxAllowedViolations>3</maxAllowedViolations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- http://mojo.codehaus.org/findbugs-maven-plugin/check-mojo.html -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs-version}</version>
+				<configuration>
+					<!-- Bug Rank - bugs are given a rank 1-20: -->
+					<!-- scariest (rank 1-4), scary (rank 5-9), troubling (rank 10-14), 
+						and of concern (rank 15-20) -->
+					<maxRank>14</maxRank>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<!-- http://maven.apache.org/plugins/maven-checkstyle-plugin/checkstyle-mojo.html -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-version}</version>
+				<configuration>
+					<configLocation>checkstyle-greenrobot.xml</configLocation>
+				</configuration>
+			</plugin>
+
+			<!-- http://mojo.codehaus.org/findbugs-maven-plugin/findbugs-mojo.html -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs-version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
