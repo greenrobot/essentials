@@ -174,13 +174,10 @@ public class StringUtils {
      * case null is returned.
      */
     public static String ellipsize(String text, int maxLength) {
-        if (text == null) {
-            return null;
+        if (text != null && text.length() > maxLength) {
+            return text.substring(0, maxLength - 3) + "...";
         }
-        if (text.length() <= maxLength) {
-            return text;
-        }
-        return text.substring(0, maxLength - 3) + "...";
+        return text;
     }
 
     public static String[] splitLines(String text, boolean skipEmptyLines) {
