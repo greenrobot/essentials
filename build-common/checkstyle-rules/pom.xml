@@ -1,25 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.greenrobot.build</groupId>
-	<artifactId>checkstyle-rules</artifactId>
-	<version>1.2.1</version>
+    <groupId>de.greenrobot.build</groupId>
+    <artifactId>checkstyle-rules</artifactId>
+    <version>1.2.2</version>
 
-	<distributionManagement>
-		<repository>
-			<id>dummy</id>
-			<url>dummy/</url>
-		</repository>
-	</distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>dummy</id>
+            <url>dummy/</url>
+        </repository>
+    </distributionManagement>
 
-	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.4</version>
-			</extension>
-		</extensions>
-	</build>
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>2.4</version>
+                <!-- Sticking to 2.4, had trouble with 2.5 and 2.6:-->
+                <!--Error injecting constructor, java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory
+                at org.apache.maven.wagon.providers.webdav.WebDavWagon.<init>(Unknown Source)
+                while locating org.apache.maven.wagon.providers.webdav.WebDavWagon -->
+            </extension>
+        </extensions>
+    </build>
 </project>

@@ -9,14 +9,14 @@
 	<parent>
 		<groupId>de.greenrobot.build</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>1.2.2</version>
+		<version>1.3.0</version>
 		<relativePath>parent-pom.xml</relativePath>
 	</parent>
 
 	<properties>
-		<findbugs-version>2.5.2</findbugs-version>
-		<checkstyle-version>2.10</checkstyle-version>
-		<checkstyle-rules-version>1.2.1</checkstyle-rules-version>
+		<findbugs-version>2.5.4</findbugs-version>
+		<checkstyle-version>2.12.1</checkstyle-version>
+		<checkstyle-rules-version>1.2.2</checkstyle-rules-version>
 	</properties>
 
 	<build>
@@ -36,7 +36,7 @@
 				<configuration>
 					<configLocation>checkstyle-greenrobot.xml</configLocation>
 					<consoleOutput>true</consoleOutput>
-					<maxAllowedViolations>3</maxAllowedViolations>
+					<maxAllowedViolations>5</maxAllowedViolations>
 				</configuration>
 				<executions>
 					<execution>
