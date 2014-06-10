@@ -25,6 +25,7 @@
         <module>build-common</module>
         <module>java-common</module>
         <module>apk-inspector</module>
+        <module>newsfeed</module>
     </modules>
 
     <dependencies>
