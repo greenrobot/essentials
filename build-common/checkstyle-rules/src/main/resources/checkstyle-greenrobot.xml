@@ -96,7 +96,9 @@
 		<module name="BooleanExpressionComplexity">
 			<property name="max" value="5" />
 		</module>
-		<module name="CyclomaticComplexity" />
+        <module name="CyclomaticComplexity">
+            <property name="max" value="15"/>
+        </module>
 		<module name="NPathComplexity" />
 		<module name="JavaNCSS" />
 
