@@ -4,7 +4,7 @@
 
     <groupId>de.greenrobot.build</groupId>
     <artifactId>checkstyle-rules</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 
     <distributionManagement>
         <repository>
