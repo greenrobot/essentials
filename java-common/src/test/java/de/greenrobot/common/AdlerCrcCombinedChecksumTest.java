@@ -5,6 +5,11 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.zip.Adler32;
+import java.util.zip.CRC32;
 
 public class AdlerCrcCombinedChecksumTest {
     @Test
@@ -84,10 +89,54 @@ public class AdlerCrcCombinedChecksumTest {
     public void testNullValues() throws Exception {
         AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
         long before = checksum.getValue();
+        checksum.update((byte[]) null);
         checksum.update((int[]) null);
         checksum.update((short[]) null);
         checksum.update((long[]) null);
         checksum.updateUtf8(null);
         Assert.assertEquals(before, checksum.getValue());
+    }
+
+    @Test
+    public void hashCollider() {
+        Random random = new Random(42);
+        byte[] bytes = new byte[1024];
+
+        AdlerCrcCombinedChecksum combined = new AdlerCrcCombinedChecksum();
+        CRC32 crc32 = new CRC32();
+        Adler32 adler32 = new Adler32();
+
+        Set<Long> combinedValues = new HashSet<>();
+        Set<Long> crc32Values = new HashSet<>();
+        Set<Long> adler32Values = new HashSet<>();
+
+        int combinedCollisions = 0;
+        int crc32Collisions = 0;
+        int adler32Collisions = 0;
+
+        for (int i = 0; i < 1000000; i++) {
+            random.nextBytes(bytes);
+            combined.reset();
+            crc32.reset();
+            adler32.reset();
+
+            crc32.update(bytes);
+            if (!crc32Values.add(crc32.getValue())) {
+                crc32Collisions++;
+            }
+
+            adler32.update(bytes);
+            if (!adler32Values.add(adler32.getValue())) {
+                adler32Collisions++;
+            }
+
+            combined.update(bytes);
+            if (!combinedValues.add(combined.getValue())) {
+                combinedCollisions++;
+            }
+        }
+
+        System.out.println("Adler32/CRC32/Combined collisions: " +
+                adler32Collisions + "/" + crc32Collisions + "/" + combinedCollisions);
     }
 }

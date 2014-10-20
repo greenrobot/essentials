@@ -5,7 +5,7 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-/** Calculates a 64 bit checksum by combining CRC32 and Adler32. */
+/** Calculates a 64 bit checksum by combining CRC32 and Adler32. The 64 bit checksum has */
 public class AdlerCrcCombinedChecksum implements Checksum {
     private final CRC32 crc32;
     private final Adler32 adler32;
@@ -72,6 +72,13 @@ public class AdlerCrcCombinedChecksum implements Checksum {
         update((int) (number >>> 16) & 0xff);
         update((int) (number >>> 8) & 0xff);
         update((int) (number & 0xff));
+    }
+
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
+    public void update(byte[] numbers) {
+        if (numbers != null) {
+            update(numbers, 0, numbers.length);
+        }
     }
 
     /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
