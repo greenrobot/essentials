@@ -1,6 +1,5 @@
 package de.greenrobot.common;
 
-
 import java.io.UnsupportedEncodingException;
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
@@ -39,14 +38,17 @@ public class AdlerCrcCombinedChecksum implements Checksum {
         adler32.reset();
     }
 
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
     public void updateUtf8(String string) {
-        byte[] bytes;
-        try {
-            bytes = string.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        if (string != null) {
+            byte[] bytes;
+            try {
+                bytes = string.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            update(bytes, 0, bytes.length);
         }
-        update(bytes, 0, bytes.length);
     }
 
     public void updateShort(short number) {
@@ -72,23 +74,31 @@ public class AdlerCrcCombinedChecksum implements Checksum {
         update((int) (number & 0xff));
     }
 
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
     public void update(short[] numbers) {
-        for (short number : numbers) {
-            updateShort(number);
+        if (numbers != null) {
+            for (short number : numbers) {
+                updateShort(number);
+            }
         }
     }
 
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
     public void update(int[] numbers) {
-        for (int number : numbers) {
-            updateInt(number);
+        if (numbers != null) {
+            for (int number : numbers) {
+                updateInt(number);
+            }
         }
     }
 
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
     public void update(long[] numbers) {
-        for (long number : numbers) {
-            updateLong(number);
+        if (numbers != null) {
+            for (long number : numbers) {
+                updateLong(number);
+            }
         }
     }
-
 
 }
