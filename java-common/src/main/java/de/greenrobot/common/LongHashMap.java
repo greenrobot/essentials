@@ -3,7 +3,7 @@ package de.greenrobot.common;
 import java.util.Arrays;
 
 /**
- * An minimalistic hash map optimized for long keys.
+ * An minimalistic hash map optimized for long keys. Not thread-safe.
  * 
  * @author Markus
  * 

@@ -5,7 +5,19 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-/** Calculates a 64 bit checksum by combining CRC32 and Adler32. The 64 bit checksum has */
+/**
+ * Calculates a 64 bit checksum by combining CRC32 and Adler32 having much less collisions than CRC32 or Adler32 alone.
+ * <p/>
+ * Collisions based on random 1K byte blocks:
+ * <table>
+ * <tr> <th>Count</th> <th>Adler32</th> <th>CRC32</th> <th>Combined</th> </tr>
+ * <tr> <td>100 K</td> <td>9</td> <td>3</td> <td>0</td> </tr>
+ * <tr> <td>1 M</td> <td>868</td> <td>128</td> <td>0</td> </tr>
+ * <tr> <td>10 M</td> <td>90214</td> <td>11665</td> <td>0</td> </tr>
+ * <tr> <td>50 M</td> <td>2199431</td> <td>289261</td> <td>0</td> </tr>
+ * <tr> <td>100 M</td> <td>8499427</td> <td>1154526</td> <td>0</td> </tr>
+ * </table>
+ */
 public class AdlerCrcCombinedChecksum implements Checksum {
     private final CRC32 crc32;
     private final Adler32 adler32;
@@ -48,6 +60,15 @@ public class AdlerCrcCombinedChecksum implements Checksum {
                 throw new RuntimeException(e);
             }
             update(bytes, 0, bytes.length);
+        }
+    }
+
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
+    public void updateUtf8(String[] strings) {
+        if (strings != null) {
+            for (String string : strings) {
+                updateUtf8(string);
+            }
         }
     }
 

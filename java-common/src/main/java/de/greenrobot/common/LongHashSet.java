@@ -3,7 +3,7 @@ package de.greenrobot.common;
 import java.util.Arrays;
 
 /**
- * An minimalistic hash set optimized for long values.
+ * An minimalistic hash set optimized for long values. Not thread-safe.
  *
  * @author Markus
  */
