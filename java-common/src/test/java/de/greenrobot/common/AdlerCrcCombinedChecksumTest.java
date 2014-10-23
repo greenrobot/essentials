@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.Random;
-import java.util.zip.Adler32;
-import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 public class AdlerCrcCombinedChecksumTest {
@@ -95,36 +93,6 @@ public class AdlerCrcCombinedChecksumTest {
         checksum.updateUtf8((String) null);
         checksum.updateUtf8((String[]) null);
         Assert.assertEquals(before, checksum.getValue());
-    }
-
-    // @Test
-    public void hashCollider() {
-        hashCollider("Adler32", new Adler32());
-        hashCollider("CRC32", new CRC32());
-        hashCollider("Combined", new AdlerCrcCombinedChecksum());
-    }
-
-    public void hashCollider(String name, Checksum checksum) {
-        // Provide seed (42) to have reproducible results
-        Random random = new Random(42);
-        byte[] bytes = new byte[1024];
-        int count = 1000000;
-
-        LongHashSet values = new LongHashSet(count);
-        int collisions = 0;
-        for (int i = 0; i < count; i++) {
-            random.nextBytes(bytes);
-            checksum.reset();
-
-            checksum.update(bytes, 0, bytes.length);
-            if (!values.add(checksum.getValue())) {
-                collisions++;
-            }
-
-            if ((i + 1) % (count / 10) == 0) {
-                System.out.println((i + 1) + " - " + name + " collisions: " + collisions);
-            }
-        }
     }
 
 }
