@@ -22,6 +22,7 @@ public final class LongHashSet {
     private int capacity;
     private int threshold;
     private int size;
+    private float loadFactor = 1.3f;
 
     public LongHashSet() {
         this(16);
@@ -30,7 +31,7 @@ public final class LongHashSet {
     @SuppressWarnings("unchecked")
     public LongHashSet(int capacity) {
         this.capacity = capacity;
-        this.threshold = capacity * 4 / 3;
+        this.threshold = (int) (capacity * loadFactor + 0.5f);
         this.table = new Entry[capacity];
     }
 
@@ -109,12 +110,20 @@ public final class LongHashSet {
         }
         table = newTable;
         capacity = newCapacity;
-        threshold = newCapacity * 4 / 3;
+        threshold = (int) (newCapacity * loadFactor + 0.5f);
+    }
+
+    public float getLoadFactor() {
+        return loadFactor;
+    }
+
+    public void setLoadFactor(float loadFactor) {
+        this.loadFactor = loadFactor;
     }
 
     /** Target load: 0,6 */
     public void reserveRoom(int entryCount) {
-        setCapacity(entryCount * 5 / 3);
+        setCapacity((int) (entryCount * loadFactor * 1.3f + 0.5f));
     }
 
 }

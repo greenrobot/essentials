@@ -1,4 +1,4 @@
-package de.greenrobot.common;
+package de.greenrobot.common.checksum;
 
 import java.io.UnsupportedEncodingException;
 import java.util.zip.Adler32;
@@ -18,36 +18,31 @@ import java.util.zip.Checksum;
  * <tr> <td>100 M</td> <td>8499427</td> <td>1154526</td> <td>0</td> </tr>
  * </table>
  */
-public class AdlerCrcCombinedChecksum implements Checksum {
-    private final CRC32 crc32;
-    private final Adler32 adler32;
+public class DataChecksum implements Checksum {
+    private final Checksum checksum;
 
-    public AdlerCrcCombinedChecksum() {
-        crc32 = new CRC32();
-        adler32 = new Adler32();
+    public DataChecksum(Checksum checksum) {
+        this.checksum = checksum;
     }
 
     @Override
     public void update(int b) {
-        crc32.update(b);
-        adler32.update(b);
+        checksum.update(b);
     }
 
     @Override
     public void update(byte[] b, int off, int len) {
-        crc32.update(b, off, len);
-        adler32.update(b, off, len);
+        checksum.update(b, off, len);
     }
 
     @Override
     public long getValue() {
-        return (adler32.getValue() << 32) | crc32.getValue();
+        return checksum.getValue();
     }
 
     @Override
     public void reset() {
-        crc32.reset();
-        adler32.reset();
+        checksum.reset();
     }
 
     /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */

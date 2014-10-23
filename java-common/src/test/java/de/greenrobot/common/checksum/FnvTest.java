@@ -1,5 +1,7 @@
-package de.greenrobot.common;
+package de.greenrobot.common.checksum;
 
+import de.greenrobot.common.checksum.FNV32;
+import de.greenrobot.common.checksum.FNV64;
 import org.junit.Assert;
 import org.junit.Test;
 

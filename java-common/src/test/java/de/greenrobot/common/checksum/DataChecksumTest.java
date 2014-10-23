@@ -1,33 +1,14 @@
-package de.greenrobot.common;
+package de.greenrobot.common.checksum;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.util.Random;
-import java.util.zip.Checksum;
+import java.util.zip.Adler32;
+import java.util.zip.CRC32;
 
-public class AdlerCrcCombinedChecksumTest {
-    @Test
-    public void testBasics() throws Exception {
-        AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
-        long emptyValue = checksum.getValue();
-        for (int i = 0; i < 256; i++) {
-            checksum.update(i);
-            long value = checksum.getValue();
-
-            long crc32 = value & 0xffffffff;
-            long adler32 = (value >>> 32) & 0xffffffff;
-
-            Assert.assertNotEquals(crc32, adler32);
-            Assert.assertNotEquals(0, adler32);
-            Assert.assertNotEquals(0, crc32);
-        }
-
-        checksum.reset();
-        Assert.assertEquals(emptyValue, checksum.getValue());
-    }
+public class DataChecksumTest {
 
     @Test
     public void testUpdateInt() throws Exception {
@@ -36,11 +17,11 @@ public class AdlerCrcCombinedChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeInt(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum = new DataChecksum(new Adler32());
         checksum.updateInt(input);
         long value1 = checksum.getValue();
 
-        AdlerCrcCombinedChecksum checksum2 = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum2 = new DataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
         Assert.assertEquals(value2, value1);
@@ -53,11 +34,11 @@ public class AdlerCrcCombinedChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeShort(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum = new DataChecksum(new Adler32());
         checksum.updateShort(input);
         long value1 = checksum.getValue();
 
-        AdlerCrcCombinedChecksum checksum2 = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum2 = new DataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -71,11 +52,11 @@ public class AdlerCrcCombinedChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeLong(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum = new DataChecksum(new Adler32());
         checksum.updateLong(input);
         long value1 = checksum.getValue();
 
-        AdlerCrcCombinedChecksum checksum2 = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum2 = new DataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -84,7 +65,7 @@ public class AdlerCrcCombinedChecksumTest {
 
     @Test
     public void testNullValues() throws Exception {
-        AdlerCrcCombinedChecksum checksum = new AdlerCrcCombinedChecksum();
+        DataChecksum checksum = new DataChecksum(new Adler32());
         long before = checksum.getValue();
         checksum.update((byte[]) null);
         checksum.update((int[]) null);

@@ -1,4 +1,4 @@
-package de.greenrobot.common;
+package de.greenrobot.common.checksum;
 
 import java.util.zip.Checksum;
 
