@@ -11,7 +11,7 @@ import java.util.zip.Checksum;
 /** Test hash functions; prints out collisions and time. */
 public class HashCollider {
     @Test
-    public void hashCollider() {
+    public void hashColliderTotalRandom() {
         hashCollider("Adler32", new Adler32());
         hashCollider("FNV1a", new FNV32());
         hashCollider("FNV1a-64", new FNV64());
@@ -19,12 +19,26 @@ public class HashCollider {
         hashCollider("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
     }
 
-    public void hashCollider(String name, Checksum checksum) {
-        hashCollider(name, checksum, 1000000, 1024, 10);
+    @Test
+    public void hashColliderSmallChanges() {
+        hashColliderSmallChanges("Adler32", new Adler32());
+        hashColliderSmallChanges("FNV1a", new FNV32());
+        hashColliderSmallChanges("FNV1a-64", new FNV64());
+        hashColliderSmallChanges("CRC32", new CRC32());
+        hashColliderSmallChanges("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
     }
 
-    public void hashCollider(String name, Checksum checksum, int count, int byteLength, int logCount) {
-        System.out.println(name + " -----------------------------------------------------------");
+    public void hashCollider(String name, Checksum checksum) {
+        hashCollider(name, checksum, 1000000, 1024, 10, true);
+    }
+
+    public void hashColliderSmallChanges(String name, Checksum checksum) {
+        hashCollider(name, checksum, 1000000, 1024, 10, false);
+    }
+
+    public void hashCollider(String name, Checksum checksum, int count, int byteLength, int logCount,
+                             boolean totalRandom) {
+        System.out.println(name + "\t-----------------------------------------------------------");
 
         // Provide seed (42) to have reproducible results
         Random random = new Random(42);
@@ -34,8 +48,24 @@ public class HashCollider {
         int collisions = 0;
         long totalTime = 0;
         int firstCollision = 0;
+        int indexToChange = -1; // used if !totalRandom
         for (int i = 0; i < count; i++) {
-            random.nextBytes(bytes);
+            if (totalRandom) {
+                random.nextBytes(bytes);
+            } else {
+                if (indexToChange != -1) {
+                    byte existing = bytes[indexToChange];
+                    byte newValue;
+                    do {
+                        newValue = (byte) random.nextInt();
+                    } while (existing == newValue);
+                    bytes[indexToChange] = newValue;
+                }
+                indexToChange++;
+                if (indexToChange == byteLength) {
+                    indexToChange = 0;
+                }
+            }
             checksum.reset();
             long start = System.nanoTime();
             checksum.update(bytes, 0, bytes.length);
