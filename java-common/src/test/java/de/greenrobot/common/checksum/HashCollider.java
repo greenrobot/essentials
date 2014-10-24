@@ -1,5 +1,7 @@
 package de.greenrobot.common.checksum;
 
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
 import org.junit.Test;
 
@@ -10,22 +12,24 @@ import java.util.zip.Checksum;
 
 /** Test hash functions; prints out collisions and time. */
 public class HashCollider {
-    @Test
+    //@Test
     public void hashColliderTotalRandom() {
         hashCollider("Adler32", new Adler32());
         hashCollider("FNV1a", new FNV32());
         hashCollider("FNV1a-64", new FNV64());
         hashCollider("CRC32", new CRC32());
         hashCollider("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
+        hashCollider("Murmur3A-32", new Murmur32Checksum());
     }
 
-    @Test
+    //    @Test
     public void hashColliderSmallChanges() {
         hashColliderSmallChanges("Adler32", new Adler32());
         hashColliderSmallChanges("FNV1a", new FNV32());
         hashColliderSmallChanges("FNV1a-64", new FNV64());
         hashColliderSmallChanges("CRC32", new CRC32());
         hashColliderSmallChanges("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
+        hashColliderSmallChanges("Murmur3A-32", new Murmur32Checksum());
     }
 
     public void hashCollider(String name, Checksum checksum) {
@@ -83,5 +87,33 @@ public class HashCollider {
             }
         }
         System.out.println(name + "\tfirst collision at: " + (firstCollision == 0 ? "none" : firstCollision));
+    }
+
+    class Murmur32Checksum implements Checksum {
+        HashFunction x = Hashing.murmur3_32();
+        Long hash;
+
+        @Override
+        public void update(int b) {
+            throw new RuntimeException("Not implemented");
+        }
+
+        @Override
+        public void update(byte[] b, int off, int len) {
+            if (hash != null) {
+                throw new RuntimeException("No hash building available");
+            }
+            hash = 0xffffffffL & x.hashBytes(b, off, len).asInt();
+        }
+
+        @Override
+        public long getValue() {
+            return hash;
+        }
+
+        @Override
+        public void reset() {
+            hash = null;
+        }
     }
 }
