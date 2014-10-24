@@ -3,8 +3,9 @@ package de.greenrobot.common.checksum;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
-import org.junit.Test;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
@@ -12,7 +13,7 @@ import java.util.zip.Checksum;
 
 /** Test hash functions; prints out collisions and time. */
 public class HashCollider {
-    //@Test
+    //    @Test
     public void hashColliderTotalRandom() {
         hashCollider("Adler32", new Adler32());
         hashCollider("FNV1a", new FNV32());
@@ -20,6 +21,7 @@ public class HashCollider {
         hashCollider("CRC32", new CRC32());
         hashCollider("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
         hashCollider("Murmur3A-32", new Murmur32Checksum());
+        hashCollider("MD5", new Md5Checksum());
     }
 
     //    @Test
@@ -89,7 +91,7 @@ public class HashCollider {
         System.out.println(name + "\tfirst collision at: " + (firstCollision == 0 ? "none" : firstCollision));
     }
 
-    class Murmur32Checksum implements Checksum {
+    static class Murmur32Checksum implements Checksum {
         HashFunction x = Hashing.murmur3_32();
         Long hash;
 
@@ -114,6 +116,38 @@ public class HashCollider {
         @Override
         public void reset() {
             hash = null;
+        }
+    }
+
+    static class Md5Checksum implements Checksum {
+        private final MessageDigest digest;
+
+        Md5Checksum() {
+            try {
+                digest = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public void update(int b) {
+            throw new RuntimeException("Not implemented");
+        }
+
+        @Override
+        public void update(byte[] b, int off, int len) {
+            digest.update(b, off, len);
+        }
+
+        @Override
+        public long getValue() {
+            return digest.digest()[0]; // Just return something
+        }
+
+        @Override
+        public void reset() {
+            digest.reset();
         }
     }
 }
