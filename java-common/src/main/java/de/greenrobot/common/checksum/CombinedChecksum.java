@@ -2,6 +2,7 @@ package de.greenrobot.common.checksum;
 
 import java.util.zip.Checksum;
 
+/** Combines two 32 bit hashes into a 64 bit hash.*/
 public class CombinedChecksum implements Checksum {
     private final Checksum checksum1;
     private final Checksum checksum2;

@@ -3,23 +3,11 @@ package de.greenrobot.common.checksum;
 import java.io.UnsupportedEncodingException;
 import java.util.zip.Checksum;
 
-/**
- * Calculates a 64 bit checksum by combining CRC32 and Adler32 having much less collisions than CRC32 or Adler32 alone.
- * <p/>
- * Collisions based on random 1K byte blocks:
- * <table>
- * <tr> <th>Count</th> <th>Adler32</th> <th>CRC32</th> <th>Combined</th> </tr>
- * <tr> <td>100 K</td> <td>9</td> <td>3</td> <td>0</td> </tr>
- * <tr> <td>1 M</td> <td>868</td> <td>128</td> <td>0</td> </tr>
- * <tr> <td>10 M</td> <td>90214</td> <td>11665</td> <td>0</td> </tr>
- * <tr> <td>50 M</td> <td>2199431</td> <td>289261</td> <td>0</td> </tr>
- * <tr> <td>100 M</td> <td>8499427</td> <td>1154526</td> <td>0</td> </tr>
- * </table>
- */
-public class DataChecksum implements Checksum {
+/** Wrapper for Checksum that accepts all kind of primitive data to update the hash. */
+public class PrimitiveDataChecksum implements Checksum {
     private final Checksum checksum;
 
-    public DataChecksum(Checksum checksum) {
+    public PrimitiveDataChecksum(Checksum checksum) {
         this.checksum = checksum;
     }
 

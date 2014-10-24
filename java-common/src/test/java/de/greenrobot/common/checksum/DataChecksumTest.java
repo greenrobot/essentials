@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.zip.Adler32;
-import java.util.zip.CRC32;
 
 public class DataChecksumTest {
 
@@ -17,11 +16,11 @@ public class DataChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeInt(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         checksum.updateInt(input);
         long value1 = checksum.getValue();
 
-        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
         Assert.assertEquals(value2, value1);
@@ -34,11 +33,11 @@ public class DataChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeShort(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         checksum.updateShort(input);
         long value1 = checksum.getValue();
 
-        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -52,11 +51,11 @@ public class DataChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeLong(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         checksum.updateLong(input);
         long value1 = checksum.getValue();
 
-        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -70,11 +69,11 @@ public class DataChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeFloat(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         checksum.updateFloat(input);
         long value1 = checksum.getValue();
 
-        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -88,11 +87,11 @@ public class DataChecksumTest {
         new DataOutputStream(byteArrayOutputStream).writeDouble(input);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         checksum.updateDouble(input);
         long value1 = checksum.getValue();
 
-        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
 
@@ -101,7 +100,7 @@ public class DataChecksumTest {
 
     @Test
     public void testNullValues() throws Exception {
-        DataChecksum checksum = new DataChecksum(new Adler32());
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
         long before = checksum.getValue();
         checksum.update((byte[]) null);
         checksum.update((int[]) null);
