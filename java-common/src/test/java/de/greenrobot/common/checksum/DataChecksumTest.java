@@ -64,6 +64,42 @@ public class DataChecksumTest {
     }
 
     @Test
+    public void testUpdateFloat() throws Exception {
+        float input = (float) -Math.PI;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        new DataOutputStream(byteArrayOutputStream).writeFloat(input);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+        DataChecksum checksum = new DataChecksum(new Adler32());
+        checksum.updateFloat(input);
+        long value1 = checksum.getValue();
+
+        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        checksum2.update(bytes, 0, bytes.length);
+        long value2 = checksum2.getValue();
+
+        Assert.assertEquals(value2, value1);
+    }
+
+    @Test
+    public void testUpdateDouble() throws Exception {
+        double input = -Math.PI;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        new DataOutputStream(byteArrayOutputStream).writeDouble(input);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+        DataChecksum checksum = new DataChecksum(new Adler32());
+        checksum.updateDouble(input);
+        long value1 = checksum.getValue();
+
+        DataChecksum checksum2 = new DataChecksum(new Adler32());
+        checksum2.update(bytes, 0, bytes.length);
+        long value2 = checksum2.getValue();
+
+        Assert.assertEquals(value2, value1);
+    }
+
+    @Test
     public void testNullValues() throws Exception {
         DataChecksum checksum = new DataChecksum(new Adler32());
         long before = checksum.getValue();
@@ -71,6 +107,8 @@ public class DataChecksumTest {
         checksum.update((int[]) null);
         checksum.update((short[]) null);
         checksum.update((long[]) null);
+        checksum.update((float[]) null);
+        checksum.update((double[]) null);
         checksum.updateUtf8((String) null);
         checksum.updateUtf8((String[]) null);
         Assert.assertEquals(before, checksum.getValue());

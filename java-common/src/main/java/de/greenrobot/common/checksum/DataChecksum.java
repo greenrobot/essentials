@@ -1,8 +1,6 @@
 package de.greenrobot.common.checksum;
 
 import java.io.UnsupportedEncodingException;
-import java.util.zip.Adler32;
-import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 /**
@@ -90,6 +88,14 @@ public class DataChecksum implements Checksum {
         update((int) (number & 0xff));
     }
 
+    public void updateFloat(float number) {
+        updateInt(Float.floatToRawIntBits(number));
+    }
+
+    public void updateDouble(double number) {
+        updateLong(Double.doubleToLongBits(number));
+    }
+
     /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
     public void update(byte[] numbers) {
         if (numbers != null) {
@@ -120,6 +126,24 @@ public class DataChecksum implements Checksum {
         if (numbers != null) {
             for (long number : numbers) {
                 updateLong(number);
+            }
+        }
+    }
+
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
+    public void update(float[] numbers) {
+        if (numbers != null) {
+            for (float number : numbers) {
+                updateFloat(number);
+            }
+        }
+    }
+
+    /** Note: leaves the checksum untouched if given value is null (provide a special value for stronger hashing). */
+    public void update(double[] numbers) {
+        if (numbers != null) {
+            for (double number : numbers) {
+                updateDouble(number);
             }
         }
     }
