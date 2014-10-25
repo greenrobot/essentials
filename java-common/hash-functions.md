@@ -34,6 +34,7 @@ Other comparisons
 =================
 http://www.strchr.com/hash_functions
 http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed
+http://research.neustar.biz/2012/02/02/choosing-a-good-hash-function-part-3/
 
 From xxHash:
 <table>
@@ -75,6 +76,11 @@ From xxHash:
 Q.Score is a measure of quality of the hash function.
 It depends on successfully passing SMHasher test set.
 10 is a perfect score.
+
+http://jpountz.github.io/lz4-java/1.2.0/xxhash-benchmark/
+http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html
+http://floodyberry.com/noncryptohashzoo/
+
 
 Hash function evaluation
 ========================
