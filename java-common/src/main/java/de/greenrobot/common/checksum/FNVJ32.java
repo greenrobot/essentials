@@ -11,8 +11,6 @@ public class FNVJ32 implements Checksum {
 
     private int pos;
     private int length;
-    // Just an idea to improve data, test it:
-    //    private int fingerprint;
 
     @Override
     public void update(int b) {
@@ -56,9 +54,7 @@ public class FNVJ32 implements Checksum {
             int v2 = (0xff & b[i + 1]) << 16;
             int v3 = (0xff & b[i + 2]) << 8;
             int v4 = (0xff & b[i + 3]);
-            int val = v1 | v2 | v3 | v4;
-            hash ^= val;
-            //            fingerprint+=val;
+            hash ^= v1 | v2 | v3 | v4;
         }
         length += stop - off;
 
@@ -76,7 +72,6 @@ public class FNVJ32 implements Checksum {
         int finished = hash * MULTIPLIER;
         finished ^= length;
         finished *= MULTIPLIER;
-        //        finished ^= fingerprint;
         return finished & 0xffffffffL;
     }
 
