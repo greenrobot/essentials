@@ -52,16 +52,16 @@ public class FNVJTest {
         Assert.assertEquals(hash, checksum.getValue());
     }
 
-    //@Test
+    @Test
     public void testTrailingZero() {
         FNVJ32 checksum = new FNVJ32();
         long lastHash = checksum.getValue();
-        Assert.assertEquals(0, INPUT16[INPUT16.length-1]);
+        Assert.assertEquals(0, INPUT16[INPUT16.length - 1]);
         for (int b : INPUT16) {
             checksum.update(b);
             long hash = checksum.getValue();
             Assert.assertNotEquals(lastHash, hash);
-            lastHash =hash;
+            lastHash = hash;
         }
     }
 

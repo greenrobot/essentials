@@ -3,7 +3,6 @@ package de.greenrobot.common.checksum;
 import java.util.zip.Checksum;
 
 /** Hash function based on FNV, but xors 4 bytes after each multiplication (faster). */
-// XXX flaw: trailing zeros don't change the hash
 public class FNVJ32 implements Checksum {
     private final static int INITIAL_VALUE = 0x811C9DC5;
     private final static int MULTIPLIER = 16777619;
@@ -11,6 +10,7 @@ public class FNVJ32 implements Checksum {
     private int hash = INITIAL_VALUE;
 
     private int pos;
+    private int length;
 
     @Override
     public void update(int b) {
@@ -34,6 +34,7 @@ public class FNVJ32 implements Checksum {
         if (pos == 4) {
             pos = 0;
         }
+        length++;
     }
 
     @Override
@@ -55,20 +56,33 @@ public class FNVJ32 implements Checksum {
             int v4 = (0xff & b[i + 3]);
             hash ^= v1 | v2 | v3 | v4;
         }
+        length += stop - off;
 
         for (int i = 0; i < remainder; i++) {
             update(b[stop + i]);
         }
     }
 
+    public long getUnfinishedValue() {
+        return hash & 0xffffffffL;
+    }
+
     @Override
     public long getValue() {
-        return hash & 0xffffffffL;
+        int finished = hash * MULTIPLIER;
+        finished ^= length;
+        finished *= MULTIPLIER;
+        return finished & 0xffffffffL;
+    }
+
+    public int getLength() {
+        return length;
     }
 
     @Override
     public void reset() {
         hash = INITIAL_VALUE;
         pos = 0;
+        length = 0;
     }
 }
