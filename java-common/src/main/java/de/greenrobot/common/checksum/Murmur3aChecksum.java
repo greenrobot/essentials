@@ -74,6 +74,18 @@ public class Murmur3aChecksum implements Checksum {
         }
     }
 
+    public void updateInt(int value) {
+        if (partialK1Pos == 0) {
+            applyK1(value);
+            length += 4;
+        } else {
+            update(value & 0xff);
+            update((value >> 8) & 0xff);
+            update((value >> 16) & 0xff);
+            update((value >> 24) & 0xff);
+        }
+    }
+
     private void applyK1(int k1) {
         k1 *= c1;
         k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
