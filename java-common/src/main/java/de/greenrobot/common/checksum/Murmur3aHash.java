@@ -18,7 +18,7 @@ import de.greenrobot.common.ByteArrayUtils;
  * <p/>
  * See http://github.com/yonik/java_util for future updates to this file.
  */
-public class Murmur3Hash {
+public class Murmur3aHash {
 
     /** Returns the MurmurHash3_x86_32 hash. */
     public static int murmurhash3_x86_32(byte[] data, int offset, int len, int seed) {

@@ -7,7 +7,7 @@ import java.util.zip.Checksum;
 /**
  * Murmur3A (murmurhash3_x86_32)
  */
-public class Murmur3Checksum implements Checksum {
+public class Murmur3aChecksum implements Checksum {
     private static final int c1 = 0xcc9e2d51;
     private static final int c2 = 0x1b873593;
 
@@ -19,11 +19,11 @@ public class Murmur3Checksum implements Checksum {
     private int partialK1;
     private int partialK1Pos;
 
-    public Murmur3Checksum() {
+    public Murmur3aChecksum() {
         seed = 0;
     }
 
-    public Murmur3Checksum(int seed) {
+    public Murmur3aChecksum(int seed) {
         this.seed = seed;
         h1 = seed;
     }

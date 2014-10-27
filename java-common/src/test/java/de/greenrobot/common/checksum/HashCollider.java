@@ -20,16 +20,16 @@ public class HashCollider {
     public void hashColliderTotalRandom() throws Exception {
         //        hashCollider("Adler32", new Adler32());
         //        hashCollider("FNV1a", new FNV32());
-        //        hashCollider("FNVJ", new FNVJ32());
+                hashCollider("FNVJ", new FNVJ32());
         //        hashCollider("Murmur2", new Murmur2Checksum());
         //        // Murmur2b is faster, hashes match Murmur2
         //                hashCollider("Murmur2b", new Murmur2bChecksum());
         //                hashCollider("Murmur3A-32 (Guava)", new Murmur32Checksum());
-        hashCollider("Murmur3A-32", new MurmurHash3Checksum());
-        hashCollider("Murmur3A-32 Fast", new Murmur3AChecksum());
-        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
-        hashCollider("xxHash", xxChecksum);
-        //        hashCollider("FNVJ64", new FNVJ64());
+        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3Checksum());
+        hashCollider("Murmur3A-32", new Murmur3aChecksum());
+//        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
+//        hashCollider("xxHash", xxChecksum);
+                hashCollider("FNVJ64", new FNVJ64());
         //        hashCollider("FNV1a-64", new FNV64());
         //        hashCollider("CRC32", new CRC32());
         //        hashCollider("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
