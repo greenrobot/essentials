@@ -92,6 +92,8 @@ Other interesting hash functions
 xxHash claims to be blazing fast for current x86 while having great hashing properties:
 https://code.google.com/p/xxhash/
 
+Faster Murmur3 32 bit than Guava's: http://github.com/yonik/java_util
+
 http://en.wikipedia.org/wiki/CityHash
 
 http://en.wikipedia.org/wiki/Jenkins_hash_function

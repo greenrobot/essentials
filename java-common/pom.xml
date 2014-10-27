@@ -21,9 +21,15 @@
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
-            <scope>test</scope>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.jpountz.lz4</groupId>
+            <artifactId>lz4</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

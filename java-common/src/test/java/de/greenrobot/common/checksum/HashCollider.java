@@ -3,6 +3,8 @@ package de.greenrobot.common.checksum;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
+import de.greenrobot.common.checksum.otherhashes.MurmurHash3Checksum;
+import net.jpountz.xxhash.XXHashFactory;
 import org.junit.Test;
 
 import java.util.Random;
@@ -15,14 +17,18 @@ public class HashCollider {
     private final static boolean COUNT_BITS = true;
 
     @Test
-    public void hashColliderTotalRandom() {
+    public void hashColliderTotalRandom() throws Exception {
         //        hashCollider("Adler32", new Adler32());
         //        hashCollider("FNV1a", new FNV32());
-        hashCollider("FNVJ", new FNVJ32());
+        //        hashCollider("FNVJ", new FNVJ32());
         //        hashCollider("Murmur2", new Murmur2Checksum());
         //        // Murmur2b is faster, hashes match Murmur2
-        //        hashCollider("Murmur2b", new Murmur2bChecksum());
-        //        hashCollider("Murmur3A-32", new Murmur32Checksum());
+        //                hashCollider("Murmur2b", new Murmur2bChecksum());
+        //                hashCollider("Murmur3A-32 (Guava)", new Murmur32Checksum());
+        hashCollider("Murmur3A-32", new MurmurHash3Checksum());
+        hashCollider("Murmur3A-32 Fast", new Murmur3AChecksum());
+        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
+        hashCollider("xxHash", xxChecksum);
         //        hashCollider("FNVJ64", new FNVJ64());
         //        hashCollider("FNV1a-64", new FNV64());
         //        hashCollider("CRC32", new CRC32());
@@ -100,7 +106,7 @@ public class HashCollider {
                 }
             }
 
-            if ((i + 1) % (count / logCount) == 0) {
+            if (logCount > count || (i + 1) % (count / logCount) == 0) {
                 long ms = totalTime / 1000000;
                 int mbs = (int) (1000000000d * i * byteLength / 1024 / 1024 / totalTime + 0.5f);
                 System.out.println(name + "\t" + (i + 1) + "\t\t" + "collisions: " + collisions + "\t\tms: " + ms +

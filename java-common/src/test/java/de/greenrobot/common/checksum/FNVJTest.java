@@ -27,6 +27,24 @@ public class FNVJTest {
     }
 
     @Test
+    public void testExpectedHash() {
+        FNVJ32 checksum = new FNVJ32();
+        checksum.update(0);
+        checksum.update(0);
+        checksum.update(0);
+        checksum.update(0);
+        Assert.assertEquals(1186001259, checksum.getValue());
+
+        checksum.reset();
+        checksum.update(INPUT4, 0, INPUT4.length);
+        Assert.assertEquals(623577631, checksum.getValue());
+
+        checksum.reset();
+        checksum.update(INPUT16, 0, INPUT16.length);
+        Assert.assertEquals(0x8AF88E69L, checksum.getValue());
+    }
+
+    @Test
     public void testRestUnaligned() {
         FNVJ32 checksum = new FNVJ32();
         checksum.update(42);
