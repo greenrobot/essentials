@@ -97,6 +97,26 @@ public class ByteArrayUtils {
                 ((bytes[index + 2] & 0xff) << 16) | (bytes[index + 3] << 24);
     }
 
+    /** Big endian. */
+    public static int getIntBE(byte[] bytes, int index) {
+        if (UNSAFE != null) {
+            int value = UNSAFE.getInt(bytes, BYTE_ARRAY_OFFSET + index);
+            if (BIG_ENDIAN) {
+                return value;
+            } else {
+                return Integer.reverseBytes(value);
+            }
+        } else {
+            return getIntBEPlainJava(bytes, index);
+        }
+    }
+
+    // separate method to enable unit test
+    static int getIntBEPlainJava(byte[] bytes, int index) {
+        return (bytes[index + 3] & 0xff) | ((bytes[index + 2] & 0xff) << 8) |
+                ((bytes[index + 1] & 0xff) << 16) | (bytes[index] << 24);
+    }
+
     /** Little endian. */
     public static long getLongLE(byte[] bytes, int index) {
         if (UNSAFE != null) {
@@ -117,6 +137,28 @@ public class ByteArrayUtils {
                 ((bytes[index + 2] & 0xff) << 16) | ((bytes[index + 3] & 0xffL) << 24) |
                 ((bytes[index + 4] & 0xffL) << 32) | ((bytes[index + 5] & 0xffL) << 40) |
                 ((bytes[index + 6] & 0xffL) << 48) | (((long) bytes[index + 7]) << 56);
+    }
+
+    /** Big endian. */
+    public static long getLongBE(byte[] bytes, int index) {
+        if (UNSAFE != null) {
+            long value = UNSAFE.getLong(bytes, BYTE_ARRAY_OFFSET + index);
+            if (BIG_ENDIAN) {
+                return value;
+            } else {
+                return Long.reverseBytes(value);
+            }
+        } else {
+            return getLongBEPlainJava(bytes, index);
+        }
+    }
+
+    // separate method to enable unit test
+    static long getLongBEPlainJava(byte[] bytes, int index) {
+        return (bytes[index + 7] & 0xff) | ((bytes[index + 6] & 0xff) << 8) |
+                ((bytes[index + 5] & 0xff) << 16) | ((bytes[index + 4] & 0xffL) << 24) |
+                ((bytes[index + 3] & 0xffL) << 32) | ((bytes[index + 2] & 0xffL) << 40) |
+                ((bytes[index + 1] & 0xffL) << 48) | (((long) bytes[index]) << 56);
     }
 
 }

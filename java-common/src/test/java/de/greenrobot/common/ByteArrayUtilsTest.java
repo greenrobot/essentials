@@ -11,6 +11,7 @@ import java.util.Random;
 public class ByteArrayUtilsTest {
     private byte[] bytes;
     private ByteBuffer byteBufferLE;
+    private ByteBuffer byteBufferBE;
 
     @Before
     public void setUp() {
@@ -19,6 +20,7 @@ public class ByteArrayUtilsTest {
 
         byteBufferLE = ByteBuffer.wrap(bytes);
         byteBufferLE.order(ByteOrder.LITTLE_ENDIAN);
+        byteBufferBE = ByteBuffer.wrap(bytes);
     }
 
     @Test
@@ -53,6 +55,42 @@ public class ByteArrayUtilsTest {
         for (int i = 0; i < bytes.length - 7; i++) {
             long expected = byteBufferLE.getLong(i);
             long value = ByteArrayUtils.getLongLEPlainJava(bytes, i);
+            Assert.assertEquals(expected, value);
+        }
+    }
+
+    @Test
+    public void testGetIntBE() {
+        for (int i = 0; i < bytes.length - 3; i++) {
+            int expected = byteBufferBE.getInt(i);
+            int value = ByteArrayUtils.getIntBE(bytes, i);
+            Assert.assertEquals(expected, value);
+        }
+    }
+
+    @Test
+    public void testGetIntBEPlainJava() {
+        for (int i = 0; i < bytes.length - 3; i++) {
+            int expected = byteBufferBE.getInt(i);
+            int value = ByteArrayUtils.getIntBEPlainJava(bytes, i);
+            Assert.assertEquals(expected, value);
+        }
+    }
+
+    @Test
+    public void testGetLongBE() {
+        for (int i = 0; i < bytes.length - 7; i++) {
+            long expected = byteBufferBE.getLong(i);
+            long value = ByteArrayUtils.getLongBE(bytes, i);
+            Assert.assertEquals(expected, value);
+        }
+    }
+
+    @Test
+    public void testGetLongBEPlainJava() {
+        for (int i = 0; i < bytes.length - 7; i++) {
+            long expected = byteBufferBE.getLong(i);
+            long value = ByteArrayUtils.getLongBEPlainJava(bytes, i);
             Assert.assertEquals(expected, value);
         }
     }
