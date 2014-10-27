@@ -75,7 +75,7 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
 
     @Test
     public void testUpdateIntMixed() throws Exception {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(12);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(13);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         byteBuffer.put((byte) 42);
         byteBuffer.putInt(1234567890);
@@ -83,6 +83,7 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         byteBuffer.put((byte) 23);
         byteBuffer.put((byte) 33);
         byteBuffer.putInt(1000000031);
+        byteBuffer.put((byte) 99);
         byte[] bytes = byteBuffer.array();
 
         Murmur3aChecksum murmur3aChecksum = (Murmur3aChecksum) checksum;
@@ -92,12 +93,60 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         murmur3aChecksum.update(23);
         murmur3aChecksum.update(33);
         murmur3aChecksum.updateInt(1000000031);
+        murmur3aChecksum.update(99);
         long value1 = murmur3aChecksum.getValue();
 
         murmur3aChecksum.reset();
         murmur3aChecksum.update(bytes, 0, bytes.length);
         long value2 = murmur3aChecksum.getValue();
         Assert.assertEquals(value2, value1);
+    }
+
+    @Test
+    public void testUpdateLongAligned() throws Exception {
+        long input = Integer.MIN_VALUE + 123456789;
+        ByteBuffer byteBuffer = ByteBuffer.allocate(8);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byteBuffer.putLong(input);
+        byte[] bytes = byteBuffer.array();
+
+        Murmur3aChecksum murmur3aChecksum = (Murmur3aChecksum) checksum;
+        murmur3aChecksum.updateLong(input);
+        long value1 = murmur3aChecksum.getValue();
+
+        murmur3aChecksum.reset();
+        murmur3aChecksum.update(bytes, 0, bytes.length);
+        long value2 = murmur3aChecksum.getValue();
+        Assert.assertEquals(value2, value1);
+    }
+
+    @Test
+    public void testUpdateLongMixed() throws Exception {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(17);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byteBuffer.put((byte) 42);
+        byteBuffer.putInt(1234567890);
+        byteBuffer.put((byte) 13);
+        byteBuffer.put((byte) 23);
+        byteBuffer.put((byte) 33);
+        byteBuffer.putLong(10000000317777L);
+        byteBuffer.put((byte) 99);
+        byte[] bytes = byteBuffer.array();
+        checksum.update(bytes, 0, bytes.length);
+        long expected = checksum.getValue();
+
+        Murmur3aChecksum murmur3aChecksum = (Murmur3aChecksum) checksum;
+        murmur3aChecksum.reset();
+        murmur3aChecksum.update(42);
+        murmur3aChecksum.updateInt(1234567890);
+        murmur3aChecksum.update(13);
+        murmur3aChecksum.update(23);
+        murmur3aChecksum.update(33);
+        murmur3aChecksum.updateLong(10000000317777L);
+        murmur3aChecksum.update(99);
+        long value1 = murmur3aChecksum.getValue();
+
+        Assert.assertEquals(expected, value1);
     }
 
 }
