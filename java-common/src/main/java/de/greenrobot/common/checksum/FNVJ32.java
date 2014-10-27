@@ -1,5 +1,7 @@
 package de.greenrobot.common.checksum;
 
+import de.greenrobot.common.ByteArrayUtils;
+
 import java.util.zip.Checksum;
 
 /** Hash function based on FNV, but xors 4 bytes after each multiplication (faster). */
@@ -48,13 +50,9 @@ public class FNVJ32 implements Checksum {
         int stop = off + len - remainder;
         for (int i = off; i < stop; i += 4) {
             hash *= MULTIPLIER;
-
-            // Using v1-v4 instead of applying directly to hash is faster
-            int v1 = b[i] << 24;
-            int v2 = (0xff & b[i + 1]) << 16;
-            int v3 = (0xff & b[i + 2]) << 8;
-            int v4 = (0xff & b[i + 3]);
-            hash ^= v1 | v2 | v3 | v4;
+            // Use big endian: makes it easier to apply partial bytes to hash.
+            // Also, for some reason, this results in a better bit distribution quality.
+            hash ^= ByteArrayUtils.getIntBE(b, i);
         }
         length += stop - off;
 
