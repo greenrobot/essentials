@@ -1,16 +1,29 @@
 package de.greenrobot.common.checksum;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-public class FNVJTest {
+import java.util.zip.Checksum;
+
+public abstract class AbstractChecksumTest {
     private final static byte[] INPUT4 = {(byte) 0xcc, 0x24, 0x31, (byte) 0xc4};
     private final static byte[] INPUT16 = {(byte) 0xe0, 0x4d, (byte) 0x9f, (byte) 0xcb, (byte) 0xd5, 0x6b,
             (byte) 0xb9, 0x53, 0x42, (byte) 0x87, 0x08, 0x36, 0x77, 0x23, 0x01, 0};
 
+    Checksum checksum;
+
+    protected AbstractChecksumTest(Checksum checksum) {
+        this.checksum = checksum;
+    }
+
+    @Before
+    public void setUp() {
+        checksum.reset();
+    }
+
     @Test
     public void testBasics() {
-        FNVJ32 checksum = new FNVJ32();
         long initialHash = checksum.getValue();
 
         for (int b : INPUT4) {
@@ -26,27 +39,24 @@ public class FNVJTest {
         Assert.assertEquals(hash, checksum.getValue());
     }
 
-    @Test
-    public void testExpectedHash() {
-        FNVJ32 checksum = new FNVJ32();
+    public void testExpectedHash(long expectedFor0, long expectedForInput4, long expectedForInput16) {
         checksum.update(0);
         checksum.update(0);
         checksum.update(0);
         checksum.update(0);
-        Assert.assertEquals(1186001259, checksum.getValue());
+        Assert.assertEquals(expectedFor0, checksum.getValue());
 
         checksum.reset();
         checksum.update(INPUT4, 0, INPUT4.length);
-        Assert.assertEquals(623577631, checksum.getValue());
+        Assert.assertEquals(expectedForInput4, checksum.getValue());
 
         checksum.reset();
         checksum.update(INPUT16, 0, INPUT16.length);
-        Assert.assertEquals(0x8AF88E69L, checksum.getValue());
+        Assert.assertEquals(expectedForInput16, checksum.getValue());
     }
 
     @Test
     public void testRestUnaligned() {
-        FNVJ32 checksum = new FNVJ32();
         checksum.update(42);
         long hash = checksum.getValue();
         checksum.reset();
@@ -57,7 +67,6 @@ public class FNVJTest {
 
     @Test
     public void testMixedUnaligned() {
-        FNVJ32 checksum = new FNVJ32();
         checksum.update(INPUT16, 0, INPUT16.length);
         long hash = checksum.getValue();
 
@@ -72,7 +81,6 @@ public class FNVJTest {
 
     @Test
     public void testTrailingZero() {
-        FNVJ32 checksum = new FNVJ32();
         long lastHash = checksum.getValue();
         Assert.assertEquals(0, INPUT16[INPUT16.length - 1]);
         for (int b : INPUT16) {

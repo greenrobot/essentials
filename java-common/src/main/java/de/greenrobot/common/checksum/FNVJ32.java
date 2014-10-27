@@ -4,23 +4,28 @@ import de.greenrobot.common.ByteArrayUtils;
 
 import java.util.zip.Checksum;
 
-/** Hash function based on FNV, but xors 4 bytes after each multiplication (faster). */
+/**
+ * Hash function with emphasis on speed. Test with random data showed pretty good collision behaviour, although
+ * quality measured by SMHasher is pretty bad (worse quality than FNV).
+ *
+ * Based on FNV, but xors 4 bytes at once after each multiplication (faster).
+ */
 public class FNVJ32 implements Checksum {
     private final static int INITIAL_VALUE = 0x811C9DC5;
     private final static int MULTIPLIER = 16777619;
 
     private int hash = INITIAL_VALUE;
 
-    private int pos;
+    private int partialPos;
     private int length;
 
     @Override
     public void update(int b) {
-        if (pos == 0) {
+        if (partialPos == 0) {
             hash *= MULTIPLIER;
         }
         int xorValue = 0xff & b;
-        switch (pos) {
+        switch (partialPos) {
             case 0:
                 xorValue <<= 24;
                 break;
@@ -32,16 +37,16 @@ public class FNVJ32 implements Checksum {
                 break;
         }
         hash ^= xorValue;
-        pos++;
-        if (pos == 4) {
-            pos = 0;
+        partialPos++;
+        if (partialPos == 4) {
+            partialPos = 0;
         }
         length++;
     }
 
     @Override
     public void update(byte[] b, int off, int len) {
-        while (pos != 0 && len > 0) {
+        while (partialPos != 0 && len > 0) {
             update(b[off]);
             off++;
             len--;
@@ -80,7 +85,7 @@ public class FNVJ32 implements Checksum {
     @Override
     public void reset() {
         hash = INITIAL_VALUE;
-        pos = 0;
+        partialPos = 0;
         length = 0;
     }
 }
