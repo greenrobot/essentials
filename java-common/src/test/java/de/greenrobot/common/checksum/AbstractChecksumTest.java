@@ -7,11 +7,11 @@ import org.junit.Test;
 import java.util.zip.Checksum;
 
 public abstract class AbstractChecksumTest {
-    private final static byte[] INPUT4 = {(byte) 0xcc, 0x24, 0x31, (byte) 0xc4};
-    private final static byte[] INPUT16 = {(byte) 0xe0, 0x4d, (byte) 0x9f, (byte) 0xcb, (byte) 0xd5, 0x6b,
+    protected final static byte[] INPUT4 = {(byte) 0xcc, 0x24, 0x31, (byte) 0xc4};
+    protected final static byte[] INPUT16 = {(byte) 0xe0, 0x4d, (byte) 0x9f, (byte) 0xcb, (byte) 0xd5, 0x6b,
             (byte) 0xb9, 0x53, 0x42, (byte) 0x87, 0x08, 0x36, 0x77, 0x23, 0x01, 0};
 
-    Checksum checksum;
+    protected Checksum checksum;
 
     protected AbstractChecksumTest(Checksum checksum) {
         this.checksum = checksum;
@@ -63,7 +63,6 @@ public abstract class AbstractChecksumTest {
         checksum.update(42);
         Assert.assertEquals(hash, checksum.getValue());
     }
-
 
     @Test
     public void testMixedUnaligned() {

@@ -47,8 +47,6 @@ public class Murmur3aChecksum implements Checksum {
         length++;
         if (partialK1Pos == 3) {
             applyK1(partialK1);
-            h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
-            h1 = h1 * 5 + 0xe6546b64;
             partialK1Pos = 0;
         } else {
             partialK1Pos++;
@@ -68,16 +66,11 @@ public class Murmur3aChecksum implements Checksum {
         for (int i = off; i < stop; i += 4) {
             int k1 = ByteArrayUtils.getIntLE(b, i);
             applyK1(k1);
-            h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
-            h1 = h1 * 5 + 0xe6546b64;
         }
         length += stop - off;
 
-        if (remainder > 0) {
-            for (int i = 0; i < remainder; i++) {
-                update(b[stop + i]);
-            }
-            applyK1(partialK1);
+        for (int i = 0; i < remainder; i++) {
+            update(b[stop + i]);
         }
     }
 
@@ -87,11 +80,20 @@ public class Murmur3aChecksum implements Checksum {
         k1 *= c2;
 
         h1 ^= k1;
+        h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
+        h1 = h1 * 5 + 0xe6546b64;
     }
 
     @Override
     public long getValue() {
-        int finished = h1 ^ length;
+        int finished = h1;
+        if (partialK1Pos > 0) {
+            int k1 = partialK1 * c1;
+            k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+            k1 *= c2;
+            finished ^= k1;
+        }
+        finished ^= length;
 
         // fmix
         finished ^= finished >>> 16;
