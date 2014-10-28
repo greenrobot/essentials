@@ -82,7 +82,7 @@ public class PrimitiveDataChecksum implements Checksum {
     }
 
     public void updateFloat(float number) {
-        updateInt(Float.floatToRawIntBits(number));
+        updateInt(Float.floatToIntBits(number));
     }
 
     public void updateDouble(double number) {

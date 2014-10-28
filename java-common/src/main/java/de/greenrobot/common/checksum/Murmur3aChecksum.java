@@ -213,6 +213,19 @@ public class Murmur3aChecksum implements Checksum {
         }
     }
 
+    public void updateFloat(float number) {
+        updateInt(Float.floatToIntBits(number));
+    }
+
+    public void updateDouble(double number) {
+        updateLong(Double.doubleToLongBits(number));
+    }
+
+    /** updates a byte with 0 for false and 1 for true */
+    public void updateBoolean(boolean value) {
+        update(value ? 1 : 0);
+    }
+
     private void applyK1(int k1) {
         k1 *= C1;
         k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
