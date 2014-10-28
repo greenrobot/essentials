@@ -64,16 +64,17 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         }
     }
 
-
     @Test
     public void testUpdateShortAlignment() throws Exception {
         for (int i = 0; i < 16; i++) {
-            ByteBuffer byteBuffer = prepareByteBufferLE(i, 3);
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 5);
             byteBuffer.putShort((short) 12345);
+            byteBuffer.putShort((short) -1);
             byteBuffer.put((byte) 23);
 
             prepareMurmur3aChecksum(i);
             murmur3aChecksum.updateShort((short) 12345);
+            murmur3aChecksum.updateShort((short) -1);  // Also test negative value to check for sign errors
             murmur3aChecksum.update((byte) 23); // One more byte to check state is still OK
             assertEqualHash(byteBuffer, murmur3aChecksum);
         }
@@ -82,12 +83,15 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
     @Test
     public void testUpdateIntAlignment() throws Exception {
         for (int i = 0; i < 16; i++) {
-            ByteBuffer byteBuffer = prepareByteBufferLE(i, 5);
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 9);
             byteBuffer.putInt(1234567890);
+            byteBuffer.putInt(-1);
+
             byteBuffer.put((byte) 23);
 
             prepareMurmur3aChecksum(i);
             murmur3aChecksum.updateInt(1234567890);
+            murmur3aChecksum.updateInt(-1); // Also test negative value to check for sign errors
             murmur3aChecksum.update((byte) 23); // One more byte to check state is still OK
             assertEqualHash(byteBuffer, murmur3aChecksum);
         }
@@ -96,49 +100,78 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
     @Test
     public void testUpdateLongAlignment() throws Exception {
         for (int i = 0; i < 16; i++) {
-            ByteBuffer byteBuffer = prepareByteBufferLE(i, 9);
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 17);
             byteBuffer.putLong(1234567890123456789L);
+            byteBuffer.putLong(-1L);
             byteBuffer.put((byte) 23);
 
             prepareMurmur3aChecksum(i);
             murmur3aChecksum.updateLong(1234567890123456789L);
+            murmur3aChecksum.updateLong(-1L); // Also test negative value to check for sign errors
             murmur3aChecksum.update((byte) 23); // One more byte to check state is still OK
             assertEqualHash(byteBuffer, murmur3aChecksum);
         }
     }
 
     @Test
-    public void testUpdateIntMixed() throws Exception {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(13);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        byteBuffer.put((byte) 42);
-        byteBuffer.putInt(1234567890);
-        byteBuffer.put((byte) 13);
-        byteBuffer.put((byte) 23);
-        byteBuffer.put((byte) 33);
-        byteBuffer.putInt(1000000031);
-        byteBuffer.put((byte) 99);
-        byte[] bytes = byteBuffer.array();
+    public void testUpdateShortArray() throws Exception {
+        for (int i = 0; i < 16; i++) {
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 16);
+            byteBuffer.put(INPUT16);
+            long expected = getHash(byteBuffer);
 
-        Murmur3aChecksum murmur3aChecksum = (Murmur3aChecksum) checksum;
-        murmur3aChecksum.update(42);
-        murmur3aChecksum.updateInt(1234567890);
-        murmur3aChecksum.update(13);
-        murmur3aChecksum.update(23);
-        murmur3aChecksum.update(33);
-        murmur3aChecksum.updateInt(1000000031);
-        murmur3aChecksum.update(99);
-        long value1 = murmur3aChecksum.getValue();
-
-        murmur3aChecksum.reset();
-        murmur3aChecksum.update(bytes, 0, bytes.length);
-        long value2 = murmur3aChecksum.getValue();
-        Assert.assertEquals(value2, value1);
+            prepareMurmur3aChecksum(i);
+            short[] array = new short[8];
+            ByteBuffer.wrap(INPUT16).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(array);
+            murmur3aChecksum.updateShort(array);
+            Assert.assertEquals("Alignment " + i, expected, murmur3aChecksum.getValue());
+        }
     }
 
     @Test
-    public void testUpdateLongMixed() throws Exception {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(17);
+    public void testUpdateIntArray() throws Exception {
+        for (int i = 0; i < 16; i++) {
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 16, 4);
+            Assert.assertEquals(0, byteBuffer.capacity() % 4);
+            byteBuffer.put(INPUT16);
+            while (byteBuffer.position() < byteBuffer.capacity()) {
+                byteBuffer.put((byte) 0);
+            }
+            long expected = getHash(byteBuffer);
+
+            int[] array = new int[byteBuffer.capacity() / 4];
+            byteBuffer.rewind();
+            byteBuffer.asIntBuffer().get(array);
+            murmur3aChecksum.reset();
+            murmur3aChecksum.updateInt(array);
+            Assert.assertEquals(expected, murmur3aChecksum.getValue());
+        }
+    }
+
+    @Test
+    public void testUpdateLongArray() throws Exception {
+        for (int i = 0; i < 16; i++) {
+            ByteBuffer byteBuffer = prepareByteBufferLE(i, 16, 8);
+            Assert.assertEquals(0, byteBuffer.capacity() % 8);
+
+            byteBuffer.put(INPUT16);
+            while (byteBuffer.position() < byteBuffer.capacity()) {
+                byteBuffer.put((byte) 0);
+            }
+            long expected = getHash(byteBuffer);
+
+            long[] array = new long[byteBuffer.capacity() / 8];
+            byteBuffer.rewind();
+            byteBuffer.asLongBuffer().get(array);
+            murmur3aChecksum.reset();
+            murmur3aChecksum.updateLong(array);
+            Assert.assertEquals(expected, murmur3aChecksum.getValue());
+        }
+    }
+
+    @Test
+    public void testUpdateMixed() throws Exception {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(20);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         byteBuffer.put((byte) 42);
         byteBuffer.putInt(1234567890);
@@ -147,12 +180,11 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         byteBuffer.put((byte) 33);
         byteBuffer.putLong(10000000317777L);
         byteBuffer.put((byte) 99);
+        byteBuffer.putShort((short) 666);
+        byteBuffer.put((byte) 77);
         byte[] bytes = byteBuffer.array();
-        checksum.update(bytes, 0, bytes.length);
-        long expected = checksum.getValue();
 
         Murmur3aChecksum murmur3aChecksum = (Murmur3aChecksum) checksum;
-        murmur3aChecksum.reset();
         murmur3aChecksum.update(42);
         murmur3aChecksum.updateInt(1234567890);
         murmur3aChecksum.update(13);
@@ -160,9 +192,14 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         murmur3aChecksum.update(33);
         murmur3aChecksum.updateLong(10000000317777L);
         murmur3aChecksum.update(99);
+        murmur3aChecksum.updateShort((short) 666);
+        murmur3aChecksum.update(77);
         long value1 = murmur3aChecksum.getValue();
 
-        Assert.assertEquals(expected, value1);
+        murmur3aChecksum.reset();
+        murmur3aChecksum.update(bytes, 0, bytes.length);
+        long value2 = murmur3aChecksum.getValue();
+        Assert.assertEquals(value2, value1);
     }
 
     private void prepareMurmur3aChecksum(int prefixLength) {
@@ -170,6 +207,13 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         for (int j = 0; j < prefixLength; j++) {
             murmur3aChecksum.update((byte) (0x77 + j));
         }
+    }
+
+
+    private ByteBuffer prepareByteBufferLE(int prefixLength, int additionalLength, int aligmentToPad) {
+        int off = (prefixLength + additionalLength) % aligmentToPad;
+        int pad = off == 0 ? 0 : aligmentToPad - off;
+        return prepareByteBufferLE(prefixLength, additionalLength + pad);
     }
 
     private ByteBuffer prepareByteBufferLE(int prefixLength, int additionalLength) {

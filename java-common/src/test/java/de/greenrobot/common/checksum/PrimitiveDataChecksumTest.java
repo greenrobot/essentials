@@ -6,24 +6,30 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.zip.Adler32;
+import java.util.zip.Checksum;
 
 public class PrimitiveDataChecksumTest {
+    Checksum[] checksums = {
+            new Adler32(), new FNV32(), new FNV64(), new FNVJ32(), /*new FNVJ64(),*/ new Murmur3aChecksum()
+    };
 
     @Test
     public void testUpdateInt() throws Exception {
-        int input = Integer.MIN_VALUE + 123456789;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        new DataOutputStream(byteArrayOutputStream).writeInt(input);
+        new DataOutputStream(byteArrayOutputStream).writeInt(1234567890);
         byte[] bytes = byteArrayOutputStream.toByteArray();
 
-        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
-        checksum.updateInt(input);
-        long value1 = checksum.getValue();
+        for (Checksum checksum : checksums) {
+            checksum.reset();
+            PrimitiveDataChecksum primitiveDataChecksum = new PrimitiveDataChecksum(checksum);
+            primitiveDataChecksum.updateInt(1234567890);
+            long value = primitiveDataChecksum.getValue();
 
-        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
-        checksum2.update(bytes, 0, bytes.length);
-        long value2 = checksum2.getValue();
-        Assert.assertEquals(value2, value1);
+            checksum.reset();
+            checksum.update(bytes, 0, bytes.length);
+            long expected = checksum.getValue();
+            Assert.assertEquals(checksum.getClass().getSimpleName(), expected, value);
+        }
     }
 
     @Test

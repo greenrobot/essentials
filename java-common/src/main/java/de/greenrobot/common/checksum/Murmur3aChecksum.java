@@ -8,8 +8,8 @@ import java.util.zip.Checksum;
  * Murmur3A (murmurhash3_x86_32)
  */
 public class Murmur3aChecksum implements Checksum {
-    private static final int c1 = 0xcc9e2d51;
-    private static final int c2 = 0x1b873593;
+    private static final int C1 = 0xcc9e2d51;
+    private static final int C2 = 0x1b873593;
 
     private final int seed;
 
@@ -73,6 +73,10 @@ public class Murmur3aChecksum implements Checksum {
         }
     }
 
+    public void update(byte[] b) {
+        update(b, 0, b.length);
+    }
+
     public void updateShort(short value) {
         switch (partialK1Pos) {
             case 0:
@@ -98,39 +102,111 @@ public class Murmur3aChecksum implements Checksum {
         length += 2;
     }
 
-    public void updateInt(int value) {
+    public void updateShort(short... values) {
         if (partialK1Pos == 0) {
-            applyK1(value);
-            length += 4;
+            // Bulk tweak: for some weird reason this is 25-60% faster than the else block
+            int joinCount = values.length & 0xfffffffe;
+            for (int i = 0; i < joinCount; i += 2) {
+                int joined = (0xffff & values[i]) | ((values[i + 1] & 0xffff) << 16);
+                applyK1(joined);
+            }
+            if (joinCount < values.length) {
+                partialK1 = values[joinCount] & 0xffff;
+                partialK1Pos = 2;
+            }
+            length += 2 * values.length;
         } else {
-            update(value & 0xff);
-            update((value >> 8) & 0xff);
-            update((value >> 16) & 0xff);
-            update((value >> 24) & 0xff);
+            for (short value : values) {
+                updateShort(value);
+            }
+        }
+    }
+
+    public void updateInt(int value) {
+        switch (partialK1Pos) {
+            case 0:
+                applyK1(value);
+                break;
+            case 1:
+                partialK1 |= (value & 0xffffff) << 8;
+                applyK1(partialK1);
+                partialK1 = value >>> 24;
+                break;
+            case 2:
+                partialK1 |= (value & 0xffff) << 16;
+                applyK1(partialK1);
+                partialK1 = value >>> 16;
+                break;
+            case 3:
+                partialK1 |= (value & 0xff) << 24;
+                applyK1(partialK1);
+                partialK1 = value >>> 8;
+                break;
+        }
+        length += 4;
+    }
+
+    public void updateInt(int... values) {
+        if (partialK1Pos == 0) {
+            // Bulk tweak: for some weird reason this is 25-60% faster than the else block
+            for (int value : values) {
+                applyK1(value);
+            }
+            length += 4 * values.length;
+        } else {
+            for (int value : values) {
+                updateInt(value);
+            }
         }
     }
 
     public void updateLong(long value) {
+        switch (partialK1Pos) {
+            case 0:
+                applyK1((int) (value & 0xffffffff));
+                applyK1((int) (value >>> 32));
+                break;
+            case 1:
+                partialK1 |= (value & 0xffffff) << 8;
+                applyK1(partialK1);
+                applyK1((int) ((value >>> 24) & 0xffffffff));
+                partialK1 = (int) (value >>> 56);
+                break;
+            case 2:
+                partialK1 |= (value & 0xffff) << 16;
+                applyK1(partialK1);
+                applyK1((int) ((value >>> 16) & 0xffffffff));
+                partialK1 = (int) (value >>> 48);
+                break;
+            case 3:
+                partialK1 |= (value & 0xff) << 24;
+                applyK1(partialK1);
+                applyK1((int) ((value >>> 8) & 0xffffffff));
+                partialK1 = (int) (value >>> 40);
+                break;
+        }
+        length += 8;
+    }
+
+    public void updateLong(long... values) {
         if (partialK1Pos == 0) {
-            applyK1((int) (value & 0xffffffff));
-            applyK1((int) (value >>> 32));
-            length += 8;
+            // Bulk tweak: for some weird reason this is ~25% faster than the else block
+            for (long value : values) {
+                applyK1((int) (value & 0xffffffff));
+                applyK1((int) (value >>> 32));
+            }
+            length += 8 * values.length;
         } else {
-            for (int shift = 0; shift < 64; shift += 8) {
-                if (partialK1Pos == 0 || shift > 32) {
-                    update((int) ((value >> shift) & 0xff));
-                } else {
-                    updateInt((int) ((value >> shift) & 0xffffffff));
-                    shift += 24;
-                }
+            for (long value : values) {
+                updateLong(value);
             }
         }
     }
 
     private void applyK1(int k1) {
-        k1 *= c1;
+        k1 *= C1;
         k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
-        k1 *= c2;
+        k1 *= C2;
 
         h1 ^= k1;
         h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
@@ -141,9 +217,9 @@ public class Murmur3aChecksum implements Checksum {
     public long getValue() {
         int finished = h1;
         if (partialK1Pos > 0) {
-            int k1 = partialK1 * c1;
+            int k1 = partialK1 * C1;
             k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
-            k1 *= c2;
+            k1 *= C2;
             finished ^= k1;
         }
         finished ^= length;

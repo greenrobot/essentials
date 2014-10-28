@@ -39,6 +39,14 @@ public abstract class AbstractChecksumTest {
         Assert.assertEquals(hash, checksum.getValue());
     }
 
+    @Test
+    public void testGetValueStable() {
+        checksum.update(INPUT16, 0, INPUT16.length);
+        long hash = checksum.getValue();
+        // Calling checksum.getValue() twice should not change hash
+        Assert.assertEquals(hash, checksum.getValue());
+    }
+
     public void testExpectedHash(long expectedFor0, long expectedForInput4, long expectedForInput16) {
         checksum.update(0);
         checksum.update(0);
