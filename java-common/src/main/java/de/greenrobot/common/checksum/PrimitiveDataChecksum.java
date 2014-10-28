@@ -53,6 +53,11 @@ public class PrimitiveDataChecksum implements Checksum {
         }
     }
 
+    /** updates a byte with 0 for false and 1 for true */
+    public void updateBoolean(boolean value) {
+        update(value ? 1 : 0);
+    }
+
     public void updateShort(short number) {
         update((number >>> 8) & 0xff);
         update(number & 0xff);

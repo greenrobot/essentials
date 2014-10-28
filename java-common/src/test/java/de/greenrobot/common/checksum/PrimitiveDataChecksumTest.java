@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.zip.Adler32;
 
-public class DataChecksumTest {
+public class PrimitiveDataChecksumTest {
 
     @Test
     public void testUpdateInt() throws Exception {
@@ -23,6 +23,23 @@ public class DataChecksumTest {
         PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
         checksum2.update(bytes, 0, bytes.length);
         long value2 = checksum2.getValue();
+        Assert.assertEquals(value2, value1);
+    }
+
+    @Test
+    public void testUpdateBoolean() throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        new DataOutputStream(byteArrayOutputStream).writeBoolean(true);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+        PrimitiveDataChecksum checksum = new PrimitiveDataChecksum(new Adler32());
+        checksum.updateBoolean(true);
+        long value1 = checksum.getValue();
+
+        PrimitiveDataChecksum checksum2 = new PrimitiveDataChecksum(new Adler32());
+        checksum2.update(bytes, 0, bytes.length);
+        long value2 = checksum2.getValue();
+
         Assert.assertEquals(value2, value1);
     }
 
