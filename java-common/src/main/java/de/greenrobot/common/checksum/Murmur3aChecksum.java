@@ -33,24 +33,23 @@ public class Murmur3aChecksum implements Checksum {
         switch (partialK1Pos) {
             case 0:
                 partialK1 = 0xff & b;
+                partialK1Pos = 1;
                 break;
             case 1:
                 partialK1 |= (0xff & b) << 8;
+                partialK1Pos = 2;
                 break;
             case 2:
                 partialK1 |= (0xff & b) << 16;
+                partialK1Pos = 3;
                 break;
             case 3:
                 partialK1 |= (0xff & b) << 24;
+                applyK1(partialK1);
+                partialK1Pos = 0;
                 break;
         }
         length++;
-        if (partialK1Pos == 3) {
-            applyK1(partialK1);
-            partialK1Pos = 0;
-        } else {
-            partialK1Pos++;
-        }
     }
 
     @Override
@@ -72,6 +71,31 @@ public class Murmur3aChecksum implements Checksum {
         for (int i = 0; i < remainder; i++) {
             update(b[stop + i]);
         }
+    }
+
+    public void updateShort(short value) {
+        switch (partialK1Pos) {
+            case 0:
+                partialK1 = value & 0xffff;
+                partialK1Pos = 2;
+                break;
+            case 1:
+                partialK1 |= (value & 0xffff) << 8;
+                partialK1Pos = 3;
+                break;
+            case 2:
+                partialK1 |= (value & 0xffff) << 16;
+                applyK1(partialK1);
+                partialK1Pos = 0;
+                break;
+            case 3:
+                partialK1 |= (value & 0xff) << 24;
+                applyK1(partialK1);
+                partialK1 = (value >> 8) & 0xff;
+                partialK1Pos = 1;
+                break;
+        }
+        length += 2;
     }
 
     public void updateInt(int value) {
@@ -97,6 +121,7 @@ public class Murmur3aChecksum implements Checksum {
                     update((int) ((value >> shift) & 0xff));
                 } else {
                     updateInt((int) ((value >> shift) & 0xffffffff));
+                    shift += 24;
                 }
             }
         }
