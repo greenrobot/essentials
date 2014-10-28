@@ -103,15 +103,25 @@ public class Murmur3aChecksum implements Checksum {
     }
 
     public void updateShort(short... values) {
-        if (partialK1Pos == 0) {
+        int len = values.length;
+        if (len > 0 && (partialK1Pos == 0 || partialK1Pos == 2)) {
             // Bulk tweak: for some weird reason this is 25-60% faster than the else block
-            int joinCount = values.length & 0xfffffffe;
-            for (int i = 0; i < joinCount; i += 2) {
+            int off = 0;
+            if (partialK1Pos == 2) {
+                partialK1 |= (values[0] & 0xffff) << 16;
+                applyK1(partialK1);
+                partialK1Pos = 0;
+                len--;
+                off = 1;
+            }
+
+            int joinBeforeIdx = off + (len & 0xfffffffe);
+            for (int i = off; i < joinBeforeIdx; i += 2) {
                 int joined = (0xffff & values[i]) | ((values[i + 1] & 0xffff) << 16);
                 applyK1(joined);
             }
-            if (joinCount < values.length) {
-                partialK1 = values[joinCount] & 0xffff;
+            if (joinBeforeIdx < values.length) {
+                partialK1 = values[joinBeforeIdx] & 0xffff;
                 partialK1Pos = 2;
             }
             length += 2 * values.length;
