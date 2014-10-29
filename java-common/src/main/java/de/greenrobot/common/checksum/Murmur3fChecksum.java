@@ -2,9 +2,10 @@ package de.greenrobot.common.checksum;
 
 import de.greenrobot.common.ByteArrayUtils;
 
+import java.math.BigInteger;
 import java.util.zip.Checksum;
 
-/** TODO */
+/** Murmur3F (MurmurHash3_x64_128) */
 public class Murmur3fChecksum implements Checksum {
     private static final long C1 = 0x87c37b91114253d5L;
     private static final long C2 = 0x4cf5ad432745937fL;
@@ -85,15 +86,14 @@ public class Murmur3fChecksum implements Checksum {
             case 15:
                 partialK2 |= (0xffL & b) << 56;
                 break;
-
         }
+
         partialPos++;
         if (partialPos == 16) {
             applyKs(partialK1, partialK2);
             partialPos = 0;
         }
         length++;
-
     }
 
     @Override
@@ -121,28 +121,22 @@ public class Murmur3fChecksum implements Checksum {
 
     private void applyKs(long k1, long k2) {
         k1 *= C1;
-        k1 = Long.rotateLeft(k1, 31); // k1 << 31) | (k1 >>> -31); // ROTL64(k1, 31);
+        k1 = Long.rotateLeft(k1, 31);
         k1 *= C2;
         h1 ^= k1;
 
-        h1 = Long.rotateLeft(h1, 27);//(h1 << 27) | (h1 >>> -27);//ROTL64(h1, 27);
+        h1 = Long.rotateLeft(h1, 27);
         h1 += h2;
         h1 = h1 * 5 + 0x52dce729;
 
         k2 *= C2;
-        k2 = Long.rotateLeft(k2, 33); //(k2 << 33) | (k2 >>> -33);//ROTL64(k2, 33);
+        k2 = Long.rotateLeft(k2, 33);
         k2 *= C1;
         h2 ^= k2;
 
-        h2 = Long.rotateLeft(h2, 31); //(h2 << 31) | (h2 >>> -31);//ROTL64(h2, 31);
+        h2 = Long.rotateLeft(h2, 31);
         h2 += h1;
         h2 = h2 * 5 + 0x38495ab5;
-    }
-
-    @Override
-    public long getValue() {
-        checkFinished();
-        return finishedH1;
     }
 
     private void checkFinished() {
@@ -153,12 +147,12 @@ public class Murmur3fChecksum implements Checksum {
             if (partialPos > 0) {
                 if (partialPos > 8) {
                     long k2 = partialK2 * C2;
-                    k2 = (k2 << 33) | (k2 >>> -33);//ROTL64(k2, 33);
+                    k2 = Long.rotateLeft(k2, 33);
                     k2 *= C1;
                     finishedH2 ^= k2;
                 }
                 long k1 = partialK1 * C1;
-                k1 = (k1 << 31) | (k1 >>> -31); // ROTL64(k1, 31);
+                k1 = Long.rotateLeft(k1, 31);
                 k1 *= C2;
                 finishedH1 ^= k1;
             }
@@ -177,13 +171,70 @@ public class Murmur3fChecksum implements Checksum {
         }
     }
 
+    private long fmix64(long k) {
+        k ^= k >>> 33;
+        k *= 0xff51afd7ed558ccdL;
+        k ^= k >>> 33;
+        k *= 0xc4ceb9fe1a85ec53L;
+        k ^= k >>> 33;
+        return k;
+    }
+
+    @Override
+    /** Returns the lower 64 bits of the 128 bit hash (you can use just this value this as a 64 bit hash). */
+    public long getValue() {
+        checkFinished();
+        return finishedH1;
+    }
+
+    /** Returns the higher 64 bits of the 128 bit hash. */
     public long getValue2() {
         checkFinished();
         return finishedH2;
     }
 
-    //    public BigInteger getBigValue() {
-    //    }
+    public BigInteger getValueBigInteger() {
+        byte[] bytes = getValueBytesBigEndian();
+        return new BigInteger(1, bytes);
+    }
+
+    /** Padded with leading 0s to ensure length of 32 */
+    public String getValueHexString() {
+        checkFinished();
+        return getPaddedHexString(finishedH2) + getPaddedHexString(finishedH1);
+    }
+
+    private String getPaddedHexString(long value) {
+        String string = Long.toHexString(value);
+        while (string.length() < 16) {
+            string = '0' + string;
+        }
+        return string;
+    }
+
+    public byte[] getValueBytesBigEndian() {
+        checkFinished();
+        byte[] bytes = new byte[16];
+        for (int i = 0; i < 8; i++) {
+            bytes[i] = (byte) ((finishedH2 >>> (56 - i * 8)) & 0xff);
+        }
+        for (int i = 0; i < 8; i++) {
+            bytes[8 + i] = (byte) ((finishedH1 >>> (56 - i * 8)) & 0xff);
+        }
+        return bytes;
+    }
+
+    public byte[] getValueBytesLittleEndian() {
+        checkFinished();
+        byte[] bytes = new byte[16];
+        for (int i = 0; i < 8; i++) {
+            bytes[i] = (byte) ((finishedH1 >>> (i * 8)) & 0xff);
+        }
+        for (int i = 0; i < 8; i++) {
+            bytes[8 + i] = (byte) ((finishedH2 >>> (i * 8)) & 0xff);
+        }
+        return bytes;
+    }
 
     @Override
     public void reset() {
@@ -192,16 +243,6 @@ public class Murmur3fChecksum implements Checksum {
         length = 0;
         partialPos = 0;
         finished = false;
-    }
-
-    private long fmix64(long k) {
-        k ^= k >>> 33;
-        k *= 0xff51afd7ed558ccdL;
-        k ^= k >>> 33;
-        k *= 0xc4ceb9fe1a85ec53L;
-        k ^= k >>> 33;
-
-        return k;
     }
 
 }
