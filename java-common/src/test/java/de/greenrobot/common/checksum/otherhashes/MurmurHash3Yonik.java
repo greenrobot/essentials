@@ -16,7 +16,7 @@ package de.greenrobot.common.checksum.otherhashes;
  *  <p>
  *  See http://github.com/yonik/java_util for future updates to this file.
  */
-public class MurmurHash3 {
+public class MurmurHash3Yonik {
 
   /** Returns the MurmurHash3_x86_32 hash. */
   public static int murmurhash3_x86_32(byte[] data, int offset, int len, int seed) {

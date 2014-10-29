@@ -1,5 +1,6 @@
 package de.greenrobot.common.checksum;
 
+import de.greenrobot.common.checksum.otherhashes.MurmurHash3Yonik;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         byte[] bytes = new byte[512];
         new Random(23).nextBytes(bytes);
         for (int i = 0; i <= bytes.length; i++) {
-            int expected = Murmur3aHash.murmurhash3_x86_32(bytes, 0, i, 0);
+            int expected = MurmurHash3Yonik.murmurhash3_x86_32(bytes, 0, i, 0);
             checksum.reset();
             checksum.update(bytes, 0, i);
             int value = (int) checksum.getValue();
@@ -33,12 +34,17 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         byte[] bytes = new byte[512];
         new Random(31).nextBytes(bytes);
         for (int i = 0; i <= bytes.length; i++) {
-            int expected = Murmur3aHash.murmurhash3_x86_32(bytes, i, bytes.length - i, 0);
+            int expected = MurmurHash3Yonik.murmurhash3_x86_32(bytes, i, bytes.length - i, 0);
             checksum.reset();
             checksum.update(bytes, i, bytes.length - i);
             int value = (int) checksum.getValue();
             Assert.assertEquals(expected, value);
         }
+    }
+
+    @Test
+    public void testExpectedHash() {
+        super.testExpectedHash(0x2362f9deL, 0xd49eb151L, 0x46a9cdc1L);
     }
 
     @Test

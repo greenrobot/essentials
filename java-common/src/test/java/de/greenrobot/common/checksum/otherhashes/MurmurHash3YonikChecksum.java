@@ -3,7 +3,7 @@ package de.greenrobot.common.checksum.otherhashes;
 import java.util.zip.Checksum;
 
 /** TODO */
-public class MurmurHash3Checksum implements Checksum {
+public class MurmurHash3YonikChecksum implements Checksum {
     Long hash;
 
     @Override
@@ -16,7 +16,7 @@ public class MurmurHash3Checksum implements Checksum {
         if (hash != null) {
             throw new RuntimeException("No hash building available");
         }
-        hash = 0xffffffffL & MurmurHash3.murmurhash3_x86_32(b, off, len, 0);
+        hash = 0xffffffffL & MurmurHash3Yonik.murmurhash3_x86_32(b, off, len, 0);
     }
 
     @Override

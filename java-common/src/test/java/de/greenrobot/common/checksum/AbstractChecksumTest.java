@@ -52,15 +52,15 @@ public abstract class AbstractChecksumTest {
         checksum.update(0);
         checksum.update(0);
         checksum.update(0);
-        Assert.assertEquals(expectedFor0, checksum.getValue());
+        Assert.assertEquals("0 (int)", expectedFor0, checksum.getValue());
 
         checksum.reset();
         checksum.update(INPUT4, 0, INPUT4.length);
-        Assert.assertEquals(expectedForInput4, checksum.getValue());
+        Assert.assertEquals("I4", expectedForInput4, checksum.getValue());
 
         checksum.reset();
         checksum.update(INPUT16, 0, INPUT16.length);
-        Assert.assertEquals(expectedForInput16, checksum.getValue());
+        Assert.assertEquals("I16", expectedForInput16, checksum.getValue());
     }
 
     @Test

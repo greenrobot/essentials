@@ -3,8 +3,7 @@ package de.greenrobot.common.checksum;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
-import de.greenrobot.common.checksum.otherhashes.MurmurHash3Checksum;
-import net.jpountz.xxhash.XXHashFactory;
+import de.greenrobot.common.checksum.otherhashes.MurmurHash3YonikChecksum;
 import org.junit.Test;
 
 import java.util.Random;
@@ -25,7 +24,7 @@ public class HashCollider {
         //        // Murmur2b is faster, hashes match Murmur2
         //                hashCollider("Murmur2b", new Murmur2bChecksum());
         //                hashCollider("Murmur3A-32 (Guava)", new Murmur32Checksum());
-        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3Checksum());
+        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3YonikChecksum());
         hashCollider("Murmur3A-32", new Murmur3aChecksum());
 //        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
 //        hashCollider("xxHash", xxChecksum);
