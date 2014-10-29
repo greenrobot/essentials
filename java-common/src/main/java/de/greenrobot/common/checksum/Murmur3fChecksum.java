@@ -96,6 +96,10 @@ public class Murmur3fChecksum implements Checksum {
         length++;
     }
 
+    public void update(byte[] b) {
+        update(b, 0, b.length);
+    }
+
     @Override
     public void update(byte[] b, int off, int len) {
         finished = false;
@@ -193,12 +197,13 @@ public class Murmur3fChecksum implements Checksum {
         return finishedH2;
     }
 
+    /** Positive value. */
     public BigInteger getValueBigInteger() {
         byte[] bytes = getValueBytesBigEndian();
         return new BigInteger(1, bytes);
     }
 
-    /** Padded with leading 0s to ensure length of 32 */
+    /** Padded with leading 0s to ensure length of 32. */
     public String getValueHexString() {
         checkFinished();
         return getPaddedHexString(finishedH2) + getPaddedHexString(finishedH1);

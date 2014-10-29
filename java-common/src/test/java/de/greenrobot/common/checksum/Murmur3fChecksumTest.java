@@ -15,7 +15,6 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
         murmur3fChecksum = (Murmur3fChecksum) checksum;
     }
 
-
     @Test
     public void testExpectedHash() {
         // 0 MurmurHash3_x64_128 hash lo: cfa0f7ddd84c76bc hash hi: 589623161cf526f1
@@ -31,7 +30,7 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
 
         for (int i = 0; i <= bytes.length; i++) {
             HashCode hashCode = Hashing.murmur3_128().hashBytes(bytes, 0, i);
-            long expected = hashCode.asLong();// 64 bit is enough
+            long expected = hashCode.asLong(); // 64 bit is enough
 
             checksum.reset();
             checksum.update(bytes, 0, i);
@@ -40,14 +39,13 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
 
         for (int i = 0; i < bytes.length; i++) {
             HashCode hashCode = Hashing.murmur3_128().hashBytes(bytes, i, bytes.length - i);
-            long expected = hashCode.asLong();// 64 bit is enough
+            long expected = hashCode.asLong(); // 64 bit is enough
 
             checksum.reset();
             checksum.update(bytes, i, bytes.length - i);
             Assert.assertEquals("Iteration " + i, expected, checksum.getValue());
         }
     }
-
 
     @Test
     public void testGetValueBytesAgainstGuava() {
@@ -102,7 +100,6 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
                     break;
                 }
             }
-
         }
     }
 
