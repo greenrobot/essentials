@@ -3,6 +3,7 @@ package de.greenrobot.common.checksum;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
+import de.greenrobot.common.checksum.otherhashes.Murmur3fGuavaChecksum;
 import de.greenrobot.common.checksum.otherhashes.MurmurHash3YonikChecksum;
 import org.junit.Test;
 
@@ -24,8 +25,10 @@ public class HashCollider {
         //        // Murmur2b is faster, hashes match Murmur2
         //                hashCollider("Murmur2b", new Murmur2bChecksum());
         //                hashCollider("Murmur3A-32 (Guava)", new Murmur32Checksum());
-        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3YonikChecksum());
-        hashCollider("Murmur3A-32", new Murmur3aChecksum());
+//        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3YonikChecksum());
+//        hashCollider("Murmur3A-32", new Murmur3aChecksum());
+        hashCollider("Murmur3F-128 (Guava)", new Murmur3fGuavaChecksum());
+        hashCollider("Murmur3F-128", new Murmur3fChecksum());
 //        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
 //        hashCollider("xxHash", xxChecksum);
 //                hashCollider("FNVJ64", new FNVJ64());
@@ -100,7 +103,6 @@ public class HashCollider {
                 for (int bitPos = 0; bitPos < 64; bitPos++) {
                     if (((hash >> bitPos) & 1) == 1) {
                         bitOneCounts[bitPos]++;
-
                     }
                 }
             }

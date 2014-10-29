@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Random;
 import java.util.zip.Checksum;
 
 public abstract class AbstractChecksumTest {
@@ -96,6 +97,37 @@ public abstract class AbstractChecksumTest {
             Assert.assertNotEquals(lastHash, hash);
             lastHash = hash;
         }
+    }
+
+    @Test
+    public void testComparePerByteVsByteArray() {
+        byte[] bytes = new byte[1024];
+        new Random(42).nextBytes(bytes);
+
+        for (int i = 0; i <= bytes.length; i++) {
+            checksum.reset();
+            for (int j = 0; j < i; j++) {
+                checksum.update(bytes[j]);
+            }
+            long expected = checksum.getValue();
+
+            checksum.reset();
+            checksum.update(bytes, 0, i);
+            Assert.assertEquals("Iteration " + i, expected, checksum.getValue());
+        }
+
+        for (int i = 0; i <= bytes.length; i++) {
+            checksum.reset();
+            for (int j = i; j < bytes.length ; j++) {
+                checksum.update(bytes[j]);
+            }
+            long expected = checksum.getValue();
+
+            checksum.reset();
+            checksum.update(bytes, i, bytes.length - i);
+            Assert.assertEquals("Iteration " + i + " (" + (bytes.length - i) + ")", expected, checksum.getValue());
+        }
+
     }
 
 }
