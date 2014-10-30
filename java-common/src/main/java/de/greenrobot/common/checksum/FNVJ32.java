@@ -5,10 +5,14 @@ import de.greenrobot.common.ByteArrayUtils;
 import java.util.zip.Checksum;
 
 /**
- * Hash function with emphasis on speed. Test with random data showed pretty good collision behaviour, although
- * quality measured by SMHasher is pretty bad (worse quality than FNV).
+ * Custom 32-bit hash function favoring speed over quality.
  *
- * Based on FNV, but xors 4 bytes at once after each multiplication (faster).
+ * Tests with random data showed pretty good collision behaviour, although quality measured by SMHasher is pretty bad
+ * (much worse than FNV).
+ * <p/>
+ * If you do progressive updates, update with byte lengths that are a multiple of 4 for best performance.
+ * <p/>
+ * Based on FNV, but xors 4 bytes at once after each multiplication.
  */
 public class FNVJ32 implements Checksum {
     private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
@@ -16,33 +20,43 @@ public class FNVJ32 implements Checksum {
     private final static int INITIAL_VALUE = 0x811C9DC5;
     private final static int MULTIPLIER = 16777619;
 
+    private final int seed;
+
     private int hash = INITIAL_VALUE;
 
     private int partialPos;
     private int length;
 
+    public FNVJ32() {
+        hash = seed = INITIAL_VALUE;
+    }
+
+    public FNVJ32(int seed) {
+        hash = this.seed = INITIAL_VALUE ^ seed;
+    }
+
     @Override
     public void update(int b) {
-        if (partialPos == 0) {
-            hash *= MULTIPLIER;
-        }
         int xorValue = 0xff & b;
         switch (partialPos) {
             case 0:
+                hash *= MULTIPLIER;
                 xorValue <<= 24;
+                partialPos = 1;
                 break;
             case 1:
                 xorValue <<= 16;
+                partialPos = 2;
                 break;
             case 2:
                 xorValue <<= 8;
+                partialPos = 3;
+                break;
+            case 3:
+                partialPos = 0;
                 break;
         }
         hash ^= xorValue;
-        partialPos++;
-        if (partialPos == 4) {
-            partialPos = 0;
-        }
         length++;
     }
 
@@ -57,8 +71,7 @@ public class FNVJ32 implements Checksum {
         int stop = off + len - remainder;
         for (int i = off; i < stop; i += 4) {
             hash *= MULTIPLIER;
-            // Use big endian: makes it easier to apply partial bytes to hash.
-            // Also, for some reason, this results in a better bit distribution quality.
+            // Tests have shown big endian results in a better bit distribution quality
             hash ^= byteArrayUtils.getIntBE(b, i);
         }
         length += stop - off;
@@ -66,10 +79,6 @@ public class FNVJ32 implements Checksum {
         for (int i = 0; i < remainder; i++) {
             update(b[stop + i]);
         }
-    }
-
-    public long getUnfinishedValue() {
-        return hash & 0xffffffffL;
     }
 
     @Override
@@ -80,14 +89,15 @@ public class FNVJ32 implements Checksum {
         return finished & 0xffffffffL;
     }
 
+    @Override
+    public void reset() {
+        hash = seed;
+        partialPos = 0;
+        length = 0;
+    }
+
     public int getLength() {
         return length;
     }
 
-    @Override
-    public void reset() {
-        hash = INITIAL_VALUE;
-        partialPos = 0;
-        length = 0;
-    }
 }
