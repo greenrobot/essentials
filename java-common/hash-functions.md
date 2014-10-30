@@ -1,103 +1,107 @@
-Java hashing utilities
-======================
-This project aims improve the hashing situation in Java by providing:
-* Comparisons of hash functions for Java
-* FNV-1a implementations for 32 and 64 bit hashes
-* Utility classes for convenience  
-* Compatibility with java.util.zip.Checksum interface
-
 The problem with hash functions for Java
 ========================================
-Non-cryptographic hash function are important building block of software. The selection of available hash functions is plenty, and in the last decade, many new hash functions emerged with very good hashing properties.
+Non-cryptographic hash function are important building blocks of software. The selection of available hash functions is plenty, and in the last decade, many new hash functions emerged with very good hashing properties.
 
-Surprisingly, the core Java API just offers Adler32 and CRC32, which were designed as checksums many years ago. Of course, there are many hash implementations available outside of the core Java API. Unlike in the C world, there are hardly any comparisons available. The hashing algorithms have very different performance characteristics, when the run inside of a Java VM. Today's fastest hashes are highly optimized against CPU hardware, and can perform at several GB/s. The VM layer imposed by Java can get in the way here. For example fast native hash functions can outperform CRC32 by a magnitude. But the same hash functions implemented in Java can be several times slower than Java's CRC32 class.
+Surprisingly, the core Java API just offers Adler32 and CRC32, which were designed as checksums many years ago. Of course, there are many hash implementations available outside of the core Java API. Unlike in the C world, there are just a few comparisons available. The hashing algorithms have very different performance characteristics, when the run inside of a Java VM. Today's fastest hashes are highly optimized against CPU hardware, and can perform at several GB/s. The VM layer imposed by Java can get in the way here. Also implementation details matter greatly. For example, Murmur3A can outperform CRC32 by a magnitude when implemented in C. Nevertheless, the same Murmur3A implemented in Java can be several times slower than Java's CRC32 class. These were the results when evaluating Murmur3A from Guava, which is one of the most popular and respected Java libraries available.  
 
-64 bit hashes are totally absent in the Java core APIs. This is unfortunate, because 64 bit hashes provide much(!) less collisions than their 32 bit counterparts. In contrast to cryptographic hash functions, they are shorter and faster.        
+Adler32 and CRC32 provide 32 bit hashes. This is unfortunate because 64 bit hashes are a perfect match for today's 64 bit CPUs and provide much(!) less collisions than their 32 bit counterparts. In contrast to cryptographic hash functions, they are much faster to compute and usually produce smaller hashes that are easy to handle.
 
-FNV-1a hash function
-====================
-We chose FNV because it is very simple to implement and runs reasonable fast in the Java VM. Our FNV-1a implementation has unit tests for correctness and use primitive data types for decent speed. Other implementations we tested produced wrong hash values, or were inefficient (e.g. usage of BigDecimal).    
+In short:
 
-You will find the classes FNV32 and FNV64 in the de.greenrobot.common.checksum package. Both implement java.util.zip.Checksum interface, so they are straight forward to use.
+* Absence of high quality hash functions in core Java APIs
+* 3rd party implementations have correctness issues and/or sub-optimal performance
+
+So, how do we address these issues?
+
+Java-common hash functions
+==========================
+This project aims improve situation described above by providing:
+
+* Fast Murmur3A (32 bit) and Murmur3F (128 bit) implementations
+* FNV-1a implementations for 32 and 64 bit hashes
+* Super-fast custom FNVJ hash functions for 32 and 64 bit hashes
+* Comparisons of hash functions for Java
+* Progressive hash creation useful for streaming or creating the hash step by step (no need accumulate a single byte array)  
+* Convenient updateInt/Long/Array/... methods to update the hash   
+* Compatibility with java.util.zip.Checksum interface
+* Comprehensive test suite to assure correctness (to a certain degree, of course)
+* Simple test classes to measure performance and quality of hash functions
+
+The hash functions are available as classes in the de.greenrobot.common.checksum package. They implement the [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html) interface, and are thus are straight forward to use.
+
+Murmur3 hash functions
+----------------------
+Murmur3 hash functions are fast and produce high quality hashes.
+
+Classes: Murmur3a and Murmur3f
+Adler32-Speed Index:  
+SMHasher quality: Very good
+
+FNV-1a hash functions
+---------------------
+FNV is a popular hash function and one of the easiest to implement. Our implementation produces the same hashes as the C reference (unit tested).     
+
+Classes: FNV32 and FNV64
+Adler32-Speed Index:  
+SMHasher quality: mediocre
+
+FNVJ hash functions
+-------------------
+These are some experimental custom hash functions.
 
 Utility classes
-===============
-Hash and checksum functions usually only accept bytes as input. Our class DataChecksum transforms shorts, ints, longs, Strings, and arrays on the fly to bytes. It's a wrapper around Java's Checksum interface and can thus be used with our FNV32 and FNV64 classes (or Java's Adler32/CRC32).
+---------------
+Hash and checksum functions usually only accept bytes as input. Our class PrimitiveDataChecksum transforms shorts, ints, longs, Strings, and arrays on the fly to bytes. It's a wrapper around Java's Checksum interface and can thus be used with all of our hash function classes (or Java's Adler32/CRC32).
  
-The class CombinedChecksum takes two Checksum objects (preferably 32 bit) and combines their hashes into a 64 bit hash. CombinedChecksum implements Checksum itself. This class can be useful to work around flaws in hashing functions.
+The class CombinedChecksum takes two Checksum objects (preferably 32 bit) and combines their hashes into a 64 bit hash. CombinedChecksum implements Checksum itself. This class can be useful to work around flaws in hashing functions, or to make collision attacks harder ().
 
-Comparison Results
-==================
+Comparison of Hashfunctions
+===========================
 
+Results
+-------
+CPU: Intel® Core™ i7-3720QM (2012)
+OS: Windows 8, 64 bit
+VM: Java 7u72
 
 Other comparisons
-=================
+-----------------
 http://www.strchr.com/hash_functions
 http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed
 http://research.neustar.biz/2012/02/02/choosing-a-good-hash-function-part-3/
-
-From xxHash:
-<table>
-  <tr>
-    <th>Name</th><th>Speed</th><th>Q.Score</th><th>Author</th>
-  </tr>
-  <tr>
-    <th>xxHash</th><th>5.4 GB/s</th><th>10</th><th>Y.C.</th>
-  </tr>
-  <tr>
-    <th>MumurHash 3a</th><th>2.7 GB/s</th><th>10</th><th>Austin Appleby</th>
-  </tr>
-  <tr>
-    <th>SBox</th><th>1.4 GB/s</th><th>9</th><th>Bret Mulvey</th>
-  </tr>
-  <tr>
-    <th>Lookup3</th><th>1.2 GB/s</th><th>9</th><th>Bob Jenkins</th>
-  </tr>
-  <tr>
-    <th>CityHash64</th><th>1.05 GB/s</th><th>10</th><th>Pike & Alakuijala</th>
-  </tr>
-  <tr>
-    <th>FNV</th><th>0.55 GB/s</th><th>5</th><th>Fowler, Noll, Vo</th>
-  </tr>
-  <tr>
-    <th>CRC32</th><th>0.43 GB/s</th><th>9</th><th></th>
-  </tr>
-  <tr>
-    <th>SipHash</th><th>0.34 GB/s</th><th>10</th><th>Jean-Philippe Aumasson</th>
-  </tr>
-  <tr>
-    <th>MD5-32</th><th>0.33 GB/s</th><th>10</th><th>Ronald L. Rivest</th>
-  </tr>
-  <tr>
-    <th>SHA1-32</th><th>0.28 GB/s</th><th>10</th><th></th>
-  </tr>
-</table>
-
-Q.Score is a measure of quality of the hash function.
-It depends on successfully passing SMHasher test set.
-10 is a perfect score.
-
 http://jpountz.github.io/lz4-java/1.2.0/xxhash-benchmark/
 http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html
 http://floodyberry.com/noncryptohashzoo/
 
 
 Hash function evaluation
-========================
-SMHasher was written by the author of Murmur hash to test variuos properties of hash functions. It's an excellent tool to detect flaws.
+------------------------
+SMHasher was written by the author of Murmur hash to test various properties of hash functions. It's an excellent tool to detect flaws.
 https://code.google.com/p/smhasher/wiki/SMHasher
 
+Misc
+====
 Other interesting hash functions
 --------------------------------
-xxHash claims to be blazing fast for current x86 while having great hashing properties:
-https://code.google.com/p/xxhash/
+Another simple Murmur3a Java implementation in the public domain:
+http://github.com/yonik/java_util
 
-Faster Murmur3 32 bit than Guava's: http://github.com/yonik/java_util
+CityHash can make use of hardware CRC 
+http://en.wikipedia.org/wiki/CityHash and https://code.google.com/p/cityhash/
 
-http://en.wikipedia.org/wiki/CityHash
-
+Hash classics by Bob Jenkins 
 http://en.wikipedia.org/wiki/Jenkins_hash_function
 
-SipHash 64 bits has a secret 128 key and claims to be strong against DoS attacks:
+And Bob Jenkins' modern 128-bit SpookyHash:
+http://www.burtleburtle.net/bob/hash/spooky.html
+
+SipHash 64 bits has a secret 128 bit key and claims to be strong against DoS attacks:
 http://en.wikipedia.org/wiki/SipHash
+
+A lesser known hash function claiming to be very fast while maintaining good SMHasher properties 
+https://code.google.com/p/fast-hash/
+
+xxHash claims to be fast for current x86 while having great hashing properties (however, the tested Java version produced lots of hash collisions):
+https://code.google.com/p/xxhash/
+
 
