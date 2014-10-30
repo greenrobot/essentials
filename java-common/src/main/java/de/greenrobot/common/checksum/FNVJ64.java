@@ -6,6 +6,7 @@ import java.util.zip.Checksum;
 
 /** Hash function based on FNV, but xors 8 bytes after each multiplication (faster). */
 public class FNVJ64 implements Checksum {
+    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
     private final static long INITIAL_VALUE = 0xcbf29ce484222325L;
     private final static long MULTIPLIER = 0x100000001b3L;
 
@@ -28,7 +29,7 @@ public class FNVJ64 implements Checksum {
             hash *= MULTIPLIER;
             // Use big endian: makes it easier to apply partial bytes to hash.
             // Also, for some reason, this results in a better bit distribution quality.
-            hash ^= ByteArrayUtils.getLongBE(b, i);
+            hash ^= byteArrayUtils.getLongBE(b, i);
         }
     }
 

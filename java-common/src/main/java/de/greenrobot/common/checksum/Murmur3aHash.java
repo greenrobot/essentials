@@ -19,6 +19,7 @@ import de.greenrobot.common.ByteArrayUtils;
  * See http://github.com/yonik/java_util for future updates to this file.
  */
 public class Murmur3aHash {
+    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
 
     /** Returns the MurmurHash3_x86_32 hash. */
     public static int murmurhash3_x86_32(byte[] data, int offset, int len, int seed) {
@@ -29,7 +30,7 @@ public class Murmur3aHash {
         int roundedEnd = offset + (len & 0xfffffffc);  // round down to 4 byte block
 
         for (int i = offset; i < roundedEnd; i += 4) {
-            int k1 = ByteArrayUtils.getIntLE(data, i);
+            int k1 = byteArrayUtils.getIntLE(data, i);
             k1 *= c1;
             k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
             k1 *= c2;

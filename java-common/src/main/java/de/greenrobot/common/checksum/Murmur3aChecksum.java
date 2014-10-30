@@ -8,6 +8,8 @@ import java.util.zip.Checksum;
  * Murmur3A (murmurhash3_x86_32)
  */
 public class Murmur3aChecksum implements Checksum {
+    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
+
     private static final int C1 = 0xcc9e2d51;
     private static final int C2 = 0x1b873593;
 
@@ -63,7 +65,7 @@ public class Murmur3aChecksum implements Checksum {
         int remainder = len & 3;
         int stop = off + len - remainder;
         for (int i = off; i < stop; i += 4) {
-            int k1 = ByteArrayUtils.getIntLE(b, i);
+            int k1 = byteArrayUtils.getIntLE(b, i);
             applyK1(k1);
         }
         length += stop - off;
