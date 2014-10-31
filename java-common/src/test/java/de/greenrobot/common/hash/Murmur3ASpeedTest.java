@@ -1,5 +1,6 @@
 package de.greenrobot.common.hash;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Random;
 
 @RunWith(Parameterized.class)
+@Ignore
 public class Murmur3ASpeedTest {
     public static final int ITERATIONS = 1000;
 

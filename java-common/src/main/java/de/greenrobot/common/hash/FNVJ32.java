@@ -1,6 +1,6 @@
 package de.greenrobot.common.hash;
 
-import de.greenrobot.common.ByteArrayUtils;
+import de.greenrobot.common.PrimitiveArrayUtils;
 
 import java.util.zip.Checksum;
 
@@ -15,7 +15,7 @@ import java.util.zip.Checksum;
  * Based on FNV, but xors 4 bytes at once after each multiplication.
  */
 public class FNVJ32 implements Checksum {
-    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
+    private static PrimitiveArrayUtils primitiveArrayUtils = PrimitiveArrayUtils.getInstance();
 
     private final static int INITIAL_VALUE = 0x811C9DC5;
     private final static int MULTIPLIER = 16777619;
@@ -72,7 +72,7 @@ public class FNVJ32 implements Checksum {
         for (int i = off; i < stop; i += 4) {
             hash *= MULTIPLIER;
             // Tests have shown big endian results in a better bit distribution quality
-            hash ^= byteArrayUtils.getIntBE(b, i);
+            hash ^= primitiveArrayUtils.getIntBE(b, i);
         }
         length += stop - off;
 

@@ -1,6 +1,6 @@
 package de.greenrobot.common.hash;
 
-import de.greenrobot.common.ByteArrayUtils;
+import de.greenrobot.common.PrimitiveArrayUtils;
 
 import java.util.zip.Checksum;
 
@@ -8,7 +8,7 @@ import java.util.zip.Checksum;
  * Murmur3A (murmurhash3_x86_32)
  */
 public class Murmur3A implements Checksum {
-    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
+    private static PrimitiveArrayUtils primitiveArrayUtils = PrimitiveArrayUtils.getInstance();
 
     private static final int C1 = 0xcc9e2d51;
     private static final int C2 = 0x1b873593;
@@ -65,7 +65,7 @@ public class Murmur3A implements Checksum {
         int remainder = len & 3;
         int stop = off + len - remainder;
         for (int i = off; i < stop; i += 4) {
-            int k1 = byteArrayUtils.getIntLE(b, i);
+            int k1 = primitiveArrayUtils.getIntLE(b, i);
             applyK1(k1);
         }
         length += stop - off;

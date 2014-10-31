@@ -1,12 +1,12 @@
 package de.greenrobot.common.hash;
 
-import de.greenrobot.common.ByteArrayUtils;
+import de.greenrobot.common.PrimitiveArrayUtils;
 
 import java.math.BigInteger;
 
 /** Murmur3F (MurmurHash3_x64_128) */
 public class Murmur3F implements Checksum128 {
-    private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
+    private static PrimitiveArrayUtils primitiveArrayUtils = PrimitiveArrayUtils.getInstance();
 
     private static final long C1 = 0x87c37b91114253d5L;
     private static final long C2 = 0x4cf5ad432745937fL;
@@ -113,8 +113,8 @@ public class Murmur3F implements Checksum128 {
         int remainder = len & 0xF;
         int stop = off + len - remainder;
         for (int i = off; i < stop; i += 16) {
-            long k1 = byteArrayUtils.getLongLE(b, i);
-            long k2 = byteArrayUtils.getLongLE(b, i + 8);
+            long k1 = primitiveArrayUtils.getLongLE(b, i);
+            long k2 = primitiveArrayUtils.getLongLE(b, i + 8);
             applyKs(k1, k2);
         }
         length += stop - off;

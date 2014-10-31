@@ -8,13 +8,13 @@ import java.nio.ByteOrder;
 import java.util.NoSuchElementException;
 
 // TODO Test on a big endian machine with Unsafe
-public abstract class ByteArrayUtils {
-    private final static ByteArrayUtils instance;
-    private final static ByteArrayUtils instanceSafe;
+public abstract class PrimitiveArrayUtils {
+    private final static PrimitiveArrayUtils instance;
+    private final static PrimitiveArrayUtils instanceSafe;
 
     static {
         instanceSafe = new SafeImpl();
-        ByteArrayUtils unsafeImpl = null;
+        PrimitiveArrayUtils unsafeImpl = null;
         try {
             if (UnsafeImpl.UNSAFE != null) {
                 unsafeImpl = new UnsafeImpl();
@@ -25,11 +25,11 @@ public abstract class ByteArrayUtils {
         instance = unsafeImpl != null ? unsafeImpl : instanceSafe;
     }
 
-    public static ByteArrayUtils getInstance() {
+    public static PrimitiveArrayUtils getInstance() {
         return instance;
     }
 
-    public static ByteArrayUtils getInstanceSafe() {
+    public static PrimitiveArrayUtils getInstanceSafe() {
         return instanceSafe;
     }
 
@@ -43,7 +43,7 @@ public abstract class ByteArrayUtils {
 
     public abstract int getIntLE(char[] chars, int index);
 
-    private static class UnsafeImpl extends ByteArrayUtils {
+    private static class UnsafeImpl extends PrimitiveArrayUtils {
         private static final boolean BIG_ENDIAN;
         private static final boolean UNALIGNED;
         /** Set only if UNALIGNED == true. */
@@ -168,7 +168,7 @@ public abstract class ByteArrayUtils {
         }
     }
 
-    private static class SafeImpl extends ByteArrayUtils {
+    private static class SafeImpl extends PrimitiveArrayUtils {
         public int getIntLE(byte[] bytes, int index) {
             return (bytes[index] & 0xff) | ((bytes[index + 1] & 0xff) << 8) |
                     ((bytes[index + 2] & 0xff) << 16) | (bytes[index + 3] << 24);
