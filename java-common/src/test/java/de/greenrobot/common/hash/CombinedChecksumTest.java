@@ -5,11 +5,15 @@ import org.junit.Test;
 
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
-public class CombinedChecksumTest {
+public class CombinedChecksumTest extends AbstractChecksumTest{
+    public CombinedChecksumTest() {
+        super(new CombinedChecksum(new CRC32(), new Adler32()));
+    }
+
     @Test
-    public void testBasics() throws Exception {
-        CombinedChecksum checksum = new CombinedChecksum(new CRC32(), new Adler32());
+    public void testCombinedBasics() {
         long emptyValue = checksum.getValue();
         for (int i = 0; i < 256; i++) {
             checksum.update(i);
