@@ -52,7 +52,7 @@ public class Murmur3aChecksumTest extends AbstractChecksumTest {
         Random random = new Random(511);
         for (int i = 0; i <= 512; i++) {
             int seed = random.nextInt();
-            int expected = Murmur3aHash.murmurhash3_x86_32(INPUT4, 0, INPUT4.length, seed);
+            int expected = MurmurHash3Yonik.murmurhash3_x86_32(INPUT4, 0, INPUT4.length, seed);
             checksum = new Murmur3aChecksum(seed);
             checksum.update(INPUT4, 0, INPUT4.length);
             int value = (int) checksum.getValue();

@@ -13,8 +13,8 @@ In short:
 
 So, how do we address these issues?
 
-Java-common hash functions
-==========================
+greenrobot-common hash functions
+================================
 This project aims improve situation described above by providing:
 
 * Fast Murmur3A (32 bit) and Murmur3F (128 bit) implementations
@@ -35,7 +35,7 @@ Murmur3 hash functions are fast and produce high quality hashes.
 
 Classes: Murmur3a and Murmur3f
 Adler32-Speed Index:  
-SMHasher quality: Very good
+SMHasher quality: very good
 
 FNV-1a hash functions
 ---------------------
@@ -47,7 +47,7 @@ SMHasher quality: mediocre
 
 FNVJ hash functions
 -------------------
-These are some experimental custom hash functions.
+These are some experimental custom hash functions. Their design with partialPos was later reused in building the Murmur3 hashes. 
 
 Utility classes
 ---------------
@@ -105,3 +105,8 @@ xxHash claims to be fast for current x86 while having great hashing properties (
 https://code.google.com/p/xxhash/
 
 
+Hash function studies
+---------------------
+"Empirical Evaluation of Hash Functions for Multipoint Measurements", Christian Henke, Carsten Schmoll, Tanja Zseby
+ACM SIGCOMM Computer Communication Review archive Volume 38 Issue 3, July 2008, Pages 39-50
+http://www.sigcomm.org/sites/default/files/ccr/papers/2008/July/1384609-1384614.pdf

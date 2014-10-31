@@ -68,7 +68,7 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
     @Test
     public void testGetBigValue() {
         murmur3fChecksum.update(42);
-        String expected = Long.toHexString(murmur3fChecksum.getValue2()) +
+        String expected = Long.toHexString(murmur3fChecksum.getValueHigh()) +
                 Long.toHexString(murmur3fChecksum.getValue());
         Assert.assertEquals(32, expected.length()); // For this particular hash OK
         String big = murmur3fChecksum.getValueBigInteger().toString(16);
@@ -78,7 +78,7 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
     @Test
     public void testGetValueHexString() {
         murmur3fChecksum.update(42);
-        String expected = Long.toHexString(murmur3fChecksum.getValue2()) +
+        String expected = Long.toHexString(murmur3fChecksum.getValueHigh()) +
                 Long.toHexString(murmur3fChecksum.getValue());
         Assert.assertEquals(32, expected.length()); // For this particular hash OK
         Assert.assertEquals(expected, murmur3fChecksum.getValueHexString());
@@ -88,7 +88,7 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
     public void testGetValueHexStringPadded() {
         while (true) {
             murmur3fChecksum.update(42);
-            String nonPadded = Long.toHexString(murmur3fChecksum.getValue2());
+            String nonPadded = Long.toHexString(murmur3fChecksum.getValueHigh());
             int delta = 16 - nonPadded.length();
             if (delta > 0) {
                 String padded = murmur3fChecksum.getValueHexString();

@@ -1,0 +1,455 @@
+Adler32	-----------------------------------------------------------
+Adler32	100000		collisions: 9		ms: 41		MB/s: 2343		hash: 1589178672
+Adler32	200000		collisions: 35		ms: 81		MB/s: 2387		hash: 4235528278
+Adler32	300000		collisions: 83		ms: 121		MB/s: 2403		hash: 3963552313
+Adler32	400000		collisions: 147		ms: 163		MB/s: 2396		hash: 1747321582
+Adler32	500000		collisions: 218		ms: 203		MB/s: 2399		hash: 1680278387
+Adler32	600000		collisions: 302		ms: 243		MB/s: 2405		hash: 2796290500
+Adler32	700000		collisions: 416		ms: 284		MB/s: 2406		hash: 4087933930
+Adler32	800000		collisions: 539		ms: 325		MB/s: 2399		hash: 501808599
+Adler32	900000		collisions: 706		ms: 365		MB/s: 2402		hash: 1637020563
+Adler32	1000000		collisions: 868		ms: 405		MB/s: 2407		hash: 4102225959
+Adler32	Quality - off sum: 298206		off² sum: 20570062746		negQ: 642.8144608125
+CRC32	-----------------------------------------------------------
+CRC32	100000		collisions: 3		ms: 107		MB/s: 911		hash: 330806032
+CRC32	200000		collisions: 5		ms: 211		MB/s: 924		hash: 719535346
+CRC32	300000		collisions: 11		ms: 315		MB/s: 927		hash: 406678595
+CRC32	400000		collisions: 20		ms: 420		MB/s: 930		hash: 3713862153
+CRC32	500000		collisions: 28		ms: 524		MB/s: 931		hash: 1741342342
+CRC32	600000		collisions: 52		ms: 628		MB/s: 932		hash: 955839514
+CRC32	700000		collisions: 69		ms: 733		MB/s: 932		hash: 678247911
+CRC32	800000		collisions: 89		ms: 837		MB/s: 932		hash: 2586028734
+CRC32	900000		collisions: 102		ms: 942		MB/s: 933		hash: 593971439
+CRC32	1000000		collisions: 128		ms: 1046		MB/s: 933		hash: 4058899793
+CRC32	Quality - off sum: 14787		off² sum: 9881451		negQ: 0.30879534374999995
+FNV1a	-----------------------------------------------------------
+FNV1a	100000		collisions: 0		ms: 125		MB/s: 777		hash: 277624549
+FNV1a	200000		collisions: 4		ms: 247		MB/s: 788		hash: 2287776756
+FNV1a	300000		collisions: 8		ms: 370		MB/s: 792		hash: 783283417
+FNV1a	400000		collisions: 15		ms: 492		MB/s: 794		hash: 2485469452
+FNV1a	500000		collisions: 26		ms: 614		MB/s: 794		hash: 2810497031
+FNV1a	600000		collisions: 40		ms: 736		MB/s: 795		hash: 40285880
+FNV1a	700000		collisions: 54		ms: 858		MB/s: 796		hash: 1954946555
+FNV1a	800000		collisions: 72		ms: 980		MB/s: 797		hash: 3397794310
+FNV1a	900000		collisions: 103		ms: 1102		MB/s: 797		hash: 1059090460
+FNV1a	1000000		collisions: 127		ms: 1224		MB/s: 798		hash: 272210939
+FNV1a	Quality - off sum: 14526		off² sum: 9907722		negQ: 0.30961631249999993
+FNV1a-64	-----------------------------------------------------------
+FNV1a-64	100000		collisions: 0		ms: 124		MB/s: 785		hash: -6454269640511399227
+FNV1a-64	200000		collisions: 0		ms: 246		MB/s: 792		hash: 6736385112064765204
+FNV1a-64	300000		collisions: 0		ms: 369		MB/s: 794		hash: 5524036599925331161
+FNV1a-64	400000		collisions: 0		ms: 491		MB/s: 794		hash: -4172723109828981108
+FNV1a-64	500000		collisions: 0		ms: 613		MB/s: 795		hash: -6824739941764379161
+FNV1a-64	600000		collisions: 0		ms: 736		MB/s: 796		hash: -6890120659149066600
+FNV1a-64	700000		collisions: 0		ms: 858		MB/s: 796		hash: 3816419587047774363
+FNV1a-64	800000		collisions: 0		ms: 981		MB/s: 796		hash: -1592182307150890938
+FNV1a-64	900000		collisions: 0		ms: 1103		MB/s: 797		hash: 3565473179892810748
+FNV1a-64	1000000		collisions: 0		ms: 1225		MB/s: 797		hash: -1646097529690289541
+FNV1a-64	Quality - off sum: 24732		off² sum: 14618466		negQ: 0.22841353125
+FNVJ	-----------------------------------------------------------
+FNVJ	100000		collisions: 4		ms: 37		MB/s: 2637		hash: 214154664
+FNVJ	200000		collisions: 7		ms: 68		MB/s: 2858		hash: 991328948
+FNVJ	300000		collisions: 12		ms: 99		MB/s: 2941		hash: 3916369719
+FNVJ	400000		collisions: 19		ms: 130		MB/s: 2987		hash: 760917412
+FNVJ	500000		collisions: 23		ms: 161		MB/s: 3015		hash: 3239402334
+FNVJ	600000		collisions: 31		ms: 193		MB/s: 3034		hash: 46039487
+FNVJ	700000		collisions: 48		ms: 224		MB/s: 3048		hash: 440724852
+FNVJ	800000		collisions: 63		ms: 255		MB/s: 3057		hash: 3541983359
+FNVJ	900000		collisions: 73		ms: 286		MB/s: 3067		hash: 4211290074
+FNVJ	1000000		collisions: 89		ms: 317		MB/s: 3072		hash: 2213027910
+FNVJ	Quality - off sum: 12714		off² sum: 8290620		negQ: 0.2590818749999999
+FNVJ64	-----------------------------------------------------------
+FNVJ64	100000		collisions: 0		ms: 21		MB/s: 4645		hash: 4356455971185895233
+FNVJ64	200000		collisions: 0		ms: 37		MB/s: 5212		hash: -8462834908841990259
+FNVJ64	300000		collisions: 0		ms: 54		MB/s: 5350		hash: -3298781642257476393
+FNVJ64	400000		collisions: 0		ms: 71		MB/s: 5475		hash: 1781007385781749974
+FNVJ64	500000		collisions: 0		ms: 87		MB/s: 5562		hash: 1939485421763304053
+FNVJ64	600000		collisions: 0		ms: 104		MB/s: 5622		hash: -5616982179018156707
+FNVJ64	700000		collisions: 0		ms: 120		MB/s: 5661		hash: 3597723620218588047
+FNVJ64	800000		collisions: 0		ms: 137		MB/s: 5687		hash: 2241934334717664746
+FNVJ64	900000		collisions: 0		ms: 153		MB/s: 5708		hash: 512784942709566249
+FNVJ64	1000000		collisions: 0		ms: 170		MB/s: 5723		hash: -5913498935236022687
+FNVJ64	Quality - off sum: 19261		off² sum: 9278107		negQ: 0.144970421875
+Murmur2b	-----------------------------------------------------------
+Murmur2b	100000		collisions: 0		ms: 83		MB/s: 1172		hash: 2559479188
+Murmur2b	200000		collisions: 4		ms: 153		MB/s: 1273		hash: 1876193799
+Murmur2b	300000		collisions: 15		ms: 223		MB/s: 1309		hash: 2000503231
+Murmur2b	400000		collisions: 27		ms: 293		MB/s: 1331		hash: 2664042618
+Murmur2b	500000		collisions: 37		ms: 377		MB/s: 1294		hash: 1733632605
+Murmur2b	600000		collisions: 52		ms: 447		MB/s: 1311		hash: 1895822000
+Murmur2b	700000		collisions: 66		ms: 517		MB/s: 1321		hash: 1678637679
+Murmur2b	800000		collisions: 92		ms: 587		MB/s: 1329		hash: 1175097255
+Murmur2b	900000		collisions: 111		ms: 657		MB/s: 1336		hash: 933913886
+Murmur2b	1000000		collisions: 133		ms: 727		MB/s: 1342		hash: 3036286706
+Murmur2b	Quality - off sum: 10714		off² sum: 5375698		negQ: 0.1679905625
+Murmur3A-32	-----------------------------------------------------------
+Murmur3A-32	100000		collisions: 3		ms: 52		MB/s: 1865		hash: 722306287
+Murmur3A-32	200000		collisions: 8		ms: 98		MB/s: 1989		hash: 3793910381
+Murmur3A-32	300000		collisions: 14		ms: 143		MB/s: 2037		hash: 2152169111
+Murmur3A-32	400000		collisions: 20		ms: 189		MB/s: 2059		hash: 261778392
+Murmur3A-32	500000		collisions: 28		ms: 236		MB/s: 2069		hash: 1713478974
+Murmur3A-32	600000		collisions: 40		ms: 282		MB/s: 2078		hash: 3585833667
+Murmur3A-32	700000		collisions: 54		ms: 327		MB/s: 2085		hash: 2042701564
+Murmur3A-32	800000		collisions: 68		ms: 373		MB/s: 2089		hash: 1971744562
+Murmur3A-32	900000		collisions: 85		ms: 419		MB/s: 2094		hash: 3049147487
+Murmur3A-32	1000000		collisions: 104		ms: 465		MB/s: 2096		hash: 1965381166
+Murmur3A-32	Quality - off sum: 10590		off² sum: 5117168		negQ: 0.15991149999999998
+Murmur3F-128	-----------------------------------------------------------
+Murmur3F-128	100000		collisions: 0		ms: 34		MB/s: 2796		hash: 1204725668576906250
+Murmur3F-128	200000		collisions: 0		ms: 60		MB/s: 3215		hash: 8172117339982727569
+Murmur3F-128	300000		collisions: 0		ms: 86		MB/s: 3383		hash: -1756401294519497716
+Murmur3F-128	400000		collisions: 0		ms: 112		MB/s: 3477		hash: 4441353439818434465
+Murmur3F-128	500000		collisions: 0		ms: 138		MB/s: 3530		hash: 5626863138325538111
+Murmur3F-128	600000		collisions: 0		ms: 164		MB/s: 3567		hash: -1164116479254129172
+Murmur3F-128	700000		collisions: 0		ms: 190		MB/s: 3589		hash: 3081078695775212057
+Murmur3F-128	800000		collisions: 0		ms: 216		MB/s: 3609		hash: -5994644387165306570
+Murmur3F-128	900000		collisions: 0		ms: 242		MB/s: 3627		hash: 8867796476402894683
+Murmur3F-128	1000000		collisions: 0		ms: 268		MB/s: 3641		hash: -8487569211150317805
+Murmur3F-128	Quality - off sum: 28538		off² sum: 17224648		negQ: 0.26913512499999986
+xxHash	-----------------------------------------------------------
+xxHash	100000		collisions: 14		ms: 35		MB/s: 2781		hash: 128990992
+xxHash	200000		collisions: 63		ms: 57		MB/s: 3403		hash: 130636426
+xxHash	300000		collisions: 160		ms: 79		MB/s: 3667		hash: 82732702
+xxHash	400000		collisions: 272		ms: 102		MB/s: 3824		hash: 205750318
+xxHash	500000		collisions: 427		ms: 124		MB/s: 3920		hash: 71412716
+xxHash	600000		collisions: 627		ms: 146		MB/s: 3989		hash: 13181534
+xxHash	700000		collisions: 868		ms: 169		MB/s: 4039		hash: 17200699
+xxHash	800000		collisions: 1115		ms: 192		MB/s: 4067		hash: 254448013
+xxHash	900000		collisions: 1425		ms: 214		MB/s: 4095		hash: 114434158
+xxHash	1000000		collisions: 1790		ms: 236		MB/s: 4121		hash: 178297456
+xxHash	Quality - off sum: 2012084		off² sum: 1000006858706		negQ: 31250.2143345625
+MD5	-----------------------------------------------------------
+MD5	100000		collisions: 99744		ms: 369		MB/s: 264		hash: 102
+MD5	200000		collisions: 199744		ms: 671		MB/s: 291		hash: -90
+MD5	300000		collisions: 299744		ms: 972		MB/s: 301		hash: 63
+MD5	400000		collisions: 399744		ms: 1273		MB/s: 307		hash: -85
+MD5	500000		collisions: 499744		ms: 1575		MB/s: 310		hash: 127
+MD5	600000		collisions: 599744		ms: 1882		MB/s: 311		hash: 114
+MD5	700000		collisions: 699744		ms: 2183		MB/s: 313		hash: -12
+MD5	800000		collisions: 799744		ms: 2485		MB/s: 314		hash: 36
+MD5	900000		collisions: 899744		ms: 2786		MB/s: 315		hash: -113
+MD5	1000000		collisions: 999744		ms: 3086		MB/s: 316		hash: -63
+MD5	Quality - off sum: 14757		off² sum: 3678681		negQ: 0.057479390625
+
+
+
+
+
+
+
+
+
+Adler32	-----------------------------------------------------------
+Adler32	1000000		collisions: 868		ms: 405		MB/s: 2410		hash: 4102225959
+Adler32	2000000		collisions: 3500		ms: 805		MB/s: 2425		hash: 3777036465
+Adler32	3000000		collisions: 8048		ms: 1205		MB/s: 2430		hash: 357889941
+Adler32	4000000		collisions: 14454		ms: 1604		MB/s: 2434		hash: 1862788850
+Adler32	5000000		collisions: 22718		ms: 2003		MB/s: 2437		hash: 2304115345
+Adler32	6000000		collisions: 32734		ms: 2411		MB/s: 2430		hash: 1791819371
+Adler32	7000000		collisions: 44383		ms: 2812		MB/s: 2430		hash: 3491556039
+Adler32	8000000		collisions: 57788		ms: 3214		MB/s: 2430		hash: 3365861736
+Adler32	9000000		collisions: 73178		ms: 3619		MB/s: 2429		hash: 3596617084
+Adler32	10000000		collisions: 90214		ms: 4018		MB/s: 2430		hash: 2474375107
+Adler32	Quality - off sum: 2977652		off² sum: 2126411572238		negQ: 6645.036163243752
+CRC32	-----------------------------------------------------------
+CRC32	1000000		collisions: 128		ms: 1040		MB/s: 938		hash: 4058899793
+CRC32	2000000		collisions: 476		ms: 2079		MB/s: 939		hash: 1036389521
+CRC32	3000000		collisions: 1070		ms: 3120		MB/s: 939		hash: 3963212202
+CRC32	4000000		collisions: 1856		ms: 4160		MB/s: 939		hash: 2947140537
+CRC32	5000000		collisions: 2920		ms: 5200		MB/s: 939		hash: 4184971283
+CRC32	6000000		collisions: 4180		ms: 6251		MB/s: 937		hash: 1417490797
+CRC32	7000000		collisions: 5767		ms: 7295		MB/s: 937		hash: 2438985627
+CRC32	8000000		collisions: 7560		ms: 8340		MB/s: 937		hash: 2023843620
+CRC32	9000000		collisions: 9510		ms: 9381		MB/s: 937		hash: 1235783937
+CRC32	10000000		collisions: 11665		ms: 10425		MB/s: 937		hash: 3186744817
+CRC32	Quality - off sum: 31729		off² sum: 55235815		negQ: 0.17261192187500002
+FNV1a	-----------------------------------------------------------
+FNV1a	1000000		collisions: 127		ms: 1222		MB/s: 799		hash: 272210939
+FNV1a	2000000		collisions: 465		ms: 2450		MB/s: 797		hash: 1141191197
+FNV1a	3000000		collisions: 1026		ms: 3672		MB/s: 798		hash: 1913387788
+FNV1a	4000000		collisions: 1835		ms: 4893		MB/s: 798		hash: 1288743787
+FNV1a	5000000		collisions: 2846		ms: 6111		MB/s: 799		hash: 3518976119
+FNV1a	6000000		collisions: 4136		ms: 7330		MB/s: 799		hash: 2243354328
+FNV1a	7000000		collisions: 5650		ms: 8548		MB/s: 800		hash: 3073639346
+FNV1a	8000000		collisions: 7311		ms: 9766		MB/s: 800		hash: 2870760889
+FNV1a	9000000		collisions: 9291		ms: 10984		MB/s: 800		hash: 2043405020
+FNV1a	10000000		collisions: 11548		ms: 12206		MB/s: 800		hash: 1126426146
+FNV1a	Quality - off sum: 34580		off² sum: 57231966		negQ: 0.17884989375000004
+FNV1a-64	-----------------------------------------------------------
+FNV1a-64	1000000		collisions: 0		ms: 1225		MB/s: 797		hash: -1646097529690289541
+FNV1a-64	2000000		collisions: 0		ms: 2448		MB/s: 798		hash: 2130219745630568829
+FNV1a-64	3000000		collisions: 0		ms: 3671		MB/s: 798		hash: 1589727353504676716
+FNV1a-64	4000000		collisions: 0		ms: 4891		MB/s: 799		hash: -8039876796160797013
+FNV1a-64	5000000		collisions: 0		ms: 6113		MB/s: 799		hash: -3942923295945238857
+FNV1a-64	6000000		collisions: 0		ms: 7338		MB/s: 798		hash: 7629562735635080632
+FNV1a-64	7000000		collisions: 0		ms: 8558		MB/s: 799		hash: -3042969796014023310
+FNV1a-64	8000000		collisions: 0		ms: 9779		MB/s: 799		hash: 7968834212012988633
+FNV1a-64	9000000		collisions: 0		ms: 11002		MB/s: 799		hash: 2702782077264410428
+FNV1a-64	10000000		collisions: 0		ms: 12225		MB/s: 799		hash: 4891867181238022722
+FNV1a-64	Quality - off sum: 88345		off² sum: 173767835		negQ: 0.27151224218750003
+FNVJ	-----------------------------------------------------------
+FNVJ	1000000		collisions: 89		ms: 316		MB/s: 3088		hash: 2213027910
+FNVJ	2000000		collisions: 446		ms: 627		MB/s: 3112		hash: 2941007630
+FNVJ	3000000		collisions: 1066		ms: 938		MB/s: 3121		hash: 2210039400
+FNVJ	4000000		collisions: 1930		ms: 1249		MB/s: 3127		hash: 2472498182
+FNVJ	5000000		collisions: 2963		ms: 1560		MB/s: 3129		hash: 912223093
+FNVJ	6000000		collisions: 4254		ms: 1872		MB/s: 3129		hash: 384351123
+FNVJ	7000000		collisions: 5731		ms: 2183		MB/s: 3131		hash: 3212130218
+FNVJ	8000000		collisions: 7461		ms: 2494		MB/s: 3132		hash: 339012806
+FNVJ	9000000		collisions: 9443		ms: 2805		MB/s: 3133		hash: 3734131513
+FNVJ	10000000		collisions: 11676		ms: 3116		MB/s: 3134		hash: 2720560055
+FNVJ	Quality - off sum: 35295		off² sum: 63046539		negQ: 0.19702043437500003
+FNVJ64	-----------------------------------------------------------
+FNVJ64	1000000		collisions: 0		ms: 169		MB/s: 5766		hash: -5913498935236022687
+FNVJ64	2000000		collisions: 0		ms: 334		MB/s: 5837		hash: 457564519379453714
+FNVJ64	3000000		collisions: 0		ms: 501		MB/s: 5841		hash: 1734170504708825102
+FNVJ64	4000000		collisions: 0		ms: 666		MB/s: 5862		hash: 2891059466992010032
+FNVJ64	5000000		collisions: 0		ms: 830		MB/s: 5878		hash: -1590160341909439447
+FNVJ64	6000000		collisions: 0		ms: 995		MB/s: 5887		hash: -7424919725960057287
+FNVJ64	7000000		collisions: 0		ms: 1160		MB/s: 5891		hash: 4441051329799790921
+FNVJ64	8000000		collisions: 0		ms: 1324		MB/s: 5898		hash: -4477940382469314922
+FNVJ64	9000000		collisions: 0		ms: 1489		MB/s: 5900		hash: -5047873938797235191
+FNVJ64	10000000		collisions: 0		ms: 1655		MB/s: 5897		hash: 5492248082377293425
+FNVJ64	Quality - off sum: 77964		off² sum: 138207844		negQ: 0.21594975624999999
+Murmur2b	-----------------------------------------------------------
+Murmur2b	1000000		collisions: 133		ms: 764		MB/s: 1277		hash: 3036286706
+Murmur2b	2000000		collisions: 507		ms: 1469		MB/s: 1329		hash: 1395830534
+Murmur2b	3000000		collisions: 1082		ms: 2167		MB/s: 1352		hash: 3959493470
+Murmur2b	4000000		collisions: 1878		ms: 2992		MB/s: 1305		hash: 3475070953
+Murmur2b	5000000		collisions: 2894		ms: 3695		MB/s: 1321		hash: 424377162
+Murmur2b	6000000		collisions: 4152		ms: 4397		MB/s: 1333		hash: 1059036235
+Murmur2b	7000000		collisions: 5695		ms: 5105		MB/s: 1339		hash: 4189268925
+Murmur2b	8000000		collisions: 7439		ms: 5811		MB/s: 1344		hash: 1981805431
+Murmur2b	9000000		collisions: 9427		ms: 6517		MB/s: 1349		hash: 2934076200
+Murmur2b	10000000		collisions: 11629		ms: 7221		MB/s: 1352		hash: 389237162
+Murmur2b	Quality - off sum: 43175		off² sum: 90872455		negQ: 0.283976421875
+Murmur3A-32	-----------------------------------------------------------
+Murmur3A-32	1000000		collisions: 104		ms: 465		MB/s: 2099		hash: 1965381166
+Murmur3A-32	2000000		collisions: 502		ms: 924		MB/s: 2113		hash: 506406562
+Murmur3A-32	3000000		collisions: 1122		ms: 1382		MB/s: 2119		hash: 516275461
+Murmur3A-32	4000000		collisions: 1926		ms: 1839		MB/s: 2123		hash: 2983557572
+Murmur3A-32	5000000		collisions: 2998		ms: 2297		MB/s: 2126		hash: 2673616270
+Murmur3A-32	6000000		collisions: 4229		ms: 2754		MB/s: 2127		hash: 304666210
+Murmur3A-32	7000000		collisions: 5758		ms: 3210		MB/s: 2129		hash: 2135502925
+Murmur3A-32	8000000		collisions: 7472		ms: 3669		MB/s: 2129		hash: 511590840
+Murmur3A-32	9000000		collisions: 9502		ms: 4128		MB/s: 2129		hash: 2535039291
+Murmur3A-32	10000000		collisions: 11708		ms: 4587		MB/s: 2129		hash: 3844101548
+Murmur3A-32	Quality - off sum: 37267		off² sum: 64303883		negQ: 0.200949634375
+Murmur3F-128	-----------------------------------------------------------
+Murmur3F-128	1000000		collisions: 0		ms: 270		MB/s: 3613		hash: -8487569211150317805
+Murmur3F-128	2000000		collisions: 0		ms: 530		MB/s: 3684		hash: -697444642704163838
+Murmur3F-128	3000000		collisions: 0		ms: 795		MB/s: 3683		hash: -9029246048500520046
+Murmur3F-128	4000000		collisions: 0		ms: 1058		MB/s: 3692		hash: -5923669462185918825
+Murmur3F-128	5000000		collisions: 0		ms: 1316		MB/s: 3710		hash: -4889820400553147005
+Murmur3F-128	6000000		collisions: 0		ms: 1575		MB/s: 3719		hash: 2956738430964836528
+Murmur3F-128	7000000		collisions: 0		ms: 1833		MB/s: 3728		hash: 1921320609832559655
+Murmur3F-128	8000000		collisions: 0		ms: 2091		MB/s: 3736		hash: -7905563647661327974
+Murmur3F-128	9000000		collisions: 0		ms: 2350		MB/s: 3739		hash: 8531591163534003233
+Murmur3F-128	10000000		collisions: 0		ms: 2609		MB/s: 3742		hash: -3059205078020759067
+Murmur3F-128	Quality - off sum: 73318		off² sum: 130912064		negQ: 0.20455010000000004
+xxHash	-----------------------------------------------------------
+xxHash	1000000		collisions: 1790		ms: 235		MB/s: 4153		hash: 178297456
+xxHash	2000000		collisions: 7461		ms: 460		MB/s: 4240		hash: 58764859
+xxHash	3000000		collisions: 16783		ms: 686		MB/s: 4269		hash: 181699418
+xxHash	4000000		collisions: 29589		ms: 913		MB/s: 4275		hash: 197277099
+xxHash	5000000		collisions: 46271		ms: 1137		MB/s: 4293		hash: 74176169
+xxHash	6000000		collisions: 66553		ms: 1361		MB/s: 4302		hash: 130625215
+xxHash	7000000		collisions: 90470		ms: 1585		MB/s: 4312		hash: 197170827
+xxHash	8000000		collisions: 118032		ms: 1809		MB/s: 4317		hash: 73568017
+xxHash	9000000		collisions: 149311		ms: 2038		MB/s: 4311		hash: 104870104
+xxHash	10000000		collisions: 184142		ms: 2262		MB/s: 4316		hash: 156305267
+xxHash	Quality - off sum: 20040189		off² sum: 100000085815081		negQ: 312500.2681721281
+MD5	-----------------------------------------------------------
+MD5	1000000		collisions: 999744		ms: 3132		MB/s: 312		hash: -63
+MD5	2000000		collisions: 1999744		ms: 6149		MB/s: 318		hash: 120
+MD5	3000000		collisions: 2999744		ms: 9159		MB/s: 320		hash: 21
+MD5	4000000		collisions: 3999744		ms: 12167		MB/s: 321		hash: -92
+MD5	5000000		collisions: 4999744		ms: 15228		MB/s: 321		hash: 45
+MD5	6000000		collisions: 5999744		ms: 18238		MB/s: 321		hash: 1
+MD5	7000000		collisions: 6999744		ms: 21250		MB/s: 322		hash: 33
+MD5	8000000		collisions: 7999744		ms: 24260		MB/s: 322		hash: 91
+MD5	9000000		collisions: 8999744		ms: 27321		MB/s: 322		hash: 75
+MD5	10000000		collisions: 9999744		ms: 30339		MB/s: 322		hash: 65
+MD5	Quality - off sum: 94977		off² sum: 149462137		negQ: 0.23353458906250013
+
+
+
+
+
+Adler32	-----------------------------------------------------------
+Adler32	10000000		collisions: 90214		ms: 4030		MB/s: 2423		hash: 2474375107
+Adler32	20000000		collisions: 358658		ms: 8052		MB/s: 2425		hash: 917889636
+Adler32	30000000		collisions: 801566		ms: 12070		MB/s: 2427		hash: 3638687892
+Adler32	40000000		collisions: 1416730		ms: 16093		MB/s: 2427		hash: 3497197170
+Adler32	50000000		collisions: 2199431		ms: 20106		MB/s: 2429		hash: 1448933900
+Adler32	60000000		collisions: 3146386		ms: 24132		MB/s: 2428		hash: 555544144
+Adler32	70000000		collisions: 4251541		ms: 28152		MB/s: 2428		hash: 3800499507
+Adler32	80000000		collisions: 5513740		ms: 32177		MB/s: 2428		hash: 882243261
+Adler32	90000000		collisions: 6932360		ms: 36197		MB/s: 2428		hash: 2165370631
+Adler32	100000000		collisions: 8499427		ms: 40233		MB/s: 2427		hash: 316603113
+Adler32	Quality - off sum: 29632590		off² sum: 212361194394918		negQ: 66362.8732484119
+CRC32	-----------------------------------------------------------
+CRC32	10000000		collisions: 11665		ms: 10452		MB/s: 934		hash: 3186744817
+CRC32	20000000		collisions: 46451		ms: 20888		MB/s: 935		hash: 1343846898
+CRC32	30000000		collisions: 104323		ms: 31349		MB/s: 935		hash: 2591010397
+CRC32	40000000		collisions: 185379		ms: 41821		MB/s: 934		hash: 2741360937
+CRC32	50000000		collisions: 289261		ms: 52256		MB/s: 934		hash: 1703209831
+CRC32	60000000		collisions: 416953		ms: 62718		MB/s: 934		hash: 1451546885
+CRC32	70000000		collisions: 567502		ms: 73157		MB/s: 934		hash: 2847319888
+CRC32	80000000		collisions: 739448		ms: 83614		MB/s: 934		hash: 1711435126
+CRC32	90000000		collisions: 935856		ms: 94147		MB/s: 934		hash: 2327661988
+CRC32	100000000		collisions: 1154526		ms: 104599		MB/s: 934		hash: 1769388974
+CRC32	Quality - off sum: 101181		off² sum: 525233267		negQ: 0.1641353959375
+FNV1a	-----------------------------------------------------------
+FNV1a	10000000		collisions: 11548		ms: 12206		MB/s: 800		hash: 1126426146
+FNV1a	20000000		collisions: 46436		ms: 24393		MB/s: 801		hash: 1149491865
+FNV1a	30000000		collisions: 104415		ms: 36607		MB/s: 800		hash: 362446885
+FNV1a	40000000		collisions: 185638		ms: 48818		MB/s: 800		hash: 3164189769
+FNV1a	50000000		collisions: 289799		ms: 61023		MB/s: 800		hash: 21249451
+FNV1a	60000000		collisions: 416546		ms: 73228		MB/s: 800		hash: 775629055
+FNV1a	70000000		collisions: 566196		ms: 85436		MB/s: 800		hash: 1437355933
+FNV1a	80000000		collisions: 739584		ms: 97644		MB/s: 800		hash: 1174637778
+FNV1a	90000000		collisions: 936306		ms: 109855		MB/s: 800		hash: 3285801154
+FNV1a	100000000		collisions: 1155327		ms: 122060		MB/s: 800		hash: 2725166770
+FNV1a	Quality - off sum: 119674		off² sum: 661642476		negQ: 0.20676327374999998
+FNV1a-64	-----------------------------------------------------------
+FNV1a-64	10000000		collisions: 0		ms: 12245		MB/s: 797		hash: 4891867181238022722
+FNV1a-64	20000000		collisions: 0		ms: 24501		MB/s: 797		hash: 2711008406916525273
+FNV1a-64	30000000		collisions: 0		ms: 36755		MB/s: 797		hash: 7445842065805539141
+FNV1a-64	40000000		collisions: 0		ms: 49010		MB/s: 797		hash: -6872159568454441879
+FNV1a-64	50000000		collisions: 0		ms: 61274		MB/s: 797		hash: 223496778997564011
+FNV1a-64	60000000		collisions: 0		ms: 73538		MB/s: 797		hash: 8280345155509678015
+FNV1a-64	70000000		collisions: 0		ms: 85781		MB/s: 797		hash: -8907325343143650819
+FNV1a-64	80000000		collisions: 0		ms: 98127		MB/s: 796		hash: -1240896081500958318
+FNV1a-64	90000000		collisions: 0		ms: 110404		MB/s: 796		hash: -1419428014064708062
+FNV1a-64	100000000		collisions: 0		ms: 122662		MB/s: 796		hash: -6042781311788601134
+FNV1a-64	Quality - off sum: 209282		off² sum: 1168598406		negQ: 0.1825935009375001
+FNVJ	-----------------------------------------------------------
+FNVJ	10000000		collisions: 11676		ms: 3119		MB/s: 3130		hash: 2720560055
+FNVJ	20000000		collisions: 46750		ms: 6234		MB/s: 3133		hash: 101340413
+FNVJ	30000000		collisions: 104460		ms: 9351		MB/s: 3133		hash: 3004220229
+FNVJ	40000000		collisions: 185330		ms: 12473		MB/s: 3132		hash: 872634905
+FNVJ	50000000		collisions: 289740		ms: 15595		MB/s: 3131		hash: 1819542983
+FNVJ	60000000		collisions: 416989		ms: 18713		MB/s: 3131		hash: 2985562141
+FNVJ	70000000		collisions: 567455		ms: 21822		MB/s: 3133		hash: 3251102207
+FNVJ	80000000		collisions: 740602		ms: 24958		MB/s: 3130		hash: 4155370144
+FNVJ	90000000		collisions: 936960		ms: 28085		MB/s: 3129		hash: 669562051
+FNVJ	100000000		collisions: 1155559		ms: 31217		MB/s: 3128		hash: 1111005368
+FNVJ	Quality - off sum: 162460		off² sum: 1229419798		negQ: 0.384193686875
+FNVJ64	-----------------------------------------------------------
+FNVJ64	10000000		collisions: 0		ms: 1657		MB/s: 5893		hash: 5492248082377293425
+FNVJ64	20000000		collisions: 0		ms: 3317		MB/s: 5887		hash: 4122394531757792969
+FNVJ64	30000000		collisions: 0		ms: 4980		MB/s: 5883		hash: -2901539448334539183
+FNVJ64	40000000		collisions: 0		ms: 6641		MB/s: 5881		hash: -6468895238940290135
+FNVJ64	50000000		collisions: 0		ms: 8307		MB/s: 5878		hash: -5366323889398347744
+FNVJ64	60000000		collisions: 0		ms: 9969		MB/s: 5877		hash: -4741064721136768738
+FNVJ64	70000000		collisions: 0		ms: 11626		MB/s: 5880		hash: -8538477898495702595
+FNVJ64	80000000		collisions: 0		ms: 13287		MB/s: 5880		hash: -3212657570708941134
+FNVJ64	90000000		collisions: 0		ms: 14950		MB/s: 5879		hash: -6279164284661935025
+FNVJ64	100000000		collisions: 0		ms: 16611		MB/s: 5879		hash: -1864046721416634519
+FNVJ64	Quality - off sum: 256839		off² sum: 1457745923		negQ: 0.22777280046874993
+Murmur2b	-----------------------------------------------------------
+Murmur2b	10000000		collisions: 11629		ms: 7088		MB/s: 1378		hash: 389237162
+Murmur2b	20000000		collisions: 46399		ms: 14210		MB/s: 1374		hash: 2876946264
+Murmur2b	30000000		collisions: 104622		ms: 21351		MB/s: 1372		hash: 2415549582
+Murmur2b	40000000		collisions: 185735		ms: 30486		MB/s: 1281		hash: 1184907863
+Murmur2b	50000000		collisions: 289925		ms: 39695		MB/s: 1230		hash: 3570527549
+Murmur2b	60000000		collisions: 417667		ms: 49052		MB/s: 1195		hash: 3673756445
+Murmur2b	70000000		collisions: 567682		ms: 58379		MB/s: 1171		hash: 3171823925
+Murmur2b	80000000		collisions: 740368		ms: 65511		MB/s: 1193		hash: 1728531070
+Murmur2b	90000000		collisions: 936819		ms: 72632		MB/s: 1210		hash: 51633766
+Murmur2b	100000000		collisions: 1155721		ms: 109539		MB/s: 892		hash: 1709921568
+Murmur2b	Quality - off sum: 109388		off² sum: 606973266		negQ: 0.18967914562500002
+Murmur3A-32	-----------------------------------------------------------
+Murmur3A-32	10000000		collisions: 11708		ms: 4592		MB/s: 2126		hash: 3844101548
+Murmur3A-32	20000000		collisions: 46430		ms: 9180		MB/s: 2127		hash: 589729084
+Murmur3A-32	30000000		collisions: 104805		ms: 13769		MB/s: 2128		hash: 1285919041
+Murmur3A-32	40000000		collisions: 185984		ms: 18355		MB/s: 2128		hash: 3712749115
+Murmur3A-32	50000000		collisions: 290339		ms: 22939		MB/s: 2129		hash: 2209439207
+Murmur3A-32	60000000		collisions: 417683		ms: 27527		MB/s: 2129		hash: 3724648218
+Murmur3A-32	70000000		collisions: 567696		ms: 32120		MB/s: 2128		hash: 3990169526
+Murmur3A-32	80000000		collisions: 740290		ms: 36690		MB/s: 2129		hash: 1500261616
+Murmur3A-32	90000000		collisions: 936327		ms: 41274		MB/s: 2129		hash: 2314121970
+Murmur3A-32	100000000		collisions: 1154474		ms: 45846		MB/s: 2130		hash: 2943017985
+Murmur3A-32	Quality - off sum: 83283		off² sum: 310742285		negQ: 0.0971069640625
+Murmur3F-128	-----------------------------------------------------------
+Murmur3F-128	10000000		collisions: 0		ms: 2605		MB/s: 3748		hash: -3059205078020759067
+Murmur3F-128	20000000		collisions: 0		ms: 5199		MB/s: 3756		hash: -4199029057487395691
+Murmur3F-128	30000000		collisions: 0		ms: 7787		MB/s: 3762		hash: 5148783641286994735
+Murmur3F-128	40000000		collisions: 0		ms: 10386		MB/s: 3761		hash: 8274489409413920942
+Murmur3F-128	50000000		collisions: 0		ms: 12989		MB/s: 3759		hash: -2795239498874199141
+Murmur3F-128	60000000		collisions: 0		ms: 15596		MB/s: 3757		hash: -6942233178061788733
+Murmur3F-128	70000000		collisions: 0		ms: 18198		MB/s: 3756		hash: 2538598936919615192
+Murmur3F-128	80000000		collisions: 0		ms: 20805		MB/s: 3755		hash: -6741545595665908020
+Murmur3F-128	90000000		collisions: 0		ms: 23413		MB/s: 3754		hash: 2592131105057497050
+Murmur3F-128	100000000		collisions: 0		ms: 26028		MB/s: 3752		hash: 3484984405177167476
+Murmur3F-128	Quality - off sum: 225453		off² sum: 1258443887		negQ: 0.19663185734375002
+xxHash	-----------------------------------------------------------
+xxHash	10000000		collisions: 184142		ms: 2284		MB/s: 4275		hash: 156305267
+xxHash	20000000		collisions: 725401		ms: 4565		MB/s: 4278		hash: 7107900
+xxHash	30000000		collisions: 1613892		ms: 6838		MB/s: 4284		hash: 217589660
+xxHash	40000000		collisions: 2836157		ms: 9127		MB/s: 4280		hash: 141292179
+xxHash	50000000		collisions: 4379875		ms: 11403		MB/s: 4282		hash: 182434028
+xxHash	60000000		collisions: 6232136		ms: 13677		MB/s: 4284		hash: 57451834
+xxHash	70000000		collisions: 8382202		ms: 15954		MB/s: 4285		hash: 57504691
+xxHash	80000000		collisions: 10820584		ms: 18217		MB/s: 4289		hash: 88360211
+xxHash	90000000		collisions: 13537306		ms: 20486		MB/s: 4290		hash: 228172235
+xxHash	100000000		collisions: 16516073		ms: 22758		MB/s: 4291		hash: 148414107
+xxHash	Quality - off sum: 200076720		off² sum: 10000000363098780		negQ: 3125000.1134683685
+MD5	-----------------------------------------------------------
+MD5	10000000		collisions: 9999744		ms: 32699		MB/s: 299		hash: 65
+MD5	20000000		collisions: 19999744		ms: 62933		MB/s: 310		hash: 42
+MD5	30000000		collisions: 29999744		ms: 93108		MB/s: 315		hash: -82
+MD5	40000000		collisions: 39999744		ms: 123306		MB/s: 317		hash: -18
+MD5	50000000		collisions: 49999744		ms: 153495		MB/s: 318		hash: 127
+MD5	60000000		collisions: 59999744		ms: 183668		MB/s: 319		hash: 51
+MD5	70000000		collisions: 69999744		ms: 213885		MB/s: 320		hash: 69
+MD5	80000000		collisions: 79999744		ms: 244036		MB/s: 320		hash: -98
+MD5	90000000		collisions: 89999744		ms: 274207		MB/s: 321		hash: 47
+MD5	100000000		collisions: 99999744		ms: 304409		MB/s: 321		hash: 85
+MD5	Quality - off sum: 94211		off² sum: 268642097		negQ: 0.04197532765624981
+
+
+
+
+
+
+Murmur3A-32 (Guava)	-----------------------------------------------------------
+Murmur3A-32 (Guava)	100000		collisions: 3		ms: 212		MB/s: 459		hash: 722306287
+Murmur3A-32 (Guava)	200000		collisions: 8		ms: 384		MB/s: 508		hash: 3793910381
+Murmur3A-32 (Guava)	300000		collisions: 14		ms: 559		MB/s: 523		hash: 2152169111
+Murmur3A-32 (Guava)	400000		collisions: 20		ms: 730		MB/s: 535		hash: 261778392
+Murmur3A-32 (Guava)	500000		collisions: 28		ms: 900		MB/s: 543		hash: 1713478974
+Murmur3A-32 (Guava)	600000		collisions: 40		ms: 1069		MB/s: 548		hash: 3585833667
+Murmur3A-32 (Guava)	700000		collisions: 54		ms: 1239		MB/s: 551		hash: 2042701564
+Murmur3A-32 (Guava)	800000		collisions: 68		ms: 1415		MB/s: 552		hash: 1971744562
+Murmur3A-32 (Guava)	900000		collisions: 85		ms: 1585		MB/s: 554		hash: 3049147487
+Murmur3A-32 (Guava)	1000000		collisions: 104		ms: 1755		MB/s: 556		hash: 1965381166
+Murmur3A-32 (Guava)	Quality - off sum: 10590		off² sum: 5117168		negQ: 0.15991149999999998
+
+Murmur3A-32 (Guava)	-----------------------------------------------------------
+Murmur3A-32 (Guava)	1000000		collisions: 104		ms: 1808		MB/s: 540		hash: 1965381166
+Murmur3A-32 (Guava)	2000000		collisions: 502		ms: 3522		MB/s: 554		hash: 506406562
+Murmur3A-32 (Guava)	3000000		collisions: 1122		ms: 5241		MB/s: 559		hash: 516275461
+Murmur3A-32 (Guava)	4000000		collisions: 1926		ms: 7145		MB/s: 547		hash: 2983557572
+Murmur3A-32 (Guava)	5000000		collisions: 2998		ms: 8863		MB/s: 551		hash: 2673616270
+Murmur3A-32 (Guava)	6000000		collisions: 4229		ms: 10583		MB/s: 554		hash: 304666210
+Murmur3A-32 (Guava)	7000000		collisions: 5758		ms: 12308		MB/s: 555		hash: 2135502925
+Murmur3A-32 (Guava)	8000000		collisions: 7472		ms: 14026		MB/s: 557		hash: 511590840
+Murmur3A-32 (Guava)	9000000		collisions: 9502		ms: 15742		MB/s: 558		hash: 2535039291
+Murmur3A-32 (Guava)	10000000		collisions: 11708		ms: 17858		MB/s: 547		hash: 3844101548
+Murmur3A-32 (Guava)	Quality - off sum: 37267		off² sum: 64303883		negQ: 0.200949634375
+
+
+Murmur3A-32 (Guava)	-----------------------------------------------------------
+Murmur3A-32 (Guava)	10000000		collisions: 0		ms: 12883		MB/s: 758		hash: -3059205078020759067
+Murmur3A-32 (Guava)	20000000		collisions: 0		ms: 22377		MB/s: 873		hash: -4199029057487395691
+Murmur3A-32 (Guava)	30000000		collisions: 0		ms: 31882		MB/s: 919		hash: 5148783641286994735
+Murmur3A-32 (Guava)	40000000		collisions: 0		ms: 50055		MB/s: 780		hash: 8274489409413920942
+Murmur3A-32 (Guava)	50000000		collisions: 0		ms: 61029		MB/s: 800		hash: -2795239498874199141
+Murmur3A-32 (Guava)	60000000		collisions: 0		ms: 71799		MB/s: 816		hash: -6942233178061788733
+Murmur3A-32 (Guava)	70000000		collisions: 0		ms: 82540		MB/s: 828		hash: 2538598936919615192
+Murmur3A-32 (Guava)	80000000		collisions: 0		ms: 95676		MB/s: 817		hash: -6741545595665908020
+Murmur3A-32 (Guava)	90000000		collisions: 0		ms: 125300		MB/s: 701		hash: 2592131105057497050
+Murmur3A-32 (Guava)	100000000		collisions: 0		ms: 136317		MB/s: 716		hash: 3484984405177167476
+Murmur3A-32 (Guava)	Quality - off sum: 225453		off² sum: 1258443887		negQ: 0.19663185734375002

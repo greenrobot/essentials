@@ -3,10 +3,9 @@ package de.greenrobot.common.checksum;
 import de.greenrobot.common.ByteArrayUtils;
 
 import java.math.BigInteger;
-import java.util.zip.Checksum;
 
 /** Murmur3F (MurmurHash3_x64_128) */
-public class Murmur3fChecksum implements Checksum {
+public class Murmur3fChecksum implements Checksum128 {
     private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
 
     private static final long C1 = 0x87c37b91114253d5L;
@@ -194,7 +193,7 @@ public class Murmur3fChecksum implements Checksum {
     }
 
     /** Returns the higher 64 bits of the 128 bit hash. */
-    public long getValue2() {
+    public long getValueHigh() {
         checkFinished();
         return finishedH2;
     }
