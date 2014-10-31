@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum.otherhashes;
+package de.greenrobot.common.hash.otherhashes;
 
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;

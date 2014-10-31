@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum.otherhashes;
+package de.greenrobot.common.hash.otherhashes;
 
 /**
  *  The MurmurHash3 algorithm was created by Austin Appleby.  This java port was authored by

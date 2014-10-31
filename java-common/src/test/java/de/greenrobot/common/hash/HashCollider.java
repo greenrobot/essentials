@@ -1,15 +1,6 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
-import de.greenrobot.common.checksum.otherhashes.Md5Checksum;
-import de.greenrobot.common.checksum.otherhashes.Murmur2bChecksum;
-import de.greenrobot.common.checksum.otherhashes.Murmur3aGuavaChecksum;
-import de.greenrobot.common.checksum.otherhashes.Murmur3fGuavaChecksum;
-import de.greenrobot.common.checksum.otherhashes.MurmurHash3YonikChecksum;
-import net.jpountz.xxhash.XXHashFactory;
-import org.junit.Test;
 
 import java.util.Random;
 import java.util.zip.Adler32;

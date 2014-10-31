@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import java.util.zip.Checksum;
 
 public class PrimitiveDataChecksumTest {
     Checksum[] checksums = {
-            new Adler32(), new FNV32(), new FNV64(), new FNVJ32(), /*new FNVJ64(),*/ new Murmur3aChecksum()
+            new Adler32(), new FNV32(), new FNV64(), new FNVJ32(), /*new FNVJ64(),*/ new Murmur3A()
     };
 
     @Test

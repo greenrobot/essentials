@@ -27,7 +27,7 @@ This project aims improve situation described above by providing:
 * Comprehensive test suite to assure correctness (to a certain degree, of course)
 * Simple test classes to measure performance and quality of hash functions
 
-The hash functions are available as classes in the de.greenrobot.common.checksum package. They implement the [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html) interface, and are thus are straight forward to use.
+The hash functions are available as classes in the de.greenrobot.common.hash package. They implement the [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html) interface, and are thus are straight forward to use.
 
 Murmur3 hash functions
 ----------------------

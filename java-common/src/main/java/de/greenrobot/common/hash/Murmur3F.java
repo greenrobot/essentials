@@ -1,11 +1,11 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import de.greenrobot.common.ByteArrayUtils;
 
 import java.math.BigInteger;
 
 /** Murmur3F (MurmurHash3_x64_128) */
-public class Murmur3fChecksum implements Checksum128 {
+public class Murmur3F implements Checksum128 {
     private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
 
     private static final long C1 = 0x87c37b91114253d5L;
@@ -25,11 +25,11 @@ public class Murmur3fChecksum implements Checksum128 {
     private long finishedH1;
     private long finishedH2;
 
-    public Murmur3fChecksum() {
+    public Murmur3F() {
         seed = 0;
     }
 
-    public Murmur3fChecksum(int seed) {
+    public Murmur3F(int seed) {
         this.seed = seed & (0xffffffffL); // unsigned
         h1 = seed;
         h2 = seed;

@@ -1,9 +1,9 @@
-package de.greenrobot.common.checksum.otherhashes;
+package de.greenrobot.common.hash.otherhashes;
 
 import java.util.zip.Checksum;
 
 /** TODO */
-public class Murmur2Checksum implements Checksum {
+public class Murmur2bChecksum implements Checksum {
     Long hash;
 
     @Override
@@ -16,7 +16,7 @@ public class Murmur2Checksum implements Checksum {
         if (hash != null) {
             throw new RuntimeException("No hash building available");
         }
-        hash = 0xffffffffL & MurmurHash2.hash(b, 0x9747b28c);
+        hash = 0xffffffffL & MurmurHash2b.hash32(b, off, len);
     }
 
     @Override

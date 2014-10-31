@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import org.junit.Assert;
 import org.junit.Before;

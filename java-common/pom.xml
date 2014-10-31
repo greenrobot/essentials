@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>java-common</artifactId>
-    <version>1.0.9</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <parent>
         <groupId>de.greenrobot</groupId>

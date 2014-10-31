@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum.otherhashes;
+package de.greenrobot.common.hash.otherhashes;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

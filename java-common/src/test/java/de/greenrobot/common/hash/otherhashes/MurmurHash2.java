@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum.otherhashes;
+package de.greenrobot.common.hash.otherhashes;
 
 // Ported by Derek Young from the C version (specifically the endian-neutral
 // version) from:

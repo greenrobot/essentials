@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import java.math.BigInteger;
 import java.util.zip.Checksum;

@@ -1,54 +1,62 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import de.greenrobot.common.ByteArrayUtils;
 
 import java.util.zip.Checksum;
 
 /**
- * Custom 64-bit hash function favoring speed over quality.
+ * Custom 32-bit hash function favoring speed over quality.
  *
  * Tests with random data showed pretty good collision behaviour, although quality measured by SMHasher is pretty bad
  * (much worse than FNV).
  * <p/>
- * If you do progressive updates, update with byte lengths that are a multiple of 8 for best performance.
+ * If you do progressive updates, update with byte lengths that are a multiple of 4 for best performance.
  * <p/>
- * Based on FNV, but xors 8 bytes at once after each multiplication.
+ * Based on FNV, but xors 4 bytes at once after each multiplication.
  */
-public class FNVJ64 implements Checksum {
+public class FNVJ32 implements Checksum {
     private static ByteArrayUtils byteArrayUtils = ByteArrayUtils.getInstance();
-    private final static long INITIAL_VALUE = 0xcbf29ce484222325L;
-    private final static long MULTIPLIER = 0x100000001b3L;
-    private final static int[] PARTIAL_SHIFTS = {56, 48, 40, 32, 24, 16, 8, 0};
 
-    private final long seed;
+    private final static int INITIAL_VALUE = 0x811C9DC5;
+    private final static int MULTIPLIER = 16777619;
 
-    private long hash;
+    private final int seed;
+
+    private int hash = INITIAL_VALUE;
 
     private int partialPos;
     private int length;
 
-    public FNVJ64() {
+    public FNVJ32() {
         hash = seed = INITIAL_VALUE;
     }
 
-    public FNVJ64(long seed) {
+    public FNVJ32(int seed) {
         hash = this.seed = INITIAL_VALUE ^ seed;
     }
 
     @Override
     public void update(int b) {
-        if (partialPos == 0) {
-            hash *= MULTIPLIER;
-        }
-        long xorValue = (0xff & b);
-        if (partialPos != 7) {
-            xorValue <<= PARTIAL_SHIFTS[partialPos];
+        int xorValue = 0xff & b;
+        switch (partialPos) {
+            case 0:
+                hash *= MULTIPLIER;
+                xorValue <<= 24;
+                partialPos = 1;
+                break;
+            case 1:
+                xorValue <<= 16;
+                partialPos = 2;
+                break;
+            case 2:
+                xorValue <<= 8;
+                partialPos = 3;
+                break;
+            case 3:
+                partialPos = 0;
+                break;
         }
         hash ^= xorValue;
-        partialPos++;
-        if (partialPos == 8) {
-            partialPos = 0;
-        }
         length++;
     }
 
@@ -59,12 +67,12 @@ public class FNVJ64 implements Checksum {
             off++;
             len--;
         }
-        int remainder = len & 7;
+        int remainder = len & 3;
         int stop = off + len - remainder;
-        for (int i = off; i < stop; i += 8) {
+        for (int i = off; i < stop; i += 4) {
             hash *= MULTIPLIER;
             // Tests have shown big endian results in a better bit distribution quality
-            hash ^= byteArrayUtils.getLongBE(b, i);
+            hash ^= byteArrayUtils.getIntBE(b, i);
         }
         length += stop - off;
 
@@ -75,10 +83,10 @@ public class FNVJ64 implements Checksum {
 
     @Override
     public long getValue() {
-        long finished = hash * MULTIPLIER;
+        int finished = hash * MULTIPLIER;
         finished ^= length;
         finished *= MULTIPLIER;
-        return finished;
+        return finished & 0xffffffffL;
     }
 
     @Override

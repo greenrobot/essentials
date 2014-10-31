@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import java.util.Random;
 
-public class Murmur3fChecksumTest extends AbstractChecksumTest {
-    private final Murmur3fChecksum murmur3fChecksum;
+public class Murmur3FTest extends AbstractChecksumTest {
+    private final Murmur3F murmur3F;
 
-    public Murmur3fChecksumTest() {
-        super(new Murmur3fChecksum());
-        murmur3fChecksum = (Murmur3fChecksum) checksum;
+    public Murmur3FTest() {
+        super(new Murmur3F());
+        murmur3F = (Murmur3F) checksum;
     }
 
     @Test
@@ -50,16 +50,16 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
     @Test
     public void testGetValueBytesAgainstGuava() {
         byte[] expected = Hashing.murmur3_128().hashBytes(INPUT4).asBytes();
-        murmur3fChecksum.update(INPUT4, 0, INPUT4.length);
-        byte[] bytes = murmur3fChecksum.getValueBytesLittleEndian();
+        murmur3F.update(INPUT4, 0, INPUT4.length);
+        byte[] bytes = murmur3F.getValueBytesLittleEndian();
         Assert.assertArrayEquals(expected, bytes);
     }
 
     @Test
     public void testGetValueBytesEndian() {
-        murmur3fChecksum.update(INPUT4, 0, INPUT4.length);
-        byte[] bytesLE = murmur3fChecksum.getValueBytesLittleEndian();
-        byte[] bytesBE = murmur3fChecksum.getValueBytesBigEndian();
+        murmur3F.update(INPUT4, 0, INPUT4.length);
+        byte[] bytesLE = murmur3F.getValueBytesLittleEndian();
+        byte[] bytesBE = murmur3F.getValueBytesBigEndian();
         for (int i = 0; i < bytesLE.length; i++) {
             Assert.assertEquals(bytesLE[i], bytesBE[bytesBE.length - 1 - i]);
         }
@@ -67,31 +67,31 @@ public class Murmur3fChecksumTest extends AbstractChecksumTest {
 
     @Test
     public void testGetBigValue() {
-        murmur3fChecksum.update(42);
-        String expected = Long.toHexString(murmur3fChecksum.getValueHigh()) +
-                Long.toHexString(murmur3fChecksum.getValue());
+        murmur3F.update(42);
+        String expected = Long.toHexString(murmur3F.getValueHigh()) +
+                Long.toHexString(murmur3F.getValue());
         Assert.assertEquals(32, expected.length()); // For this particular hash OK
-        String big = murmur3fChecksum.getValueBigInteger().toString(16);
+        String big = murmur3F.getValueBigInteger().toString(16);
         Assert.assertEquals(expected, big);
     }
 
     @Test
     public void testGetValueHexString() {
-        murmur3fChecksum.update(42);
-        String expected = Long.toHexString(murmur3fChecksum.getValueHigh()) +
-                Long.toHexString(murmur3fChecksum.getValue());
+        murmur3F.update(42);
+        String expected = Long.toHexString(murmur3F.getValueHigh()) +
+                Long.toHexString(murmur3F.getValue());
         Assert.assertEquals(32, expected.length()); // For this particular hash OK
-        Assert.assertEquals(expected, murmur3fChecksum.getValueHexString());
+        Assert.assertEquals(expected, murmur3F.getValueHexString());
     }
 
     @Test
     public void testGetValueHexStringPadded() {
         while (true) {
-            murmur3fChecksum.update(42);
-            String nonPadded = Long.toHexString(murmur3fChecksum.getValueHigh());
+            murmur3F.update(42);
+            String nonPadded = Long.toHexString(murmur3F.getValueHigh());
             int delta = 16 - nonPadded.length();
             if (delta > 0) {
-                String padded = murmur3fChecksum.getValueHexString();
+                String padded = murmur3F.getValueHexString();
                 for (int i = 0; i < delta; i++) {
                     Assert.assertEquals('0', padded.charAt(i));
                 }

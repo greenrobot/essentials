@@ -1,9 +1,7 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.zip.Checksum;
 
 public class FNV64Test extends  AbstractChecksumTest {
     private final static byte[] INPUT64_ZERO = {(byte) 0xd5, 0x6b, (byte) 0xb9, 0x53, 0x42, (byte) 0x87, 0x08, 0x36};

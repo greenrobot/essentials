@@ -1,4 +1,4 @@
-package de.greenrobot.common.checksum;
+package de.greenrobot.common.hash;
 
 import java.io.UnsupportedEncodingException;
 import java.util.zip.Checksum;
