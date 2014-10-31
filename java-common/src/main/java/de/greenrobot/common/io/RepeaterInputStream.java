@@ -23,7 +23,7 @@ public class RepeaterInputStream extends FilterInputStream {
 
     @Override
     public int read() throws IOException {
-        int read = super.read();
+        int read = in.read();
         if (read > 0) {
             out.write(read);
         }
@@ -32,20 +32,15 @@ public class RepeaterInputStream extends FilterInputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        int read = super.read(b, off, len);
+        int read = in.read(b, off, len);
         if (read > 0) {
             out.write(b, off, read);
         }
         return read;
     }
 
-    @Override
-    public int read(byte[] b) throws IOException {
-        int read = super.read();
-        if (read > 0) {
-            out.write(b, 0, read);
-        }
-        return read;
+    public int read(byte b[]) throws IOException {
+        return read(b, 0, b.length);
     }
 
     @Override
