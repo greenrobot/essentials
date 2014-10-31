@@ -8,11 +8,12 @@ import java.io.OutputStream;
 /**
  * Repeats an input stream to an additional OutputStream. The data of the InputStream becomes available for two
  * purposes, e.g. reading data and storing for caching.
+ * <p/>
+ * Note: OutputStream is not closed when close() is called.
  *
  * @author Markus
  */
 public class RepeaterInputStream extends FilterInputStream {
-
     private final OutputStream out;
 
     public RepeaterInputStream(InputStream in, OutputStream out) {
@@ -45,6 +46,23 @@ public class RepeaterInputStream extends FilterInputStream {
             out.write(b, 0, read);
         }
         return read;
+    }
+
+    @Override
+    /** Unsupported. */
+    public boolean markSupported() {
+        return false;
+    }
+
+    @Override
+    /** Unsupported. */
+    public void mark(int readlimit) {
+    }
+
+    @Override
+    /** Unsupported. */
+    public void reset() throws IOException {
+        throw new IOException("Unsupported");
     }
 
 }
