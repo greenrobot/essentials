@@ -1,6 +1,7 @@
-package de.greenrobot.common;
+package de.greenrobot.common.io;
 
 import de.greenrobot.common.hash.Murmur3F;
+import de.greenrobot.common.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

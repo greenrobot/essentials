@@ -1,4 +1,4 @@
-package de.greenrobot.common;
+package de.greenrobot.common.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

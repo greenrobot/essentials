@@ -1,4 +1,6 @@
-package de.greenrobot.common;
+package de.greenrobot.common.io;
+
+import de.greenrobot.common.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
