@@ -41,6 +41,8 @@ public abstract class ByteArrayUtils {
 
     public abstract long getLongBE(byte[] bytes, int index);
 
+    public abstract int getIntLE(char[] chars, int index);
+
     private static class UnsafeImpl extends ByteArrayUtils {
         private static final boolean BIG_ENDIAN;
         private static final boolean UNALIGNED;
@@ -48,6 +50,8 @@ public abstract class ByteArrayUtils {
         private static final Unsafe UNSAFE;
         /** Set only if UNALIGNED == true. */
         private static final long BYTE_ARRAY_OFFSET;
+        /** Set only if UNALIGNED == true. */
+        private static final long CHAR_ARRAY_OFFSET;
 
         static {
             BIG_ENDIAN = ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN);
@@ -56,9 +60,11 @@ public abstract class ByteArrayUtils {
             if (UNALIGNED) {
                 UNSAFE = initUnsafe();
                 BYTE_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
+                CHAR_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(char[].class);
             } else {
                 UNSAFE = null;
                 BYTE_ARRAY_OFFSET = 0;
+                CHAR_ARRAY_OFFSET = 0;
             }
         }
 
@@ -113,6 +119,16 @@ public abstract class ByteArrayUtils {
         /** Little endian. */
         public int getIntLE(byte[] bytes, int index) {
             int value = UNSAFE.getInt(bytes, BYTE_ARRAY_OFFSET + index);
+            if (BIG_ENDIAN) {
+                return Integer.reverseBytes(value);
+            } else {
+                return value;
+            }
+        }
+
+        /** Little endian. */
+        public int getIntLE(char[] chars, int index) {
+            int value = UNSAFE.getInt(chars, CHAR_ARRAY_OFFSET + (index << 2));
             if (BIG_ENDIAN) {
                 return Integer.reverseBytes(value);
             } else {
@@ -175,6 +191,11 @@ public abstract class ByteArrayUtils {
                     ((bytes[index + 5] & 0xff) << 16) | ((bytes[index + 4] & 0xffL) << 24) |
                     ((bytes[index + 3] & 0xffL) << 32) | ((bytes[index + 2] & 0xffL) << 40) |
                     ((bytes[index + 1] & 0xffL) << 48) | (((long) bytes[index]) << 56);
+        }
+
+        /** Little endian. */
+        public int getIntLE(char[] chars, int index) {
+            return (chars[index] & 0xffff) | ((chars[index + 1] & 0xffff) << 16);
         }
 
     }
