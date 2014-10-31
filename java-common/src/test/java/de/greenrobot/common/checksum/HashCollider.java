@@ -3,8 +3,12 @@ package de.greenrobot.common.checksum;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.greenrobot.common.LongHashSet;
+import de.greenrobot.common.checksum.otherhashes.Md5Checksum;
+import de.greenrobot.common.checksum.otherhashes.Murmur2bChecksum;
+import de.greenrobot.common.checksum.otherhashes.Murmur3aGuavaChecksum;
 import de.greenrobot.common.checksum.otherhashes.Murmur3fGuavaChecksum;
 import de.greenrobot.common.checksum.otherhashes.MurmurHash3YonikChecksum;
+import net.jpountz.xxhash.XXHashFactory;
 import org.junit.Test;
 
 import java.util.Random;
@@ -16,25 +20,28 @@ import java.util.zip.Checksum;
 public class HashCollider {
     private final static boolean COUNT_BITS = true;
 
-    @Test
+    //    @Test
     public void hashColliderTotalRandom() throws Exception {
         //        hashCollider("Adler32", new Adler32());
-        //        hashCollider("FNV1a", new FNV32());
-//                hashCollider("FNVJ", new FNVJ32());
-        //        hashCollider("Murmur2", new Murmur2Checksum());
-        //        // Murmur2b is faster, hashes match Murmur2
-        //                hashCollider("Murmur2b", new Murmur2bChecksum());
-        //                hashCollider("Murmur3A-32 (Guava)", new Murmur32Checksum());
-//        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3YonikChecksum());
-//        hashCollider("Murmur3A-32", new Murmur3aChecksum());
-        hashCollider("Murmur3F-128 (Guava)", new Murmur3fGuavaChecksum());
-        hashCollider("Murmur3F-128", new Murmur3fChecksum());
-//        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
-//        hashCollider("xxHash", xxChecksum);
-//                hashCollider("FNVJ64", new FNVJ64());
-        //        hashCollider("FNV1a-64", new FNV64());
         //        hashCollider("CRC32", new CRC32());
-        //        hashCollider("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
+        //
+        //        hashCollider("FNV1a", new FNV32());
+        //        hashCollider("FNV1a-64", new FNV64());
+        //        hashCollider("FNVJ", new FNVJ32());
+        //        hashCollider("FNVJ64", new FNVJ64());
+
+        //        hashCollider("Murmur2", new Murmur2Checksum());
+        //        // Murmur2b is faster than Murmur2, hashes match Murmur2
+        //        hashCollider("Murmur2b", new Murmur2bChecksum());
+        //        hashCollider("Murmur3A-32 (Guava)", new Murmur3aGuavaChecksum());
+        //        hashCollider("Murmur3A-32 (yonik)", new MurmurHash3YonikChecksum());
+        //        hashCollider("Murmur3A-32", new Murmur3aChecksum());
+        //        hashCollider("Murmur3F-128 (Guava)", new Murmur3fGuavaChecksum());
+        //        hashCollider("Murmur3F-128", new Murmur3fChecksum());
+
+        //        The implementation of XXHash seems to be pretty broken with high number of collisions
+        //        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
+        //        hashCollider("xxHash", xxChecksum);
         //        hashCollider("MD5", new Md5Checksum());
     }
 
@@ -45,8 +52,6 @@ public class HashCollider {
         hashColliderSmallChanges("FNVJ", new FNVJ32());
         hashColliderSmallChanges("FNV1a-64", new FNV64());
         hashColliderSmallChanges("CRC32", new CRC32());
-        hashColliderSmallChanges("Combined", new CombinedChecksum(new Adler32(), new CRC32()));
-        hashColliderSmallChanges("Murmur3A-32", new Murmur32Checksum());
     }
 
     public void hashCollider(String name, Checksum checksum) {
@@ -138,34 +143,6 @@ public class HashCollider {
             }
             System.out.println(name + "\tQuality - off sum: " + offSum + "\t\toff² sum: " + offSumQ +
                     "\t\tnegQ: " + q);
-        }
-    }
-
-    static class Murmur32Checksum implements Checksum {
-        HashFunction x = Hashing.murmur3_32();
-        Long hash;
-
-        @Override
-        public void update(int b) {
-            throw new RuntimeException("Not implemented");
-        }
-
-        @Override
-        public void update(byte[] b, int off, int len) {
-            if (hash != null) {
-                throw new RuntimeException("No hash building available");
-            }
-            hash = 0xffffffffL & x.hashBytes(b, off, len).asInt();
-        }
-
-        @Override
-        public long getValue() {
-            return hash;
-        }
-
-        @Override
-        public void reset() {
-            hash = null;
         }
     }
 
