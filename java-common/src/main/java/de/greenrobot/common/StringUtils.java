@@ -12,15 +12,12 @@ import java.util.List;
 
 /**
  * Utilities for working with strings, like splitting, url-encoding, and MD5 digests.
- * 
+ *
  * @author markus
  */
 public class StringUtils {
 
-    /**
-     * Teilt einen String in Einzelteile performanter als die Methode String.split(). Im Gegensatz zu split() wird hier
-     * nicht mit einem regulaeren Ausdruck gearbeitet sondern nur mit einem einzigen Trennzeichen.
-     */
+    /** Splits a String based on a single character, which is usually faster than regex-based String.split(). */
     public static String[] fastSplit(String string, char delimiter) {
         List<String> list = new ArrayList<String>();
         int size = string.length();
@@ -43,7 +40,7 @@ public class StringUtils {
     }
 
     /**
-     * URL-Encodes a given string using UTF-8 (some webpages have problems with UTF-8 and Umlauts, consider
+     * URL-Encodes a given string using UTF-8 (some web pages have problems with UTF-8 and umlauts, consider
      * {@link #encodeUrlIso(String)} also). No UnsupportedEncodingException to handle as it is dealt with in this
      * method.
      */
@@ -56,7 +53,7 @@ public class StringUtils {
     }
 
     /**
-     * URL-Encodes a given string using ISO-8859-1, which may work better with web pages and umlauts compared to UTF-8.
+     * URL-encodes a given string using ISO-8859-1, which may work better with web pages and umlauts compared to UTF-8.
      * No UnsupportedEncodingException to handle as it is dealt with in this method.
      */
     public static String encodeUrlIso(String stringToEncode) {
@@ -94,7 +91,7 @@ public class StringUtils {
     /**
      * Generates the MD5 digest for a given String based on UTF-8. The digest is padded with zeroes in the front if
      * necessary.
-     * 
+     *
      * @return MD5 digest (32 characters).
      */
     public static String generateMD5String(String stringToEncode) {
@@ -104,7 +101,7 @@ public class StringUtils {
     /**
      * Generates the SHA-1 digest for a given String based on UTF-8. The digest is padded with zeroes in the front if
      * necessary. The SHA-1 algorithm is considers to produce less collisions than MD5.
-     * 
+     *
      * @return SHA-1 digest (40 characters).
      */
     public static String generateSHA1String(String stringToEncode) {
@@ -112,7 +109,7 @@ public class StringUtils {
     }
 
     public static String
-            generateDigestString(String stringToEncode, String digestAlgo, String encoding, int lengthToPad) {
+    generateDigestString(String stringToEncode, String digestAlgo, String encoding, int lengthToPad) {
         // Loosely inspired by http://workbench.cadenhead.org/news/1428/creating-md5-hashed-passwords-java
         MessageDigest digester;
         try {
@@ -141,9 +138,8 @@ public class StringUtils {
     /**
      * Simple HTML/XML entity resolving: Only supports unicode enitities and a very limited number text represented
      * entities (apos, quot, gt, lt, and amp). There are many more: http://www.w3.org/TR/REC-html40/sgml/dtd.html
-     * 
-     * @param entity
-     *            The entity name without & and ; (null throws NPE)
+     *
+     * @param entity The entity name without & and ; (null throws NPE)
      * @return Resolved entity or the entity itself if it could not be resolved.
      */
     public static String resolveEntity(String entity) {

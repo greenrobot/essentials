@@ -55,8 +55,8 @@ Hash and checksum functions usually only accept bytes as input. Our class Primit
  
 The class CombinedChecksum takes two Checksum objects (preferably 32 bit) and combines their hashes into a 64 bit hash. CombinedChecksum implements Checksum itself. This class can be useful to work around flaws in hashing functions, or to make collision attacks harder ().
 
-Comparison of Hashfunctions
-===========================
+Comparison of hash functions
+============================
 
 Results
 -------
