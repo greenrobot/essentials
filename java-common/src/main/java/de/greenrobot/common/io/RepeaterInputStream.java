@@ -39,7 +39,7 @@ public class RepeaterInputStream extends FilterInputStream {
         return read;
     }
 
-    public int read(byte b[]) throws IOException {
+    public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 

@@ -77,7 +77,8 @@ public abstract class PrimitiveArrayUtils {
                 unaligned = Boolean.TRUE.equals(unalignedMethod.invoke(null));
             } catch (Throwable t) {
                 String arch = System.getProperty("os.arch");
-                // TODO some ARMs support it: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka15414.html
+                // TODO some ARM CPUs support it, too:
+                // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka15414.html
                 unaligned = arch != null && arch.matches("^(i[3-6]86|x86(_64)?|x64|amd64)$");
             }
             return unaligned;
