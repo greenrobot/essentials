@@ -7,40 +7,22 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>de.greenrobot.build</groupId>
-        <artifactId>parent-pom-with-checks</artifactId>
-        <version>1.4.0</version>
-        <relativePath>build-common/parent-pom-with-checks.xml</relativePath>
-    </parent>
-
-    <repositories>
-        <repository>
-            <id>dummy</id>
-            <url>https://dummy/</url>
-        </repository>
-    </repositories>
-
     <modules>
         <module>build-common</module>
         <module>java-common</module>
     </modules>
 
-    <dependencies>
-    </dependencies>
-
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <configuration>
-                        <maxAllowedViolations>5</maxAllowedViolations>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
