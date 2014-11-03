@@ -453,3 +453,68 @@ Murmur3A-32 (Guava)	80000000		collisions: 0		ms: 95676		MB/s: 817		hash: -674154
 Murmur3A-32 (Guava)	90000000		collisions: 0		ms: 125300		MB/s: 701		hash: 2592131105057497050
 Murmur3A-32 (Guava)	100000000		collisions: 0		ms: 136317		MB/s: 716		hash: 3484984405177167476
 Murmur3A-32 (Guava)	Quality - off sum: 225453		off² sum: 1258443887		negQ: 0.19663185734375002
+
+
+MD5	-----------------------------------------------------------
+MD5	100000		collisions: 0		ms: 380		MB/s: 257		hash: 1240769721925060710
+MD5	200000		collisions: 0		ms: 684		MB/s: 285		hash: -6701422277248467034
+MD5	300000		collisions: 0		ms: 989		MB/s: 296		hash: 4610483238280841279
+MD5	400000		collisions: 0		ms: 1294		MB/s: 302		hash: -6541767505152474709
+MD5	500000		collisions: 0		ms: 1597		MB/s: 306		hash: -8453881175292707713
+MD5	600000		collisions: 0		ms: 1902		MB/s: 308		hash: 3235879947275486066
+MD5	700000		collisions: 0		ms: 2205		MB/s: 310		hash: -4412884336486246156
+MD5	800000		collisions: 0		ms: 2509		MB/s: 311		hash: -811992725563918300
+MD5	900000		collisions: 0		ms: 2812		MB/s: 312		hash: 5840958017466663823
+MD5	1000000		collisions: 0		ms: 3116		MB/s: 313		hash: 2755614878552141505
+MD5	Quality - off sum: 25597		off² sum: 14913987		negQ: 0.23303104687500004
+SHA-1	-----------------------------------------------------------
+SHA-1	100000		collisions: 0		ms: 505		MB/s: 193		hash: -5984566105150091715
+SHA-1	200000		collisions: 0		ms: 977		MB/s: 200		hash: -5746795343463876428
+SHA-1	300000		collisions: 0		ms: 1449		MB/s: 202		hash: -5711392772336723519
+SHA-1	400000		collisions: 0		ms: 1922		MB/s: 203		hash: 7851418878228316635
+SHA-1	500000		collisions: 0		ms: 2394		MB/s: 204		hash: 6195085147248550646
+SHA-1	600000		collisions: 0		ms: 2865		MB/s: 204		hash: -3863345817806107839
+SHA-1	700000		collisions: 0		ms: 3336		MB/s: 205		hash: -3194860454750150645
+SHA-1	800000		collisions: 0		ms: 3812		MB/s: 205		hash: -2512202603519321630
+SHA-1	900000		collisions: 0		ms: 4283		MB/s: 205		hash: 2777419024738118158
+SHA-1	1000000		collisions: 0		ms: 4783		MB/s: 204		hash: 3447707357669961098
+SHA-1	Quality - off sum: 23840		off² sum: 14945578		negQ: 0.23352465625000002
+
+
+MD5	-----------------------------------------------------------
+MD5	1000000		collisions: 0		ms: 3100		MB/s: 315		hash: 2755614878552141505
+MD5	2000000		collisions: 0		ms: 6115		MB/s: 319		hash: -8096732779163625352
+MD5	3000000		collisions: 0		ms: 9133		MB/s: 321		hash: -8397769904914603755
+MD5	4000000		collisions: 0		ms: 13632		MB/s: 287		hash: -8957956511933949020
+MD5	5000000		collisions: 0		ms: 16654		MB/s: 293		hash: 6766646990209557549
+MD5	6000000		collisions: 0		ms: 19686		MB/s: 298		hash: -6741706243130456319
+MD5	7000000		collisions: 0		ms: 22704		MB/s: 301		hash: -1483726428991035615
+MD5	8000000		collisions: 0		ms: 25717		MB/s: 304		hash: -8017100322411551909
+MD5	9000000		collisions: 0		ms: 28738		MB/s: 306		hash: -5820934079384970165
+MD5	10000000		collisions: 0		ms: 31765		MB/s: 307		hash: -4812056500370518463
+MD5	Quality - off sum: 77876		off² sum: 151305626		negQ: 0.23641504062499996
+SHA-1	-----------------------------------------------------------
+SHA-1	1000000		collisions: 0		ms: 4756		MB/s: 205		hash: 3447707357669961098
+SHA-1	2000000		collisions: 0		ms: 9481		MB/s: 206		hash: 1512076679093119139
+SHA-1	3000000		collisions: 0		ms: 14347		MB/s: 204		hash: 9097432476464408054
+SHA-1	4000000		collisions: 0		ms: 19061		MB/s: 205		hash: -326835653038322208
+SHA-1	5000000		collisions: 0		ms: 23789		MB/s: 205		hash: -6009342345928310774
+SHA-1	6000000		collisions: 0		ms: 28674		MB/s: 204		hash: -567165019275710821
+SHA-1	7000000		collisions: 0		ms: 33403		MB/s: 205		hash: 3965675695453996873
+SHA-1	8000000		collisions: 0		ms: 38156		MB/s: 205		hash: -7068236844075816983
+SHA-1	9000000		collisions: 0		ms: 43053		MB/s: 204		hash: 3568990265761538213
+SHA-1	10000000		collisions: 0		ms: 47794		MB/s: 204		hash: 2830424734549797203
+SHA-1	Quality - off sum: 85280		off² sum: 173089892		negQ: 0.27045295625
+
+SHA-1	-----------------------------------------------------------
+SHA-1	10000000		collisions: 0		ms: 50998		MB/s: 191		hash: 2830424734549797203
+SHA-1	20000000		collisions: 0		ms: 99332		MB/s: 197		hash: 3759135919595209412
+SHA-1	30000000		collisions: 0		ms: 157838		MB/s: 186		hash: 5349855215891891441
+SHA-1	40000000		collisions: 0		ms: 204944		MB/s: 191		hash: 6973545822183727693
+SHA-1	50000000		collisions: 0		ms: 255567		MB/s: 191		hash: 2390244495731061199
+SHA-1	60000000		collisions: 0		ms: 305062		MB/s: 192		hash: -2543010241723262359
+SHA-1	70000000		collisions: 0		ms: 354067		MB/s: 193		hash: -1176339827591886429
+SHA-1	80000000		collisions: 0		ms: 403346		MB/s: 194		hash: -3371069867903623732
+SHA-1	90000000		collisions: 0		ms: 450560		MB/s: 195		hash: 3439294471742907308
+SHA-1	100000000		collisions: 0		ms: 497737		MB/s: 196		hash: -429061193393785638
+SHA-1	Quality - off sum: 285149		off² sum: 2024631315		negQ: 0.3163486429687499

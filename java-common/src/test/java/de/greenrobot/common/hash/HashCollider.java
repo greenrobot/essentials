@@ -59,7 +59,12 @@ public class HashCollider {
         System.out.println(name + "\t-----------------------------------------------------------");
 
         // Provide seed (42) to have reproducible results
-        Random random = new Random(42);
+        Random random = new Random(31);
+
+        // SecureRandom is rather slow, but potentially useful for testing bit distribution
+        // byte[] seed = {1, 2, 3, 4};
+        // SecureRandom random = new SecureRandom(seed);
+
         byte[] bytes = new byte[byteLength];
         int[] bitOneCounts = new int[64];
 
