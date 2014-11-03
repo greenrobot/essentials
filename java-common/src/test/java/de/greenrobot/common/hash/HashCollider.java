@@ -33,7 +33,8 @@ public class HashCollider {
         //        The implementation of XXHash seems to be pretty broken with high number of collisions
         //        Checksum xxChecksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(0).asChecksum();
         //        hashCollider("xxHash", xxChecksum);
-        //        hashCollider("MD5", new Md5Checksum());
+        //        hashCollider("MD5", new MessageDigestChecksum("MD5"));
+        //        hashCollider("SHA-1", new MessageDigestChecksum("SHA-1"));
     }
 
     //    @Test

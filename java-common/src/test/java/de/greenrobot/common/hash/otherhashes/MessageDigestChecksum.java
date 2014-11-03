@@ -1,16 +1,23 @@
 package de.greenrobot.common.hash.otherhashes;
 
+import de.greenrobot.common.PrimitiveArrayUtils;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.Checksum;
 
-/** TODO */
-public class Md5Checksum implements Checksum {
+/** Warpper for MessageDigest. */
+public class MessageDigestChecksum implements Checksum {
     private final MessageDigest digest;
+    private PrimitiveArrayUtils primitiveArrayUtils = PrimitiveArrayUtils.getInstance();
 
-    public Md5Checksum() {
+    public MessageDigestChecksum(MessageDigest digest) {
+        this.digest = digest;
+    }
+
+    public MessageDigestChecksum(String algo) {
         try {
-            digest = MessageDigest.getInstance("MD5");
+            digest = (MessageDigest.getInstance(algo));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -28,7 +35,7 @@ public class Md5Checksum implements Checksum {
 
     @Override
     public long getValue() {
-        return digest.digest()[0]; // Just return something
+        return primitiveArrayUtils.getLongLE(digest.digest(), 0);
     }
 
     @Override
