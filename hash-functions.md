@@ -85,9 +85,6 @@ In this test, our Murmur3 implementations perform pretty well. Murmur3F outperfo
 <img src="web-resources/hash-functions-collisions.png" width="700" height="344"/><br/>
 Two observations: 1.) Adler32 is outdated (and wasn't designed as a hash). 2.) All other hash functions and the CRC checksum perform equally well with random data.  
 
-<img src="web-resources/hash-functions-bit-distribution-quality.png" width="700" height="440"/><br/>
-Each bit in the hash should have a chance of 50% of being 0 or 1. Murmur3A has excellent distribution of bits on the tested random data. It's hard to generalize, however. For different seeds for the pseudo random data, Murmur3A did not always perform best. The main intention of the test is to detect obvious flaws.       
-
 Test platform: Intel® Core™ i7-3720QM (2012), Windows 8 (64 bit), Java 7u72
 
 Other comparisons
