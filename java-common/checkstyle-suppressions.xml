@@ -4,8 +4,18 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
     <!-- Don't mess with 3rd party code -->
-	<suppress checks=".*" files=".*Base64.java" />
+	<suppress checks=".*" files="Base64.java" />
 
     <!-- Skip copyright header -->
     <suppress checks="StrictDuplicateCode" files=".java" lines="1-15"/>
+
+    <!-- Murmur3F.update has lots of case switches for performance -->
+    <suppress checks="CyclomaticComplexity" files="Murmur3F.java"/>
+    <suppress checks="JavaNCSS" files="Murmur3F.java"/>
+
+    <!-- Bit shifting is OK-->
+    <suppress checks="BooleanExpressionComplexity" files="PrimitiveArrayUtils.java"/>
+
+    <!-- Optional Unsafe -->
+    <suppress checks="IllegalImport" files="PrimitiveArrayUtils.java"/>
 </suppressions>
