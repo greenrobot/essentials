@@ -94,9 +94,7 @@ public class DateUtils {
         long time1 = getTimeFromDayReadableInt(dayOfBroadcast1);
         long time2 = getTimeFromDayReadableInt(dayOfBroadcast2);
 
-        // Might work too:
-        // System.out.println(getDayDifference(time1, time2));
-
+        // Don't use getDayDifference(time1, time2) here, it's wrong for some days.
         // Do float calculation and rounding at the end to cover daylight saving stuff etc.
         float daysFloat = (time2 - time1) / 1000 / 60 / 60 / 24f;
         return Math.round(daysFloat);

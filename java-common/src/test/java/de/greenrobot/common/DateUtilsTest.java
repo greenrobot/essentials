@@ -24,16 +24,16 @@ import java.util.Calendar;
 public class DateUtilsTest {
 
     @Test
-    public void testGetDayDifferenceOfReadableIntsPlusMinus1000Days() {
-        testGetDayDifferenceOfReadableIntsPlusMinus1000Days(1);
-        testGetDayDifferenceOfReadableIntsPlusMinus1000Days(-1);
+    public void testGetDayDifferenceOfReadableIntsPlusMinusNDays() {
+        testGetDayDifferenceOfReadableIntsPlusMinusNDays(1);
+        testGetDayDifferenceOfReadableIntsPlusMinusNDays(-1);
     }
 
-    private void testGetDayDifferenceOfReadableIntsPlusMinus1000Days(int sign) {
+    private void testGetDayDifferenceOfReadableIntsPlusMinusNDays(int sign) {
         Calendar calendar = Calendar.getInstance();
         DateUtils.setTime(calendar, 12, 0, 0, 0);
         int today = DateUtils.getDayAsReadableInt(calendar);
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1; i <= 5000; i++) {
             DateUtils.addDays(calendar, sign * 1);
             int day = DateUtils.getDayAsReadableInt(calendar);
             int diff = DateUtils.getDayDifferenceOfReadableInts(today, day);
