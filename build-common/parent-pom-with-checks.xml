@@ -4,20 +4,20 @@
 
 	<groupId>de.greenrobot</groupId>
 	<artifactId>parent-pom-with-checks</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>de.greenrobot</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>2.0.0</version>
 		<relativePath>parent-pom.xml</relativePath>
 	</parent>
 
 	<properties>
 		<findbugs-version>3.0.0</findbugs-version>
 		<checkstyle-version>2.13</checkstyle-version>
-		<checkstyle-rules-version>2.0.0-SNAPSHOT</checkstyle-rules-version>
+		<checkstyle-rules-version>2.0.0</checkstyle-rules-version>
 	</properties>
 
 	<build>
@@ -92,4 +92,8 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+    <name>greenrobot-common's parent POM with checks</name>
+    <description>Some defaults for Maven builds including checks for Java code (currently Checkstyle and FindBugs)</description>
+
 </project>
