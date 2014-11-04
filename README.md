@@ -27,9 +27,9 @@ And for Maven:
 
 Code samples
 ============
+Example code on how to use some of the utility classes: 
 
 ```Java
-
 // Get all bytes from stream and close the stream safely
 byte[] bytes = IoUtils.readAllBytesAndClose(inputStream);
 
@@ -39,14 +39,37 @@ String contents = FileUtils.readUtf8(file);
 // How many days until new year's eve?
 long time2 = DateUtils.getTimeForDay(2015, 12, 31);
 int daysToNewYear = DateUtils.getDayDifference(time, time2);
-
 ```
 
-We won't write much additional documentation for this project. Most of the method names should be self-explaining. Also, it's usually straight forward to look at the code and JavaDocs. 
+[Our hash functions](hash-functions.md) implement [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html), so this code might look familiar to you:
+
+```Java
+Murmur3A murmur = new Murmur3A();
+murmur.update(bytes);
+long hash = murmur.getValue();
+```
+
+All hashes can be calculated progressively by calling update(...) multiple times. Our Murmur3A implementation go a step further by offering updates with primitive data in a very efficient way:
+```Java
+// reuse the previous instance and start over to calculate a new hash
+murmur.reset();
+
+murmur.updateLong(42L);
+
+// Varargs and arrays are supported natively, too  
+murmur.updateInt(2014, 2015, 2016);
+
+murmur.updateUtf8("And strings, of course");
+
+// Hash for the previous update calls. No conversion to byte[] necessary.
+hash = murmur.getValue();
+```
+ 
+We may not write a lot of documentation for this project. The utility classes are straight forward and don't have dependencies, so you should be fine to grasp them by having a look at their source code. Most of the method names should be self-explaining, and often you'll find JavaDocs where needed. Code is the best documentation, right? 
 
 Build system
 ============
-Currently, Maven is used to build greenrobot-common. Inside of [build-common](build-common), there are some parent POMs defined that might be useful. One of those integrates FindBugs and Checkstyle in your build. Use it like this: 
+Currently, Maven is used to build greenrobot-common. Inside of [build-common](build-common), there are two parent POMs defined that might be useful: parent-pom and parent-pom-with-checks. The latter integrates FindBugs and Checkstyle in your build. Use it like this: 
 
     <parent>
         <groupId>de.greenrobot</groupId>
