@@ -35,7 +35,6 @@ public class FileUtilsTest {
     @Before
     public void setUp() throws IOException {
         file = File.createTempFile("file-utils-test", ".txt");
-        System.out.println(file.getAbsolutePath());
         file.deleteOnExit();
     }
 
