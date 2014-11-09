@@ -29,39 +29,27 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author markus
  */
-public class ObjectCache<KEY, T> {
-    private final Map<KEY, Reference<T>> cache;
-    private final boolean useWeakReferences;
-    
+public abstract class ObjectCache<KEY, T> {
+
+    private final Map<KEY, Reference<T>> cache =  new ConcurrentHashMap<>();
+
     /** Weak references are a bad cache but the work with external allocations like bitmaps. */
     public static <KEY, T> ObjectCache<KEY, T> createUsingWeakReferences() {
-        return new ObjectCache<KEY, T>(true);
+        return new WeakReferenceObjectCache<>();
     }
     
     /** Never use this for external allocations like bitmaps: they are not GCed (tested under Android 2.2)! */
     public static <KEY, T> ObjectCache<KEY, T> createUsingSoftReferences() {
-        return new ObjectCache<KEY, T>(false);
+        return new SoftReferenceObjectCache<>();
     }
-    
-    private ObjectCache(boolean useWeakReferences) {
-        this.useWeakReferences = useWeakReferences;
-        cache = new ConcurrentHashMap<KEY, Reference<T>>();
-    }
+
+    protected abstract Reference<T> getReferenceObject(T object);
     
     /** Stores an new entry in the cache. */
     public T put(KEY key, T object) {
-        Reference<T> ref;
-        if (useWeakReferences) {
-            ref = new WeakReference<T>(object);
-        } else {
-            ref = new SoftReference<T>(object);
-        }
+        Reference<T> ref = getReferenceObject(object);
         Reference<T> oldRef = cache.put(key, ref);
-        if (oldRef != null) {
-            return oldRef.get();
-        } else {
-            return null;
-        }
+        return oldRef != null ? oldRef.get() : null;
     }
     
     /** Stores all entries contained in the given map in the cache. */
@@ -75,11 +63,7 @@ public class ObjectCache<KEY, T> {
     /** Get the cached entry or null if no valid cached entry is found. */
     public T get(KEY key) {
         Reference<T> ref = cache.get(key);
-        if (ref != null) {
-            return ref.get();
-        } else {
-            return null;
-        }
+        return ref != null ? ref.get() : null;
     }
     
     /** Clears all cached entries. */
@@ -90,11 +74,7 @@ public class ObjectCache<KEY, T> {
     /** Removes an entry from the cache. @return The removed entry */
     public T remove(KEY key) {
         Reference<T> oldRef = cache.remove(key);
-        if (oldRef != null) {
-            return oldRef.get();
-        } else {
-            return null;
-        }
+        return oldRef != null ? oldRef.get() : null;
     }
     
     /** Removes zombie entries (entries whose reference was set to null). */
@@ -111,11 +91,7 @@ public class ObjectCache<KEY, T> {
     /** Returns true if an entry was found with no value: mainly for testing purposes. */
     public boolean isValueExpired(KEY key) {
         Reference<T> ref = cache.get(key);
-        if (ref != null) {
-            return ref.get() == null;
-        } else {
-            return false;
-        }
+        return ref != null && ref.get() == null;
     }
     
     public boolean containsKey(KEY key) {
@@ -133,5 +109,23 @@ public class ObjectCache<KEY, T> {
     public int size() {
         return cache.size();
     }
-    
+
+    private static class WeakReferenceObjectCache<KEY, T> extends ObjectCache<KEY, T> {
+
+       @Override
+       protected Reference<T> getReferenceObject(T object) {
+          return new WeakReference<>(object);
+       }
+
+    }
+
+    private static class SoftReferenceObjectCache<KEY, T> extends ObjectCache<KEY, T> {
+
+       @Override
+       protected Reference<T> getReferenceObject(T object) {
+          return new SoftReference<>(object);
+       }
+
+    }
+
 }
