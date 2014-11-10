@@ -88,10 +88,16 @@ More Open Source by greenrobot
 ==============================
 [__EventBus__](https://github.com/greenrobot/EventBus) is a central publish/subscribe bus for Android with optional delivery threads, priorities, and sticky events. A great tool to decouple components (e.g. Activities, Fragments, logic components) from each other. 
  
-[__greenDAO__](https://github.com/greenrobot/greenDAO) is an ORM optimized for Android: it maps database tables to Java objects and uses code generation for optimal speed. 
+[__greenDAO__](https://github.com/greenrobot/greenDAO) is an ORM optimized for Android: it maps database tables to Java objects and uses code generation for optimal speed.
+
+[Follow us on Google+](https://plus.google.com/b/114381455741141514652/+GreenrobotDe/posts) to stay up to date.
 
 Changelog
 =========
+Unreleased
+----------
+* Added LimitedInputStream: limits bytes that can be read from an InputStream (useful if your stream contains separate sections of known lengths)
+
 Version 2.0.0
 -------------
 First open source release.
