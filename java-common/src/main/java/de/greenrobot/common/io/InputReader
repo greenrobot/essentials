@@ -1,0 +1,50 @@
+package de.greenrobot.common.io;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public class InputReader extends LimitedInputStream{
+
+	public InputReader(InputStream in) {
+		super(in, 1024);
+		// TODO Auto-generated constructor stub
+	}
+	public static boolean isSpaceChar(int c) {
+	    return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
+	}
+	
+	public char readChar() throws IOException{
+		int c = read();
+		return (char)c;
+	}
+	
+
+    public String readString() throws IOException {
+    	int c = read();
+    	
+    	while (isSpaceChar(c))
+    		c = read();
+    	
+    	StringBuffer res = new StringBuffer();
+    	
+    	do {
+    		res.appendCodePoint(c);
+    		c = read();
+    	} while (!isSpaceChar(c));
+    	
+    	return res.toString();
+    }
+    
+    public int readInt() throws IOException{
+    	String str = readString();
+    	int res = Integer.parseInt(str);
+    	return res;
+    }
+    
+    public long readLong() throws IOException{
+    	String str = readString();
+    	long res = Long.parseLong(str);
+    	return res;
+    }
+    
+}
