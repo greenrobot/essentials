@@ -47,8 +47,7 @@ public class Murmur3F implements Checksum128 {
 
     public Murmur3F(int seed) {
         this.seed = seed & (0xffffffffL); // unsigned
-        h1 = seed;
-        h2 = seed;
+        h1 = h2 = seed;
     }
 
     @Override
@@ -111,6 +110,38 @@ public class Murmur3F implements Checksum128 {
             partialPos = 0;
         }
         length++;
+    }
+
+    /**
+     * Special update method to hash long values very efficiently using Java's native little endian (LE) byte order.
+     * Note, that you cannot mix this with other (previous) hash updates, because it only supports 8-bytes alignment.
+     */
+    public void updateLongLE(long value) {
+        finished = false;
+        switch (partialPos) {
+            case 0:
+                partialK1 = value;
+                break;
+            case 8:
+                partialK2 = value;
+                break;
+            default:
+                throw new IllegalStateException("Cannot mix long with other alignments than 8: " + partialPos);
+        }
+
+        partialPos += 8;
+        if (partialPos == 16) {
+            applyKs(partialK1, partialK2);
+            partialPos = 0;
+        }
+        length += 8;
+    }
+
+    /**
+     * Consider {@link #updateLongLE(long)} for better performance if you do not rely on big endian (BE) byte order.
+     */
+    public void updateLongBE(long value) {
+        updateLongLE(Long.reverseBytes(value));
     }
 
     public void update(byte[] b) {
@@ -260,11 +291,14 @@ public class Murmur3F implements Checksum128 {
 
     @Override
     public void reset() {
-        h1 = seed;
-        h2 = seed;
+        h1 = h2 = seed;
         length = 0;
         partialPos = 0;
         finished = false;
+
+        // The remainder is not really necessary, but looks nicer when debugging
+        partialK1 = partialK2 = 0;
+        finishedH1 = finishedH2 = 0;
     }
 
 }

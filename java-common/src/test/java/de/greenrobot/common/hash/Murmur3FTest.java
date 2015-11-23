@@ -18,10 +18,16 @@ package de.greenrobot.common.hash;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class Murmur3FTest extends AbstractChecksumTest {
     private final Murmur3F murmur3F;
@@ -50,7 +56,7 @@ public class Murmur3FTest extends AbstractChecksumTest {
 
             checksum.reset();
             checksum.update(bytes, 0, i);
-            Assert.assertEquals("Iteration " + i, expected, checksum.getValue());
+            assertEquals("Iteration " + i, expected, checksum.getValue());
         }
 
         for (int i = 0; i < bytes.length; i++) {
@@ -59,7 +65,7 @@ public class Murmur3FTest extends AbstractChecksumTest {
 
             checksum.reset();
             checksum.update(bytes, i, bytes.length - i);
-            Assert.assertEquals("Iteration " + i, expected, checksum.getValue());
+            assertEquals("Iteration " + i, expected, checksum.getValue());
         }
     }
 
@@ -77,7 +83,7 @@ public class Murmur3FTest extends AbstractChecksumTest {
         byte[] bytesLE = murmur3F.getValueBytesLittleEndian();
         byte[] bytesBE = murmur3F.getValueBytesBigEndian();
         for (int i = 0; i < bytesLE.length; i++) {
-            Assert.assertEquals(bytesLE[i], bytesBE[bytesBE.length - 1 - i]);
+            assertEquals(bytesLE[i], bytesBE[bytesBE.length - 1 - i]);
         }
     }
 
@@ -86,9 +92,9 @@ public class Murmur3FTest extends AbstractChecksumTest {
         murmur3F.update(42);
         String expected = Long.toHexString(murmur3F.getValueHigh()) +
                 Long.toHexString(murmur3F.getValue());
-        Assert.assertEquals(32, expected.length()); // For this particular hash OK
+        assertEquals(32, expected.length()); // For this particular hash OK
         String big = murmur3F.getValueBigInteger().toString(16);
-        Assert.assertEquals(expected, big);
+        assertEquals(expected, big);
     }
 
     @Test
@@ -96,8 +102,8 @@ public class Murmur3FTest extends AbstractChecksumTest {
         murmur3F.update(42);
         String expected = Long.toHexString(murmur3F.getValueHigh()) +
                 Long.toHexString(murmur3F.getValue());
-        Assert.assertEquals(32, expected.length()); // For this particular hash OK
-        Assert.assertEquals(expected, murmur3F.getValueHexString());
+        assertEquals(32, expected.length()); // For this particular hash OK
+        assertEquals(expected, murmur3F.getValueHexString());
     }
 
     @Test
@@ -109,13 +115,45 @@ public class Murmur3FTest extends AbstractChecksumTest {
             if (delta > 0) {
                 String padded = murmur3F.getValueHexString();
                 for (int i = 0; i < delta; i++) {
-                    Assert.assertEquals('0', padded.charAt(i));
+                    assertEquals('0', padded.charAt(i));
                 }
                 Assert.assertNotEquals('0', padded.charAt(delta));
                 if (delta > 2) {
                     break;
                 }
             }
+        }
+    }
+
+    @Test
+    public void testUpdateLongBE() throws IOException {
+        doTestUpdateLong(ByteOrder.BIG_ENDIAN);
+    }
+
+    @Test
+    public void testUpdateLongLE() throws IOException {
+        doTestUpdateLong(ByteOrder.LITTLE_ENDIAN);
+    }
+
+    private void doTestUpdateLong(ByteOrder endian) {
+        Random random = new Random(1977);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(8).order(endian);
+        Murmur3F referenceMurmur3F = new Murmur3F();
+        for (int i = 0; i < 100; i++) {
+            long value = random.nextLong();
+
+            byteBuffer.clear();
+            byteBuffer.putLong(value);
+            byte[] bytes = byteBuffer.array();
+            referenceMurmur3F.update(bytes, 0, bytes.length);
+
+            if (endian == ByteOrder.BIG_ENDIAN) {
+                murmur3F.updateLongBE(value);
+            } else {
+                murmur3F.updateLongLE(value);
+            }
+
+            assertEquals(referenceMurmur3F.getValue(), murmur3F.getValue());
         }
     }
 
