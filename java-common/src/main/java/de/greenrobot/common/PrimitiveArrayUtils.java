@@ -85,19 +85,29 @@ public abstract class PrimitiveArrayUtils {
         }
 
         private static boolean initUnaligned() {
-            boolean unaligned;
-            try {
-                Class<?> bitsClass = Class.forName("java.nio.Bits", false, ClassLoader.getSystemClassLoader());
-                Method unalignedMethod = bitsClass.getDeclaredMethod("unaligned");
-                unalignedMethod.setAccessible(true);
-                unaligned = Boolean.TRUE.equals(unalignedMethod.invoke(null));
-            } catch (Throwable t) {
-                String arch = System.getProperty("os.arch");
-                // TODO some ARM CPUs support it, too:
-                // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka15414.html
-                unaligned = arch != null && arch.matches("^(i[3-6]86|x86(_64)?|x64|amd64)$");
+            // http://developer.android.com/reference/java/lang/System.html#getProperty(java.lang.String)
+            String javaVendor = System.getProperty("java.vendor");
+            boolean isAndroid = javaVendor != null ? javaVendor.contains("Android") : false;
+            if (isAndroid) {
+                // java.nio.Bits is a Java only internal class, some Genymotion VM did SIGSEGV on querying it, so avoid this
+                return guessUnalignedFromOsArch();
+            } else {
+                try {
+                    Class<?> bitsClass = Class.forName("java.nio.Bits", false, ClassLoader.getSystemClassLoader());
+                    Method unalignedMethod = bitsClass.getDeclaredMethod("unaligned");
+                    unalignedMethod.setAccessible(true);
+                    return Boolean.TRUE.equals(unalignedMethod.invoke(null));
+                } catch (Throwable t) {
+                    return guessUnalignedFromOsArch();
+                }
             }
-            return unaligned;
+        }
+
+        private static boolean guessUnalignedFromOsArch() {
+            String arch = System.getProperty("os.arch");
+            // TODO some ARM CPUs support it, too:
+            // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka15414.html
+            return arch != null && arch.matches("^(i[3-6]86|x86(_64)?|x64|amd64)$");
         }
 
         private static Unsafe initUnsafe() {
