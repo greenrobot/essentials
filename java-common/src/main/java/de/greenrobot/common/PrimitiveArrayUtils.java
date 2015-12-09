@@ -89,7 +89,7 @@ public abstract class PrimitiveArrayUtils {
             String javaVendor = System.getProperty("java.vendor");
             boolean isAndroid = javaVendor != null ? javaVendor.contains("Android") : false;
             if (isAndroid) {
-                // java.nio.Bits is a Java only internal class, some Genymotion VM did SIGSEGV on querying it, so avoid this
+                // java.nio.Bits is a Java-only internal class, avoid it: some Genymotion VM did SIGSEGV on querying it
                 return guessUnalignedFromOsArch();
             } else {
                 try {

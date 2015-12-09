@@ -94,8 +94,9 @@ More Open Source by greenrobot
 
 Changelog
 =========
-Unreleased
-----------
+Version 2.1.0
+-------------
+* Murmur3F: added update methods for long values
 * Added LimitedInputStream: limits bytes that can be read from an InputStream (useful if your stream contains separate sections of known lengths)
 
 Version 2.0.0
