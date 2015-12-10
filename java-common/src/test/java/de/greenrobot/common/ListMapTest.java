@@ -30,7 +30,7 @@ public class ListMapTest {
 
     @Before
     public void setup() {
-        multimap = ListMap.createWithHashMap(false);
+        multimap = new ListMap();
         multimap.putElement("a", "1");
         multimap.putElement("a", "2");
         multimap.putElement("a", "3");

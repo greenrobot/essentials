@@ -18,27 +18,20 @@ package de.greenrobot.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Combines a Map with List values to provide simple way to store multiple values for a key (multimap).
- * <p>
- * Threading note: if used multithreaded, all direct operations on lists should synchronize the ListMap.
  */
 public class ListMap<K, V> extends AbstractMultimap<K, V, List<V>> {
 
-    public static <K, V> ListMap<K, V> createWithHashMap(boolean threadSafeLists) {
-        return new ListMap<>(new HashMap<K, List<V>>(), threadSafeLists);
-    }
-
-    public static <K, V> ListMap<K, V> createWithLinkedHashMap(boolean threadSafeLists) {
-        return new ListMap<>(new LinkedHashMap<K, List<V>>(), threadSafeLists);
-    }
-
     private final boolean threadSafeLists;
+
+    public ListMap() {
+        this(new HashMap<K, List<V>>(), false);
+    }
 
     public ListMap(Map<K, List<V>> map, boolean threadSafeLists) {
         super(map);
