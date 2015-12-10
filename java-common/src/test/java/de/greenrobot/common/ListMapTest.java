@@ -30,7 +30,7 @@ public class ListMapTest {
 
     @Before
     public void setup() {
-        multimap = ListMap.createHashMap();
+        multimap = ListMap.createWithHashMap(false);
         multimap.putElement("a", "1");
         multimap.putElement("a", "2");
         multimap.putElement("a", "3");
@@ -56,7 +56,7 @@ public class ListMapTest {
 
     @Test
     public void testRemove() {
-        assertTrue(multimap.removeElement("a","2"));
+        assertTrue(multimap.removeElement("a", "2"));
         assertFalse(multimap.removeElement("a", "2"));
 
         assertTrue(multimap.removeElement("a", "1"));

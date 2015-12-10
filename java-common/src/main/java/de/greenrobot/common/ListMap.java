@@ -18,8 +18,10 @@ package de.greenrobot.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Combines a Map with List values to provide simple way to store multiple values for a key (multimap).
@@ -28,16 +30,23 @@ import java.util.Map;
  */
 public class ListMap<K, V> extends AbstractMultimap<K, V, List<V>> {
 
-    public ListMap(Map<K, List<V>> map) {
-        super(map);
+    public static <K, V> ListMap<K, V> createWithHashMap(boolean threadSafeLists) {
+        return new ListMap<>(new HashMap<K, List<V>>(), threadSafeLists);
     }
 
-    public static <K, V> ListMap<K, V> createHashMap() {
-        return new ListMap<>(new HashMap<K, List<V>>());
+    public static <K, V> ListMap<K, V> createWithLinkedHashMap(boolean threadSafeLists) {
+        return new ListMap<>(new LinkedHashMap<K, List<V>>(), threadSafeLists);
+    }
+
+    private final boolean threadSafeLists;
+
+    public ListMap(Map<K, List<V>> map, boolean threadSafeLists) {
+        super(map);
+        this.threadSafeLists = threadSafeLists;
     }
 
     protected List<V> createNewCollection() {
-        return new ArrayList<>();
+        return threadSafeLists ? new CopyOnWriteArrayList<V>() : new ArrayList<V>();
     }
 
 }
