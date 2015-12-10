@@ -16,14 +16,14 @@ How to integrate in your project
 --------------------------------
 Just grab it from Maven Central (or jCenter). For Gradle, add the following dependency:
 
-    compile 'de.greenrobot:java-common:2.0.0'
+    compile 'de.greenrobot:java-common:2.2.0'
 
 And for Maven:
     
     <dependency>
         <groupId>de.greenrobot</groupId>
         <artifactId>java-common</artifactId>
-        <version>2.0.0</version>
+        <version>2.2.0</version>
     </dependency>
 
 Code samples
@@ -40,6 +40,15 @@ String contents = FileUtils.readUtf8(file);
 // How many days until new year's eve?
 long time2 = DateUtils.getTimeForDay(2015, 12, 31);
 int daysToNewYear = DateUtils.getDayDifference(time, time2);
+```
+
+Multimaps (added in V2.2):
+```Java
+ListMap<String,String> multimap = new ListMap<>();
+multimap.putElement("a", "1");
+multimap.putElement("a", "2");
+multimap.putElement("a", "3");
+List<String> strings = multimap.get("a"); // Contains "1", "2", and "3"
 ```
 
 [Our hash functions](hash-functions.md) implement [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html), so this code might look familiar to you:
@@ -79,11 +88,6 @@ Currently, Maven is used to build greenrobot-common. Inside of [build-common](bu
         <relativePath></relativePath>
     </parent>
 
-History
-=======
-
-You may notice that the version numbers are already above 1.0 for the initial release. That's because we were already having this project inside of greenrobot. It started as a general purpose library for Android around 2009, which was used for many Android projects since then. The Android library grew and matured over the years. In 2013, we noticed that parts of our Android library would be useful for some Java projects we do. So we moved the parts that don't depend on Android into a new project. Internally, we referred to this as java-common, which is still the artifact name. In late 2014, we decided to open source it as greenrobot-common.
-
 More Open Source by greenrobot
 ==============================
 [__EventBus__](https://github.com/greenrobot/EventBus) is a central publish/subscribe bus for Android with optional delivery threads, priorities, and sticky events. A great tool to decouple components (e.g. Activities, Fragments, logic components) from each other. 
@@ -94,11 +98,21 @@ More Open Source by greenrobot
 
 Changelog
 =========
-Version 2.1.0
--------------
+Version 2.2.0 (10-Dec-2015)
+---------------------------
+* New: Multimaps (ListMap and SetMap)
+
+Version 2.1.0 (23-Nov-2015)
+---------------------------
 * Murmur3F: added update methods for long values
 * Added LimitedInputStream: limits bytes that can be read from an InputStream (useful if your stream contains separate sections of known lengths)
 
-Version 2.0.0
--------------
+Version 2.0.0 (04-Nov-2014)
+---------------------------
 First open source release.
+
+Versions before 2.0.0
+---------------------
+Used internally only inside greenrobot.
+
+History: The roots go back to 2009 when we started a general purpose library for Android. In 2013, we noticed that parts of our Android library would be useful for some Java projects we do. So we moved the parts that don't depend on Android into a new project. Internally, we referred to this as java-common, which is still the artifact name. In late 2014, we decided to open source it as greenrobot-common.
