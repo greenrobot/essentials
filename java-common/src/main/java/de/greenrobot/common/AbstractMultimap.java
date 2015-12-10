@@ -16,9 +16,7 @@
 
 package de.greenrobot.common;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,12 +25,15 @@ import java.util.Set;
  * <p>
  * Threading note: if used multithreaded, all direct operations on lists should synchronize the ListMap.
  */
-public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C > {
-    Map<K, C> map;
+public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C> {
+    protected Map<K, C> map;
+
 
     public AbstractMultimap(Map<K, C> map) {
         this.map = map;
     }
+
+    abstract protected C createNewCollection();
 
     @Override
     public void putAll(Map<? extends K, ? extends C> m) {
@@ -96,18 +97,16 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
     }
 
     public synchronized void putElement(K key, V value) {
-        C list = map.get(key);
-        if (list == null) {
-            list = createNewCollection();
-            map.put(key, list);
+        C collection = map.get(key);
+        if (collection == null) {
+            collection = createNewCollection();
+            map.put(key, collection);
         }
-        list.add(value);
+        collection.add(value);
     }
 
-    abstract protected C createNewCollection();
-
     @Override
-    public C put(K key,C value) {
+    public C put(K key, C value) {
         return map.put(key, value);
     }
 
@@ -150,14 +149,20 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
     }
 
     public synchronized boolean containsElement(V value) {
-        Collection<C> values = map.values();
-        for (Collection<V> list : values) {
-            if (list.contains(value)) {
+        for (C collection : map.values()) {
+            if (collection.contains(value)) {
                 return true;
             }
         }
         return false;
     }
 
+    public synchronized C valuesElements() {
+        C all = createNewCollection();
+        for (C collection : map.values()) {
+            all.addAll(collection);
+        }
+        return all;
+    }
 
 }

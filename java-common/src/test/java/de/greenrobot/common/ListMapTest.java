@@ -76,4 +76,15 @@ public class ListMapTest {
         assertTrue(multimap.containsElement("a", "5"));
     }
 
+    @Test
+    public void testValuesElements() {
+        multimap.putElement("b", "10");
+        multimap.putElement("b", "11");
+
+        List<String> allStrings = multimap.valuesElements();
+        assertEquals(5, allStrings.size());
+        assertTrue(allStrings.contains("1"));
+        assertTrue(allStrings.contains("10"));
+    }
+
 }
