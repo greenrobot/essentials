@@ -52,4 +52,15 @@ public class ListMapTest {
         assertFalse(multimap.containsElement("a", "4"));
     }
 
+    @Test
+    public void testRemove() {
+        assertTrue(multimap.removeElement("a","2"));
+        assertFalse(multimap.removeElement("a","2"));
+
+        assertTrue(multimap.removeElement("a","1"));
+        assertTrue(multimap.containsKey("a"));
+        assertTrue(multimap.removeElement("a","3"));
+        assertFalse(multimap.containsKey("a"));
+    }
+
 }

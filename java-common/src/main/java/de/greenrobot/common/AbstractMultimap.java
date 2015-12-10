@@ -132,7 +132,7 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
         } else {
             boolean removed = list.remove(value);
             if (list.isEmpty()) {
-                map.remove(list);
+                map.remove(key);
             }
             return removed;
         }
