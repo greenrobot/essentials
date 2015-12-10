@@ -19,6 +19,8 @@ package de.greenrobot.common;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -55,12 +57,23 @@ public class ListMapTest {
     @Test
     public void testRemove() {
         assertTrue(multimap.removeElement("a","2"));
-        assertFalse(multimap.removeElement("a","2"));
+        assertFalse(multimap.removeElement("a", "2"));
 
-        assertTrue(multimap.removeElement("a","1"));
+        assertTrue(multimap.removeElement("a", "1"));
         assertTrue(multimap.containsKey("a"));
-        assertTrue(multimap.removeElement("a","3"));
+        assertTrue(multimap.removeElement("a", "3"));
         assertFalse(multimap.containsKey("a"));
+    }
+
+    @Test
+    public void testPutElements() {
+        Collection<String> collection = new HashSet<>();
+        collection.add("4");
+        collection.add("5");
+        assertTrue(multimap.putElements("a", collection));
+        assertEquals(5, multimap.get("a").size());
+        assertTrue(multimap.containsElement("a", "4"));
+        assertTrue(multimap.containsElement("a", "5"));
     }
 
 }

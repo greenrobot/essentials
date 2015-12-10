@@ -116,22 +116,24 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
         return map.entrySet();
     }
 
-    public synchronized void putElements(K key, C values) {
-        C list = map.get(key);
-        if (list == null) {
-            list = createNewCollection();
-            map.put(key, list);
+    /** @return true if the collection was changed. */
+    public synchronized boolean putElements(K key, Collection<V> values) {
+        C collection = map.get(key);
+        if (collection == null) {
+            collection = createNewCollection();
+            map.put(key, collection);
         }
-        list.addAll(values);
+        return collection.addAll(values);
     }
 
+    /** @return true if the given element was removed. */
     public synchronized boolean removeElement(K key, V value) {
-        C list = map.get(key);
-        if (list == null) {
+        C collection = map.get(key);
+        if (collection == null) {
             return false;
         } else {
-            boolean removed = list.remove(value);
-            if (list.isEmpty()) {
+            boolean removed = collection.remove(value);
+            if (collection.isEmpty()) {
                 map.remove(key);
             }
             return removed;
@@ -139,11 +141,11 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
     }
 
     public synchronized boolean containsElement(K key, V value) {
-        C list = map.get(key);
-        if (list == null) {
+        C collection = map.get(key);
+        if (collection == null) {
             return false;
         } else {
-            return list.contains(value);
+            return collection.contains(value);
         }
     }
 
