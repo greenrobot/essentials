@@ -18,19 +18,30 @@ package de.greenrobot.common;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class ListMapTest {
-    ListMap<String, String> multimap;
+@RunWith(Parameterized.class)
+public class MultimapTest {
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[]{new ListMap()}, new Object[]{new SetMap()});
+    }
+
+    @Parameterized.Parameter
+    public AbstractMultimap<String, String, ? extends Collection<String>> multimap;
 
     @Before
     public void setup() {
-        multimap = new ListMap();
+        multimap.clear();
         multimap.putElement("a", "1");
         multimap.putElement("a", "2");
         multimap.putElement("a", "3");
@@ -38,11 +49,14 @@ public class ListMapTest {
 
     @Test
     public void testPutElementAndGet() {
-        List<String> list = multimap.get("a");
-        assertEquals(3, list.size());
-        assertEquals("1", list.get(0));
-        assertEquals("2", list.get(1));
-        assertEquals("3", list.get(2));
+        Collection<String> collection = multimap.get("a");
+        assertEquals(3, collection.size());
+        if (collection instanceof List) {
+            List<String> list = (List<String>) collection;
+            assertEquals("1", list.get(0));
+            assertEquals("2", list.get(1));
+            assertEquals("3", list.get(2));
+        }
     }
 
     @Test
@@ -81,7 +95,7 @@ public class ListMapTest {
         multimap.putElement("b", "10");
         multimap.putElement("b", "11");
 
-        List<String> allStrings = multimap.valuesElements();
+        Collection<String> allStrings = multimap.valuesElements();
         assertEquals(5, allStrings.size());
         assertTrue(allStrings.contains("1"));
         assertTrue(allStrings.contains("10"));
