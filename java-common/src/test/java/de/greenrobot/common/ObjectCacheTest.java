@@ -23,7 +23,13 @@ import static org.junit.Assert.*;
 public class ObjectCacheTest {
     @Test
     public void testBasics() {
-        ObjectCache<String, String> cache = ObjectCache.createUsingWeakReferences();
+        doTestBasics(ObjectCache.ReferenceType.SOFT);
+        doTestBasics(ObjectCache.ReferenceType.STRONG);
+        doTestBasics(ObjectCache.ReferenceType.WEAK);
+    }
+
+    private void doTestBasics(ObjectCache.ReferenceType referenceType) {
+        ObjectCache<String, String> cache = new ObjectCache(referenceType);
         String value = "foo";
         String value2 = "bar";
         String key = "mykey";

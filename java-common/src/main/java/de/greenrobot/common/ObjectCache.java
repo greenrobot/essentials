@@ -25,60 +25,118 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A simple in-memory object "cache" based on a ConcurrentHashMap and soft/weak references.
- * <p/>
+ * A simple in-memory object "cache" based on a ConcurrentHashMap and soft/weak/strong references.
+ * <p>
  * In contrast to Java's WeakHashMap, it does not weakly reference keys but values.
- * <p/>
- * Not thread-safe.
+ * <p>
  *
  * @author markus
  */
-public class ObjectCache<KEY, T> {
-    private final Map<KEY, Reference<T>> cache;
-    private final boolean useWeakReferences;
+public class ObjectCache<KEY, VALUE> {
 
-    /** Android note: Weak references are a bad cache but the work with external allocations like bitmaps. */
-    public static <KEY, T> ObjectCache<KEY, T> createUsingWeakReferences() {
-        return new ObjectCache<KEY, T>(true);
+    public static enum ReferenceType {SOFT, WEAK, STRONG}
+
+    static class CacheEntry<V> {
+        final Reference<V> reference;
+        final V referenceStrong;
+        final long timeCreated;
+        volatile long timeAccessed;
+
+        CacheEntry(Reference<V> reference, V referenceStrong) {
+            this.reference = reference;
+            this.referenceStrong = referenceStrong;
+            timeCreated = timeAccessed = System.currentTimeMillis();
+        }
     }
 
-    /**
-     * Android note: Be careful with this one before Android 4.0.  External allocations like bitmaps are not GCed
-     * (tested under Android 2.2)!
-     */
-    public static <KEY, T> ObjectCache<KEY, T> createUsingSoftReferences() {
-        return new ObjectCache<KEY, T>(false);
+    private final ReferenceType referenceType;
+    private final Map<KEY, CacheEntry<VALUE>> cache;
+
+    private int maxSize;
+    private long expirationMillis;
+    private boolean lru;
+
+    public ObjectCache(ReferenceType referenceType) {
+        this.referenceType = referenceType;
+        cache = new ConcurrentHashMap<>();
     }
 
-    private ObjectCache(boolean useWeakReferences) {
-        this.useWeakReferences = useWeakReferences;
-        cache = new ConcurrentHashMap<KEY, Reference<T>>();
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSizeNonLru(int maxSize) {
+        this.maxSize = maxSize;
+        lru = false;
+    }
+
+    public void setMaxSizeLru(int maxSize) {
+        this.maxSize = maxSize;
+        lru = true;
+    }
+
+    public long getExpirationMillis() {
+        return expirationMillis;
+    }
+
+    public void setExpirationMillis(long expirationMillis) {
+        this.expirationMillis = expirationMillis;
+    }
+
+    public boolean isLru() {
+        return lru;
     }
 
     /** Stores an new entry in the cache. */
-    public T put(KEY key, T object) {
-        Reference<T> ref;
-        if (useWeakReferences) {
-            ref = new WeakReference<T>(object);
-        } else {
-            ref = new SoftReference<T>(object);
+    public VALUE put(KEY key, VALUE object) {
+        if (maxSize > 0 && cache.size() > maxSize) {
+            makeRoom();
         }
-        Reference<T> oldRef = cache.put(key, ref);
-        return oldRef != null ? oldRef.get() : null;
+        CacheEntry<VALUE> entry;
+        if (referenceType == ReferenceType.WEAK) {
+            entry = new CacheEntry<>(new WeakReference<>(object), null);
+        } else if (referenceType == ReferenceType.SOFT) {
+            entry = new CacheEntry<>(new SoftReference<>(object), null);
+        } else {
+            entry = new CacheEntry<>(null, object);
+        }
+        CacheEntry<VALUE> oldEntry = cache.put(key, entry);
+        return getValue(oldEntry);
+    }
+
+    private VALUE getValue(CacheEntry<VALUE> entry) {
+        if (entry != null) {
+            return referenceType == ReferenceType.STRONG ? entry.referenceStrong : entry.reference.get();
+        } else {
+            return null;
+        }
     }
 
     /** Stores all entries contained in the given map in the cache. */
-    public void putAll(Map<KEY, T> mapDataToPut) {
-        Set<Entry<KEY, T>> entries = mapDataToPut.entrySet();
-        for (Entry<KEY, T> entry : entries) {
+    public void putAll(Map<KEY, VALUE> mapDataToPut) {
+        Set<Entry<KEY, VALUE>> entries = mapDataToPut.entrySet();
+        for (Entry<KEY, VALUE> entry : entries) {
             put(entry.getKey(), entry.getValue());
         }
     }
 
     /** Get the cached entry or null if no valid cached entry is found. */
-    public T get(KEY key) {
-        Reference<T> ref = cache.get(key);
-        return ref != null ? ref.get() : null;
+    public VALUE get(KEY key) {
+        CacheEntry<VALUE> entry = cache.get(key);
+        if (entry != null) {
+            if (expirationMillis > 0) {
+                long age = System.currentTimeMillis() - entry.timeCreated;
+                if (age < expirationMillis) {
+                    return getValue(entry);
+                } else {
+                    cache.remove(key);
+                    return null;
+                }
+            }
+            return getValue(entry);
+        } else {
+            return null;
+        }
     }
 
     /** Clears all cached entries. */
@@ -87,26 +145,21 @@ public class ObjectCache<KEY, T> {
     }
 
     /** Removes an entry from the cache. @return The removed entry */
-    public T remove(KEY key) {
-        Reference<T> oldRef = cache.remove(key);
-        return oldRef != null ? oldRef.get() : null;
+    public VALUE remove(KEY key) {
+        return getValue(cache.remove(key));
     }
 
-    /** Removes zombie entries (entries whose reference was set to null). */
-    public void cleanUp() {
-        Set<KEY> keySet = cache.keySet();
-        for (KEY key : keySet) {
-            Reference<T> ref = cache.get(key);
-            if (ref != null && ref.get() == null) {
-                cache.remove(key);
+    public void makeRoom() {
+        long now = System.currentTimeMillis();
+        Set<Entry<KEY, CacheEntry<VALUE>>> entries = cache.entrySet();
+        for (Entry<KEY, CacheEntry<VALUE>> entry : entries) {
+            CacheEntry<VALUE> cacheEntry = entry.getValue();
+            if ((referenceType != ReferenceType.STRONG && cacheEntry.reference == null) ||
+                    (expirationMillis > 0 && now - cacheEntry.timeCreated > expirationMillis)) {
+                cache.remove(entry.getKey());
             }
         }
-    }
 
-    /** Returns true if an entry was found with no value: mainly for testing purposes. */
-    public boolean isValueExpired(KEY key) {
-        Reference<T> ref = cache.get(key);
-        return ref != null && ref.get() == null;
     }
 
     public boolean containsKey(KEY key) {
