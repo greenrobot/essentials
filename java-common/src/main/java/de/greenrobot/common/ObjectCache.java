@@ -33,7 +33,9 @@ import java.util.Set;
  */
 public class ObjectCache<KEY, VALUE> {
 
-    public static enum ReferenceType {SOFT, WEAK, STRONG}
+    public static enum ReferenceType {
+        SOFT, WEAK, STRONG
+    }
 
     static class CacheEntry<V> {
         final Reference<V> reference;
