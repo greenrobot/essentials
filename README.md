@@ -16,14 +16,14 @@ How to integrate in your project
 --------------------------------
 Just grab it from Maven Central (or jCenter). For Gradle, add the following dependency:
 
-    compile 'de.greenrobot:java-common:2.2.0'
+    compile 'de.greenrobot:java-common:2.3.0'
 
 And for Maven:
     
     <dependency>
         <groupId>de.greenrobot</groupId>
         <artifactId>java-common</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </dependency>
 
 Code samples
