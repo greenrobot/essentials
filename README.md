@@ -98,6 +98,10 @@ More Open Source by greenrobot
 
 Changelog
 =========
+Version 2.3.0 (08-Jan-2016)
+---------------------------
+* Improved ObjectCache: now supports soft/weak/strong references, maximum size (clearing the entries putted first), and time-based expiration
+
 Version 2.2.0 (10-Dec-2015)
 ---------------------------
 * New: Multimaps (ListMap and SetMap)
