@@ -16,14 +16,14 @@ How to integrate in your project
 --------------------------------
 Just grab it from Maven Central (or jCenter). For Gradle, add the following dependency:
 
-    compile 'de.greenrobot:java-common:2.3.0'
+    compile 'de.greenrobot:java-common:2.3.1'
 
 And for Maven:
     
     <dependency>
         <groupId>de.greenrobot</groupId>
         <artifactId>java-common</artifactId>
-        <version>2.3.0</version>
+        <version>2.3.1</version>
     </dependency>
 
 Code samples
@@ -98,6 +98,10 @@ More Open Source by greenrobot
 
 Changelog
 =========
+Version 2.3.1 (15-Jan-2016)
+---------------------------
+* Minor ObjectCache improvements: added statistics (hits, misses, ...), getting removes entries with cleared references proactively
+
 Version 2.3.0 (08-Jan-2016)
 ---------------------------
 * Improved ObjectCache: now supports soft/weak/strong references, maximum size (clearing the entries putted first), and time-based expiration
