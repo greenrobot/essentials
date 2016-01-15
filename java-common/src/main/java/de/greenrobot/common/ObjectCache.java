@@ -57,8 +57,14 @@ public class ObjectCache<KEY, VALUE> {
     private final boolean isExpiring;
 
     // No strict multi-threading required for those
-    private volatile int putCountSinceEviction;
     private volatile long nextCleanUpTimestamp;
+    private volatile int countPutCountSinceEviction;
+    private volatile int countPut;
+    private volatile int countHit;
+    private volatile int countMiss;
+    private volatile int countExpired;
+    private volatile int countRefCleared;
+    private volatile int countEvicted;
 
     /**
      * Create a cache according to the given configuration.
@@ -89,7 +95,8 @@ public class ObjectCache<KEY, VALUE> {
             entry = new CacheEntry<>(null, object);
         }
 
-        putCountSinceEviction++;
+        countPutCountSinceEviction++;
+        countPut++;
         if (isExpiring && nextCleanUpTimestamp == 0) {
             nextCleanUpTimestamp = System.currentTimeMillis() + expirationMillis + 1;
         }
@@ -101,12 +108,33 @@ public class ObjectCache<KEY, VALUE> {
             }
             oldEntry = cache.put(key, entry);
         }
-        return getValue(oldEntry);
+        return getValueForRemoved(oldEntry);
     }
 
-    private VALUE getValue(CacheEntry<VALUE> entry) {
+    private VALUE getValueForRemoved(CacheEntry<VALUE> entry) {
         if (entry != null) {
             return isStrongReference ? entry.referenceStrong : entry.reference.get();
+        } else {
+            return null;
+        }
+    }
+
+    private VALUE getValue(KEY keyForRemoval, CacheEntry<VALUE> entry) {
+        if (entry != null) {
+            if (isStrongReference) {
+                return entry.referenceStrong;
+            } else {
+                VALUE value = entry.reference.get();
+                if (value == null) {
+                    countRefCleared++;
+                    if (keyForRemoval != null) {
+                        synchronized (this) {
+                            cache.remove(keyForRemoval);
+                        }
+                    }
+                }
+                return value;
+            }
         } else {
             return null;
         }
@@ -130,23 +158,31 @@ public class ObjectCache<KEY, VALUE> {
         synchronized (this) {
             entry = cache.get(key);
         }
+        VALUE value;
         if (entry != null) {
             if (isExpiring) {
                 long age = System.currentTimeMillis() - entry.timeCreated;
                 if (age < expirationMillis) {
-                    return getValue(entry);
+                    value = getValue(key, entry);
                 } else {
+                    countExpired++;
                     synchronized (this) {
                         cache.remove(key);
                     }
-                    return null;
+                    value = null;
                 }
             } else {
-                return getValue(entry);
+                value = getValue(key, entry);
             }
         } else {
-            return null;
+            value = null;
         }
+        if (value != null) {
+            countHit++;
+        } else {
+            countMiss++;
+        }
+        return value;
     }
 
     /** Clears all cached entries. */
@@ -160,7 +196,7 @@ public class ObjectCache<KEY, VALUE> {
      * @return The removed entry
      */
     public VALUE remove(KEY key) {
-        return getValue(cache.remove(key));
+        return getValueForRemoved(cache.remove(key));
     }
 
     public synchronized void evictToTargetSize(int targetSize) {
@@ -170,6 +206,7 @@ public class ObjectCache<KEY, VALUE> {
             checkCleanUpObsoleteEntries();
             Iterator<KEY> keys = cache.keySet().iterator();
             while (keys.hasNext() && cache.size() > targetSize) {
+                countEvicted++;
                 keys.next();
                 keys.remove();
             }
@@ -178,22 +215,39 @@ public class ObjectCache<KEY, VALUE> {
 
     void checkCleanUpObsoleteEntries() {
         if (!isStrongReference || isExpiring) {
-            long now = System.currentTimeMillis();
-            if ((isExpiring && nextCleanUpTimestamp != 0 && now > nextCleanUpTimestamp) ||
-                    putCountSinceEviction > maxSize / 2) {
-                putCountSinceEviction = 0;
-                nextCleanUpTimestamp = 0;
-
-                long timeLimit = isExpiring ? now - expirationMillis : 0;
-                Set<Entry<KEY, CacheEntry<VALUE>>> entries = cache.entrySet();
-                for (Entry<KEY, CacheEntry<VALUE>> entry : entries) {
-                    CacheEntry<VALUE> cacheEntry = entry.getValue();
-                    if ((!isStrongReference && cacheEntry.reference == null) || (cacheEntry.timeCreated < timeLimit)) {
-                        cache.remove(entry.getKey());
-                    }
-                }
+            if ((isExpiring && nextCleanUpTimestamp != 0 && System.currentTimeMillis() > nextCleanUpTimestamp) ||
+                    countPutCountSinceEviction > maxSize / 2) {
+                cleanUpObsoleteEntries();
             }
         }
+    }
+
+    /**
+     * Iterates over all entries to check for obsolete ones (time expired or reference cleared).
+     * <p>
+     * Note: Usually you don't need to call this method explicitly, because it is called internally in certain
+     * conditions when space has to be reclaimed.
+     */
+    public synchronized int cleanUpObsoleteEntries() {
+        countPutCountSinceEviction = 0;
+        nextCleanUpTimestamp = 0;
+
+        int countCleaned = 0;
+        long timeLimit = isExpiring ? System.currentTimeMillis() - expirationMillis : 0;
+        Set<Entry<KEY, CacheEntry<VALUE>>> entries = cache.entrySet();
+        for (Entry<KEY, CacheEntry<VALUE>> entry : entries) {
+            CacheEntry<VALUE> cacheEntry = entry.getValue();
+            if (!isStrongReference && cacheEntry.reference == null) {
+                countRefCleared++;
+                countCleaned++;
+                cache.remove(entry.getKey());
+            } else if (cacheEntry.timeCreated < timeLimit) {
+                countExpired++;
+                countCleaned++;
+                cache.remove(entry.getKey());
+            }
+        }
+        return countCleaned;
     }
 
     public synchronized boolean containsKey(KEY key) {
@@ -208,8 +262,45 @@ public class ObjectCache<KEY, VALUE> {
         return cache.keySet();
     }
 
+    public int getMaxSize() {
+        return maxSize;
+    }
+
     public synchronized int size() {
         return cache.size();
     }
 
+    public int getCountPut() {
+        return countPut;
+    }
+
+    public int getCountHit() {
+        return countHit;
+    }
+
+    public int getCountMiss() {
+        return countMiss;
+    }
+
+    public int getCountExpired() {
+        return countExpired;
+    }
+
+    public int getCountRefCleared() {
+        return countRefCleared;
+    }
+
+    public int getCountEvicted() {
+        return countEvicted;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectCache[maxSize=" + maxSize + ", hits=" + countHit + ", misses=" + countMiss + "]";
+    }
+
+    /** Often used in addition to {@link #toString()} to print out states: details why entries were removed. */
+    public String getStatsStringRemoved() {
+        return "ObjectCache-Removed[expired=" + countExpired + ", refCleared=" + countRefCleared + ", evicted=" + countEvicted;
+    }
 }

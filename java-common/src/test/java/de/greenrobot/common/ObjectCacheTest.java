@@ -54,6 +54,7 @@ public class ObjectCacheTest {
         assertEquals(4, cache.size());
         assertNull(cache.get("1"));
         assertEquals(cache.get("5"), "e");
+        assertEquals(1, cache.getCountEvicted());
     }
 
     @Test
@@ -75,6 +76,7 @@ public class ObjectCacheTest {
         Thread.sleep(3);
         assertNull(cache.get("1"));
         assertEquals(0, cache.size());
+        assertEquals(1, cache.getCountExpired());
     }
 
     @Test
@@ -84,6 +86,7 @@ public class ObjectCacheTest {
         Thread.sleep(3);
         cache.checkCleanUpObsoleteEntries();
         assertEquals(0, cache.size());
+        assertEquals(1, cache.getCountExpired());
     }
 
     @Test
@@ -92,6 +95,7 @@ public class ObjectCacheTest {
         cache.put("1", "a");
         Thread.sleep(3);
         assertEquals(cache.get("1"), "a");
+        assertEquals(0, cache.getCountExpired());
     }
 
     private ObjectCache<String, String> createCacheWith4Entries() {
