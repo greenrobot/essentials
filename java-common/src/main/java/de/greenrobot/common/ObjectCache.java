@@ -31,6 +31,9 @@ import java.util.Set;
  *
  * @author markus
  */
+// Decided against providing a value creator/factory because synchronization won't be optimal for general solutions:
+// 1. Long lasting creations may block the cache for other threads
+// 2. Some creations may be expensive and should not be triggered in parallel (e.g. for the same key)
 public class ObjectCache<KEY, VALUE> {
 
     public static enum ReferenceType {
@@ -49,7 +52,7 @@ public class ObjectCache<KEY, VALUE> {
         }
     }
 
-    private final Map<KEY, CacheEntry<VALUE>> cache;
+    private final Map<KEY, CacheEntry<VALUE>> values;
     private final ReferenceType referenceType;
     private final boolean isStrongReference;
     private final int maxSize;
@@ -81,7 +84,7 @@ public class ObjectCache<KEY, VALUE> {
         this.maxSize = maxSize;
         this.expirationMillis = expirationMillis;
         isExpiring = expirationMillis > 0;
-        cache = new LinkedHashMap<>();
+        values = new LinkedHashMap<>();
     }
 
     /** Stores an new entry in the cache. */
@@ -103,10 +106,10 @@ public class ObjectCache<KEY, VALUE> {
 
         CacheEntry<VALUE> oldEntry;
         synchronized (this) {
-            if (cache.size() >= maxSize) {
+            if (values.size() >= maxSize) {
                 evictToTargetSize(maxSize - 1);
             }
-            oldEntry = cache.put(key, entry);
+            oldEntry = values.put(key, entry);
         }
         return getValueForRemoved(oldEntry);
     }
@@ -129,7 +132,7 @@ public class ObjectCache<KEY, VALUE> {
                     countRefCleared++;
                     if (keyForRemoval != null) {
                         synchronized (this) {
-                            cache.remove(keyForRemoval);
+                            values.remove(keyForRemoval);
                         }
                     }
                 }
@@ -143,7 +146,7 @@ public class ObjectCache<KEY, VALUE> {
     /** Stores all entries contained in the given map in the cache. */
     public void putAll(Map<KEY, VALUE> mapDataToPut) {
         int targetSize = maxSize - mapDataToPut.size();
-        if (maxSize > 0 && cache.size() > targetSize) {
+        if (maxSize > 0 && values.size() > targetSize) {
             evictToTargetSize(targetSize);
         }
         Set<Entry<KEY, VALUE>> entries = mapDataToPut.entrySet();
@@ -156,7 +159,7 @@ public class ObjectCache<KEY, VALUE> {
     public VALUE get(KEY key) {
         CacheEntry<VALUE> entry;
         synchronized (this) {
-            entry = cache.get(key);
+            entry = values.get(key);
         }
         VALUE value;
         if (entry != null) {
@@ -167,7 +170,7 @@ public class ObjectCache<KEY, VALUE> {
                 } else {
                     countExpired++;
                     synchronized (this) {
-                        cache.remove(key);
+                        values.remove(key);
                     }
                     value = null;
                 }
@@ -187,7 +190,7 @@ public class ObjectCache<KEY, VALUE> {
 
     /** Clears all cached entries. */
     public synchronized void clear() {
-        cache.clear();
+        values.clear();
     }
 
     /**
@@ -196,16 +199,16 @@ public class ObjectCache<KEY, VALUE> {
      * @return The removed entry
      */
     public VALUE remove(KEY key) {
-        return getValueForRemoved(cache.remove(key));
+        return getValueForRemoved(values.remove(key));
     }
 
     public synchronized void evictToTargetSize(int targetSize) {
         if (targetSize <= 0) {
-            cache.clear();
+            values.clear();
         } else {
             checkCleanUpObsoleteEntries();
-            Iterator<KEY> keys = cache.keySet().iterator();
-            while (keys.hasNext() && cache.size() > targetSize) {
+            Iterator<KEY> keys = values.keySet().iterator();
+            while (keys.hasNext() && values.size() > targetSize) {
                 countEvicted++;
                 keys.next();
                 keys.remove();
@@ -234,24 +237,24 @@ public class ObjectCache<KEY, VALUE> {
 
         int countCleaned = 0;
         long timeLimit = isExpiring ? System.currentTimeMillis() - expirationMillis : 0;
-        Set<Entry<KEY, CacheEntry<VALUE>>> entries = cache.entrySet();
+        Set<Entry<KEY, CacheEntry<VALUE>>> entries = values.entrySet();
         for (Entry<KEY, CacheEntry<VALUE>> entry : entries) {
             CacheEntry<VALUE> cacheEntry = entry.getValue();
             if (!isStrongReference && cacheEntry.reference == null) {
                 countRefCleared++;
                 countCleaned++;
-                cache.remove(entry.getKey());
+                values.remove(entry.getKey());
             } else if (cacheEntry.timeCreated < timeLimit) {
                 countExpired++;
                 countCleaned++;
-                cache.remove(entry.getKey());
+                values.remove(entry.getKey());
             }
         }
         return countCleaned;
     }
 
     public synchronized boolean containsKey(KEY key) {
-        return cache.containsKey(key);
+        return values.containsKey(key);
     }
 
     public boolean containsKeyWithValue(KEY key) {
@@ -259,7 +262,7 @@ public class ObjectCache<KEY, VALUE> {
     }
 
     public synchronized Set<KEY> keySet() {
-        return cache.keySet();
+        return values.keySet();
     }
 
     public int getMaxSize() {
@@ -267,7 +270,7 @@ public class ObjectCache<KEY, VALUE> {
     }
 
     public synchronized int size() {
-        return cache.size();
+        return values.size();
     }
 
     public int getCountPut() {
