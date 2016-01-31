@@ -17,7 +17,6 @@
 package de.greenrobot.common.io;
 
 import de.greenrobot.common.hash.Murmur3F;
-import de.greenrobot.common.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +43,16 @@ public class FileUtilsTest {
         FileUtils.writeUtf8(file, text);
         String text2 = FileUtils.readUtf8(file);
         Assert.assertEquals(text, text2);
+    }
+
+    @Test
+    public void testAppendAndReadUtf8() throws IOException {
+        String text = "Hello, let's put in some Umlauts: öäüÖÄÜ €";
+        String text1 = "Yes, sir!";
+        FileUtils.writeUtf8(file, text);
+        FileUtils.writeUtf8(file, text1, true);
+        String text2 = FileUtils.readUtf8(file);
+        Assert.assertEquals(text+text1, text2);
     }
 
     @Test
