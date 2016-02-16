@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Markus Junginger, greenrobot (http://greenrobot.de)
+ * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package de.greenrobot.common.io;
 import de.greenrobot.common.StringUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,7 +35,7 @@ import java.util.zip.Checksum;
  * @author Markus
  */
 public class IoUtils {
-    private static final int BUFFER_SIZE = 4096;
+    private static final int BUFFER_SIZE = 8192;
 
     public static byte[] readAllBytes(InputStream in) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -51,7 +52,7 @@ public class IoUtils {
     }
 
     public static String readAllChars(Reader reader) throws IOException {
-        char[] buffer = new char[2048];
+        char[] buffer = new char[BUFFER_SIZE / 2];
         StringBuilder builder = new StringBuilder();
         while (true) {
             int read = reader.read(buffer);
@@ -141,44 +142,14 @@ public class IoUtils {
     }
 
 
-    /** Closes the given stream inside a try/catch. Does nothing if stream is null. */
-    public static void safeClose(InputStream in) {
-        if (in != null) {
+    /**
+     * Closes the given resource (e.g. stream, reader, writer, etc.) inside a try/catch.
+     * Does nothing if stream is null.
+     */
+    public static void safeClose(Closeable closeable) {
+        if (closeable != null) {
             try {
-                in.close();
-            } catch (IOException e) {
-                // Silent
-            }
-        }
-    }
-
-    /** Closes the given stream inside a try/catch. Does nothing if stream is null. */
-    public static void safeClose(OutputStream out) {
-        if (out != null) {
-            try {
-                out.close();
-            } catch (IOException e) {
-                // Silent
-            }
-        }
-    }
-
-    /** Closes the given stream inside a try/catch. Does nothing if stream is null. */
-    public static void safeClose(Reader in) {
-        if (in != null) {
-            try {
-                in.close();
-            } catch (IOException e) {
-                // Silent
-            }
-        }
-    }
-
-    /** Closes the given stream inside a try/catch. Does nothing if stream is null. */
-    public static void safeClose(Writer out) {
-        if (out != null) {
-            try {
-                out.close();
+                closeable.close();
             } catch (IOException e) {
                 // Silent
             }
