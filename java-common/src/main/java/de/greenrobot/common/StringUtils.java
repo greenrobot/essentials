@@ -217,14 +217,12 @@ public class StringUtils {
      */
     public static String concatLines(List<String> lines) {
         StringBuilder builder = new StringBuilder();
-        int countMinus1 = lines.size() - 1;
-        for (int i = 0; i < countMinus1; i++) {
-            builder.append(lines.get(i)).append('\n');
-        }
-        if (!lines.isEmpty()) {
-            builder.append(lines.get(countMinus1));
-        }
-        return builder.toString();
+        for(String line : lines)
+            builder.append(line).append('\n');
+        String result = builder.toString();
+        if(!result.isEmpty())
+            result = result.substring(0, result.length() - 1);
+        return result;
     }
 
     public static String joinIterableOnComma(Iterable<?> iterable) {
