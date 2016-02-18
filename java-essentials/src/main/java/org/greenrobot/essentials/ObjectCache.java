@@ -36,7 +36,7 @@ import java.util.Set;
 // 2. Some creations may be expensive and should not be triggered in parallel (e.g. for the same key)
 public class ObjectCache<KEY, VALUE> {
 
-    public static enum ReferenceType {
+    public enum ReferenceType {
         SOFT, WEAK, STRONG
     }
 
