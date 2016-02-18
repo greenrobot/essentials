@@ -50,6 +50,7 @@ public class PipelineOutputStream extends OutputStream {
     public synchronized void write(byte[] data, int off, int len) throws IOException {
         int done = 0;
         while (done != len) {
+            checkPipelineInput();
             int count = buffer.put(data, off + done, len - done);
             if (count > 0) {
                 done += count;
@@ -60,10 +61,18 @@ public class PipelineOutputStream extends OutputStream {
         }
     }
 
+    private void checkPipelineInput() throws IOException {
+        if(closedIn) {
+            throw new IOException("PipelineInputStream was closed (broken pipeline)");
+        }
+    }
+
     @Override
     public synchronized void write(int b) throws IOException {
+        checkPipelineInput();
         while (!buffer.put((byte) b)) {
             waitForBuffer();
+            checkPipelineInput();
         }
         notifyBuffer();
     }
@@ -150,6 +159,11 @@ public class PipelineOutputStream extends OutputStream {
                 }
                 return total;
             }
+        }
+
+        @Override
+        public void close() throws IOException {
+            closedIn = true;
         }
     }
 

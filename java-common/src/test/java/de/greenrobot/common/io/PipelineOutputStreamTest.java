@@ -16,7 +16,6 @@
 
 package de.greenrobot.common.io;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,7 +23,10 @@ import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class PipelineOutputStreamTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class PipelineOutputStreamTest {
+    static final boolean LONG_TEST = false;
 
     @Test
     public void testBasics() throws IOException {
@@ -63,7 +65,6 @@ public class PipelineOutputStreamTest extends TestCase {
         assertEquals(5, in.read());
     }
 
-
     @Test
     public void testCloseOut() throws IOException {
         PipelineOutputStream out = new PipelineOutputStream();
@@ -89,7 +90,7 @@ public class PipelineOutputStreamTest extends TestCase {
             public void run() {
                 started.countDown();
                 try {
-                    in.read();
+                    in.read(new byte[16]);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -104,13 +105,27 @@ public class PipelineOutputStreamTest extends TestCase {
         assertTrue(done.await(1, TimeUnit.SECONDS));
     }
 
+    @Test(expected = IOException.class)
+    public void testCloseIn_writeByteArray() throws IOException {
+        PipelineOutputStream out = new PipelineOutputStream();
+        out.getInputStream().close();
+        out.write(new byte[16]);
+    }
+
+    @Test(expected = IOException.class)
+    public void testCloseIn_writeSingleByte() throws IOException {
+        PipelineOutputStream out = new PipelineOutputStream();
+        out.getInputStream().close();
+        out.write(42);
+    }
+
     @Test
     public void testTwoThreads() throws IOException, InterruptedException {
         final PipelineOutputStream out = new PipelineOutputStream(271);
         InputStream in = out.getInputStream();
         int blockLen = 257;
         final byte[] bytes = createBytes(blockLen);
-        final int runs = 10000;
+        final int runs = LONG_TEST ? 25000 : 1000; //
 
         Thread threadWriter = new Thread() {
             @Override
