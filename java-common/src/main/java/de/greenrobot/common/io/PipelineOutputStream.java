@@ -22,10 +22,10 @@ import java.io.OutputStream;
 
 /**
  * Replacement for Java's PipedOutputStream: all data written to this stream will get available in the integrated
- * InputStream.
+ * InputStream (see {@link #getInputStream()}).
  * <p/>
- * Note:You should use exactly two threads: one to write and one to read. If you use a single thread, avoid reading
- * more bytes than previously written or writing more bytes than the internal buffer can handle.
+ * Note: Usually, you will have exactly two threads: one to write and one to read. If you use a single thread, avoid
+ * reading more bytes than previously written or writing more bytes than the internal buffer can handle.
  */
 public class PipelineOutputStream extends OutputStream {
     private final PipelineInputStream inputStream;
@@ -62,7 +62,7 @@ public class PipelineOutputStream extends OutputStream {
     }
 
     private void checkPipelineInput() throws IOException {
-        if(closedIn) {
+        if (closedIn) {
             throw new IOException("PipelineInputStream was closed (broken pipeline)");
         }
     }
