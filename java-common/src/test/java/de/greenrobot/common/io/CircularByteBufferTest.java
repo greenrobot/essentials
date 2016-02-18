@@ -21,6 +21,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CircularByteBufferTest {
@@ -130,7 +131,7 @@ public class CircularByteBufferTest {
 
     @Test
     public void testSkipAndPeek() {
-        int capacity = 16;
+        int capacity = 17;
         CircularByteBuffer buffer = new CircularByteBuffer(capacity);
         byte[] bytes = createBytes(10);
 
@@ -145,6 +146,42 @@ public class CircularByteBufferTest {
             assertEquals(-1, buffer.peek());
         }
     }
+
+    @Test
+    public void testGetAndPutSingle() {
+        int capacity = 17;
+        CircularByteBuffer buffer = new CircularByteBuffer(capacity);
+        int length = 10;
+        byte[] bytes = createBytes(length);
+
+        // Loop to test a couple of different internal start positions
+        for (int i = 0; i < length; i++) {
+            assertEquals(length, buffer.put(bytes));
+            for (int j = 0; j < length; j++) {
+                assertEquals(bytes[j], buffer.get());
+            }
+            assertEquals(-1, buffer.get());
+            assertEquals(0, buffer.available());
+
+            for (int j = 0; j < length; j++) {
+                assertTrue(buffer.put(bytes[j]));
+                assertEquals(j + 1, buffer.available());
+            }
+            getAndAssertEqualContent(buffer, bytes);
+            assertEquals(0, buffer.available());
+        }
+    }
+
+    @Test
+    public void testGetAndPutSingleNoData() {
+        CircularByteBuffer buffer = new CircularByteBuffer(1);
+        assertTrue(buffer.put((byte) 42));
+        assertFalse(buffer.put((byte) 42));
+
+        assertEquals(42, buffer.get());
+        assertEquals(-1, buffer.get());
+    }
+
 
     private byte[] createBytes(int len) {
         byte[] bytes = new byte[len];

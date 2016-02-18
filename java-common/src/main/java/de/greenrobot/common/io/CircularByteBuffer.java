@@ -49,6 +49,20 @@ public class CircularByteBuffer {
         idxGet = idxPut = available = 0;
     }
 
+
+    /**
+     * Gets a single byte return or -1 if no data is available.
+     */
+    public synchronized int get() {
+        if (available == 0) {
+            return -1;
+        }
+        byte value = buffer[idxGet];
+        idxGet = (idxGet + 1) % capacity;
+        available--;
+        return value;
+    }
+
     /**
      * Gets as many of the requested bytes as available from this buffer.
      *
@@ -89,6 +103,21 @@ public class CircularByteBuffer {
         return count;
     }
 
+
+    /**
+     * Puts a single byte if the buffer is not yet full.
+     *
+     * @return true if the byte was put, or false if the buffer is full
+     */
+    public synchronized boolean put(byte value) {
+        if (available == capacity) {
+            return false;
+        }
+        buffer[idxPut] = value;
+        idxPut = (idxPut + 1) % capacity;
+        available++;
+        return true;
+    }
 
     /**
      * Puts as many of the given bytes as possible into this buffer.
