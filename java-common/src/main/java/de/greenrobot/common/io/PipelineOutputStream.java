@@ -30,6 +30,8 @@ import java.io.OutputStream;
 public class PipelineOutputStream extends OutputStream {
     private final PipelineInputStream inputStream;
     final CircularByteBuffer buffer;
+    boolean closedOut;
+    boolean closedIn;
 
     public PipelineOutputStream() {
         this(8192);
@@ -66,6 +68,12 @@ public class PipelineOutputStream extends OutputStream {
         notifyBuffer();
     }
 
+    @Override
+    public synchronized void close() throws IOException {
+        closedOut = true;
+        notifyBuffer();
+    }
+
     void waitForBuffer() throws IOException {
         try {
             wait();
@@ -83,13 +91,16 @@ public class PipelineOutputStream extends OutputStream {
         @Override
         public int read(byte[] b, int off, int len) throws IOException {
             if (len == 0) {
-                return 0;
+                return closedOut ? -1 : 0;
             }
             int read;
             synchronized (PipelineOutputStream.this) {
                 do {
                     read = buffer.get(b, off, len);
                     if (read == 0) {
+                        if (closedOut) {
+                            return -1;
+                        }
                         waitForBuffer();
                     }
                 } while (read == 0);
@@ -104,6 +115,9 @@ public class PipelineOutputStream extends OutputStream {
             synchronized (PipelineOutputStream.this) {
                 int value = buffer.get();
                 while (value == -1) {
+                    if (closedOut) {
+                        return -1;
+                    }
                     waitForBuffer();
                     value = buffer.get();
                 }
@@ -125,6 +139,9 @@ public class PipelineOutputStream extends OutputStream {
                 while (total < len) {
                     int skipped = buffer.skip(len - total);
                     if (skipped == 0) {
+                        if (closedOut) {
+                            return total;
+                        }
                         waitForBuffer();
                     } else {
                         total += skipped;

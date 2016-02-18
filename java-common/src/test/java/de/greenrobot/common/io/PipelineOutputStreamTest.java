@@ -21,6 +21,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class PipelineOutputStreamTest extends TestCase {
 
@@ -59,6 +61,47 @@ public class PipelineOutputStreamTest extends TestCase {
         in.skip(4);
         assertEquals(12, in.available());
         assertEquals(5, in.read());
+    }
+
+
+    @Test
+    public void testCloseOut() throws IOException {
+        PipelineOutputStream out = new PipelineOutputStream();
+        InputStream in = out.getInputStream();
+        byte[] bytes = createBytes(16);
+        out.write(bytes);
+        out.close();
+        assertEquals(16, in.available());
+        assertEquals(16, in.read(new byte[16]));
+        assertEquals(-1, in.read());
+        assertEquals(-1, in.read(new byte[16]));
+    }
+
+    @Test
+    public void testCloseOutWakesReader() throws IOException, InterruptedException {
+        PipelineOutputStream out = new PipelineOutputStream();
+        final InputStream in = out.getInputStream();
+        final CountDownLatch started = new CountDownLatch(1);
+        final CountDownLatch done = new CountDownLatch(1);
+
+        Thread threadReader = new Thread() {
+            @Override
+            public void run() {
+                started.countDown();
+                try {
+                    in.read();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                done.countDown();
+            }
+        };
+        threadReader.start();
+
+        assertTrue(started.await(1, TimeUnit.SECONDS));
+        assertFalse(done.await(2, TimeUnit.MICROSECONDS));
+        out.close();
+        assertTrue(done.await(1, TimeUnit.SECONDS));
     }
 
     @Test
