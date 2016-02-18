@@ -304,6 +304,7 @@ public class ObjectCache<KEY, VALUE> {
 
     /** Often used in addition to {@link #toString()} to print out states: details why entries were removed. */
     public String getStatsStringRemoved() {
-        return "ObjectCache-Removed[expired=" + countExpired + ", refCleared=" + countRefCleared + ", evicted=" + countEvicted;
+        return "ObjectCache-Removed[expired=" + countExpired + ", refCleared=" + countRefCleared +
+                ", evicted=" + countEvicted;
     }
 }
