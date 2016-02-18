@@ -4,7 +4,7 @@
 
 	<groupId>de.greenrobot</groupId>
 	<artifactId>parent-pom-with-checks</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -15,9 +15,10 @@
 	</parent>
 
 	<properties>
-		<findbugs-version>3.0.0</findbugs-version>
-		<checkstyle-version>2.13</checkstyle-version>
-		<checkstyle-rules-version>2.0.0</checkstyle-rules-version>
+		<findbugs-version>3.0.1</findbugs-version>
+		<checkstyle-maven-version>2.17</checkstyle-maven-version>
+		<checkstyle-version>6.15</checkstyle-version>
+		<checkstyle-rules-version>2.0.1</checkstyle-rules-version>
 	</properties>
 
 	<build>
@@ -26,13 +27,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${checkstyle-version}</version>
+				<version>${checkstyle-maven-version}</version>
 				<dependencies>
 					<dependency>
 						<groupId>de.greenrobot</groupId>
 						<artifactId>checkstyle-rules</artifactId>
 						<version>${checkstyle-rules-version}</version>
 					</dependency>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle-version}</version>
+                    </dependency>
 				</dependencies>
 				<configuration>
 					<configLocation>checkstyle-greenrobot.xml</configLocation>
@@ -56,7 +62,7 @@
 				<version>${findbugs-version}</version>
 				<configuration>
 					<!-- Bug Rank - bugs are given a rank 1-20: -->
-					<!-- scariest (rank 1-4), scary (rank 5-9), troubling (rank 10-14), 
+					<!-- scariest (rank 1-4), scary (rank 5-9), troubling (rank 10-14),
 						and of concern (rank 15-20) -->
 					<maxRank>14</maxRank>
 					<xmlOutput>true</xmlOutput>
@@ -78,7 +84,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${checkstyle-version}</version>
+				<version>${checkstyle-maven-version}</version>
 				<configuration>
 					<configLocation>checkstyle-greenrobot.xml</configLocation>
 				</configuration>

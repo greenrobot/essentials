@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.greenrobot</groupId>
         <artifactId>parent-pom-with-checks</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <relativePath>../build-common/parent-pom-with-checks.xml</relativePath>
     </parent>
 
@@ -119,8 +119,8 @@
         </profile>
     </profiles>
 
-    <name>greenrobot-common</name>
-    <description>General purpose utilities for Android and Java projects (aka java-common)</description>
+    <name>greenrobot-essentials</name>
+    <description>Essentials for high-performance Android and Java projects</description>
     <url>https://github.com/greenrobot/greenrobot-common</url>
     <licenses>
         <license>

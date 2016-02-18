@@ -11,12 +11,6 @@
 		<property name="max" value="1500" />
 	</module>
 
-	<!-- http://checkstyle.sourceforge.net/config_duplicates.html -->
-	<module name="StrictDuplicateCode">
-		<property name="min" value="15" />
-		<property name="fileExtensions" value="java" />
-	</module>
-
 	<!-- http://checkstyle.sourceforge.net/config_whitespace.html -->
 	<module name="FileTabCharacter" />
 
@@ -69,7 +63,6 @@
 		<module name="CovariantEquals" />
 		<module name="EmptyStatement" />
 		<module name="EqualsHashCode" />
-		<module name="RedundantThrows" />
 		<module name="SimplifyBooleanExpression" />
 		<module name="SimplifyBooleanReturn" />
 		<module name="StringLiteralEquality" />

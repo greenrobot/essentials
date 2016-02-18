@@ -4,4 +4,10 @@
         <Class name="org.greenrobot.essentials.ObjectCache"/>
         <Bug pattern="VO_VOLATILE_INCREMENT"/>
     </Match>
+
+    <!-- wait() is actually called in loop, but using separate method -->
+    <Match>
+        <Class name="org.greenrobot.essentials.io.PipelineOutputStream"/>
+        <Bug pattern="WA_NOT_IN_LOOP"/>
+    </Match>
 </FindBugsFilter>
