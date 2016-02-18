@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenrobot.essentials;
+package org.greenrobot.essentials.collections;
 
 import java.util.Collection;
 import java.util.Map;

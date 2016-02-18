@@ -16,7 +16,7 @@
 
 package org.greenrobot.essentials.hash;
 
-import org.greenrobot.essentials.LongHashSet;
+import org.greenrobot.essentials.collections.LongHashSet;
 
 import java.util.Random;
 import java.util.zip.Adler32;

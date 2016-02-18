@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.greenrobot.essentials;
+package org.greenrobot.essentials.collections;
 
 import org.junit.Before;
 import org.junit.Test;
