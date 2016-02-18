@@ -2,15 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.greenrobot</groupId>
+	<groupId>org.greenrobot</groupId>
 	<artifactId>parent-pom-with-checks</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>de.greenrobot</groupId>
+		<groupId>org.greenrobot</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>2.0.0</version>
+		<version>3.0.0</version>
 		<relativePath>parent-pom.xml</relativePath>
 	</parent>
 
@@ -18,7 +18,7 @@
 		<findbugs-version>3.0.1</findbugs-version>
 		<checkstyle-maven-version>2.17</checkstyle-maven-version>
 		<checkstyle-version>6.15</checkstyle-version>
-		<checkstyle-rules-version>2.0.1</checkstyle-rules-version>
+		<checkstyle-rules-version>3.0.0</checkstyle-rules-version>
 	</properties>
 
 	<build>
@@ -30,7 +30,7 @@
 				<version>${checkstyle-maven-version}</version>
 				<dependencies>
 					<dependency>
-						<groupId>de.greenrobot</groupId>
+						<groupId>org.greenrobot</groupId>
 						<artifactId>checkstyle-rules</artifactId>
 						<version>${checkstyle-rules-version}</version>
 					</dependency>
@@ -99,7 +99,7 @@
 		</plugins>
 	</reporting>
 
-    <name>greenrobot-common's parent POM with checks</name>
+    <name>greenrobot's parent POM with code checks</name>
     <description>Some defaults for Maven builds including checks for Java code (currently Checkstyle and FindBugs)</description>
 
 </project>

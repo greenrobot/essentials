@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.greenrobot</groupId>
+    <groupId>org.greenrobot</groupId>
     <artifactId>checkstyle-rules</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 
     <build>
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-webdav-jackrabbit</artifactId>
-                <version>2.4</version>
+                <version>2.10</version>
                 <!-- Sticking to 2.4, had trouble with 2.5 and 2.6:-->
                 <!--Error injecting constructor, java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory
                 at org.apache.maven.wagon.providers.webdav.WebDavWagon.<init>(Unknown Source)
@@ -45,7 +45,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -64,7 +64,7 @@
 
     <name>greenrobot-common's Checkstyle ruleset</name>
     <description>Checkstyle configuration file</description>
-    <url>https://github.com/greenrobot/greenrobot-common</url>
+    <url>https://github.com/greenrobot/essentials</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
@@ -75,12 +75,12 @@
         <developer>
             <name>greenrobot</name>
             <organization>greenrobot</organization>
-            <organizationUrl>http://greenrobot.de</organizationUrl>
+            <organizationUrl>http://greenrobot.org</organizationUrl>
         </developer>
     </developers>
     <scm>
-        <connection>scm:git@github.com:greenrobot/greenrobot-common.git</connection>
-        <developerConnection>scm:git@github.com:greenrobot/greenrobot-common.git</developerConnection>
-        <url>https://github.com/greenrobot/greenrobot-common</url>
+        <connection>scm:git@github.com:greenrobot/essentials.git</connection>
+        <developerConnection>scm:git@github.com:greenrobot/essentials.git</developerConnection>
+        <url>https://github.com/greenrobot/essentials</url>
     </scm>
 </project>

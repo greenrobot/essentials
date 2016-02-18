@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>essentials</artifactId>
-    <version>2.4.0</version>
+    <version>3.0.0</version>
 
     <parent>
-        <groupId>de.greenrobot</groupId>
+        <groupId>org.greenrobot</groupId>
         <artifactId>parent-pom-with-checks</artifactId>
-        <version>2.0.1</version>
+        <version>3.0.0</version>
         <relativePath>../build-common/parent-pom-with-checks.xml</relativePath>
     </parent>
 
