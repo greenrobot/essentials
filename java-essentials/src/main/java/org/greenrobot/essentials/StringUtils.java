@@ -212,7 +212,7 @@ public class StringUtils {
     }
 
     /**
-     * Returns a concatenated string consisting of the given lines seperated by a new line character \n. The last line
+     * Returns a concatenated string consisting of the given lines separated by a new line character \n. The last line
      * does not have a \n at the end.
      */
     public static String concatLines(List<String> lines) {
@@ -229,7 +229,6 @@ public class StringUtils {
 
     public static String joinIterableOnComma(Iterable<?> iterable) {
         if (iterable != null) {
-
             StringBuilder buf = new StringBuilder();
             Iterator<?> it = iterable.iterator();
             while (it.hasNext()) {
@@ -257,7 +256,6 @@ public class StringUtils {
         } else {
             return "";
         }
-
     }
 
     public static String joinArrayOnComma(String[] array) {
