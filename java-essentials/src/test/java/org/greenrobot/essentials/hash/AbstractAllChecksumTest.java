@@ -33,8 +33,6 @@ public abstract class AbstractAllChecksumTest {
                 {new Adler32()},
                 {new FNV32()},
                 {new FNV64()},
-                {new FNVJ32()},
-                {new FNVJ64()},
                 {new Murmur3A()},
                 {new Murmur3F()}});
     }

@@ -34,8 +34,6 @@ public class HashCollider {
         //
         //        hashCollider("FNV1a", new FNV32());
         //        hashCollider("FNV1a-64", new FNV64());
-        //        hashCollider("FNVJ", new FNVJ32());
-        //        hashCollider("FNVJ64", new FNVJ64());
 
         //        hashCollider("Murmur2", new Murmur2Checksum());
         //        // Murmur2b is faster than Murmur2, hashes match Murmur2
@@ -57,7 +55,6 @@ public class HashCollider {
     public void hashColliderSmallChanges() {
         hashColliderSmallChanges("Adler32", new Adler32());
         hashColliderSmallChanges("FNV1a", new FNV32());
-        hashColliderSmallChanges("FNVJ", new FNVJ32());
         hashColliderSmallChanges("FNV1a-64", new FNV64());
         hashColliderSmallChanges("CRC32", new CRC32());
     }
