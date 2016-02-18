@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <!-- No strict atomicity required -->
+    <Match>
+        <Class name="org.greenrobot.essentials.ObjectCache"/>
+        <Bug pattern="VO_VOLATILE_INCREMENT"/>
+    </Match>
+</FindBugsFilter>
