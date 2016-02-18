@@ -18,8 +18,8 @@ package de.greenrobot.common.io;
 
 /**
  * A circular byte buffer (also called ring buffer) allows putting and and getting bytes in a FIFO way. Typical use
- * cases are (concurrent) producers and consumers operating on bytes. All put&get methods are non-blocking, and may
- * only operate partially on the given data according to the state of the buffer.
+ * cases are (often concurrent/asynchronous) producers and consumers operating on bytes. All put&get methods are
+ * non-blocking, and may only operate partially on the given data according to the state of the buffer.
  * <p/>
  * This class is thread-safe.
  */
@@ -119,6 +119,25 @@ public class CircularByteBuffer {
         available += count;
         return count;
     }
+
+    public synchronized int peek() {
+        return available > 0 ? buffer[idxGet] : -1;
+    }
+
+    /**
+     * Skips the given count of bytes, but at most the currently available count.
+     *
+     * @return number of bytes actually skipped from this buffer (0 if no bytes are available)
+     */
+    public synchronized int skip(int count) {
+        if (count > available) {
+            count = available;
+        }
+        idxGet = (idxGet + count) % capacity;
+        available -= count;
+        return count;
+    }
+
 
     public int capacity() {
         return capacity;

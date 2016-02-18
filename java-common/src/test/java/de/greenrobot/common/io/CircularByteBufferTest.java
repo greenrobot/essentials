@@ -128,6 +128,24 @@ public class CircularByteBufferTest {
         }
     }
 
+    @Test
+    public void testSkipAndPeek() {
+        int capacity = 16;
+        CircularByteBuffer buffer = new CircularByteBuffer(capacity);
+        byte[] bytes = createBytes(10);
+
+        // Loop to test a couple of different internal start positions
+        for (int i = 0; i < 10; i++) {
+            buffer.put(bytes);
+
+            assertEquals(2, buffer.skip(2));
+            assertEquals(3, buffer.peek());
+
+            assertEquals(8, buffer.skip(10));
+            assertEquals(-1, buffer.peek());
+        }
+    }
+
     private byte[] createBytes(int len) {
         byte[] bytes = new byte[len];
         for (int i = 0; i < len; i++) {
