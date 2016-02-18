@@ -31,9 +31,12 @@ public class PipelineOutputStream extends OutputStream {
     private final PipelineInputStream inputStream;
     final CircularByteBuffer buffer;
 
-
     public PipelineOutputStream() {
-        this.buffer = new CircularByteBuffer(8192);
+        this(8192);
+    }
+
+    public PipelineOutputStream(int bufferCapacity) {
+        this.buffer = new CircularByteBuffer(bufferCapacity);
         inputStream = new PipelineInputStream();
     }
 
@@ -43,11 +46,11 @@ public class PipelineOutputStream extends OutputStream {
 
     @Override
     public synchronized void write(byte[] data, int off, int len) throws IOException {
-        int total = 0;
-        while (total != len) {
-            int count = buffer.put(data, off, len);
+        int done = 0;
+        while (done != len) {
+            int count = buffer.put(data, off + done, len - done);
             if (count > 0) {
-                total += count;
+                done += count;
                 notifyBuffer();
             } else {
                 waitForBuffer();

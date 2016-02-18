@@ -17,17 +17,12 @@
 package de.greenrobot.common.io;
 
 import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class PipelineOutputStreamTest extends TestCase {
-
-    @Before
-    public void setUp() throws IOException {
-    }
 
     @Test
     public void testBasics() throws IOException {
@@ -66,6 +61,54 @@ public class PipelineOutputStreamTest extends TestCase {
         assertEquals(5, in.read());
     }
 
+    @Test
+    public void testTwoThreads() throws IOException, InterruptedException {
+        final PipelineOutputStream out = new PipelineOutputStream(271);
+        InputStream in = out.getInputStream();
+        int blockLen = 257;
+        final byte[] bytes = createBytes(blockLen);
+        final int runs = 10000;
+
+        Thread threadWriter = new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i < runs; i++) {
+                    try {
+                        out.write(bytes);
+                        simulateWork();
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+        };
+        threadWriter.start();
+
+        byte[] readBuffer = new byte[211];
+        int totalRead = 0;
+
+        while (totalRead < blockLen * runs) {
+            int read = in.read(readBuffer);
+            assertTrue(read > 0);
+            //System.out.println("> " + totalRead + "+" + read);
+            for (int i = 0; i < read; i++) {
+                assertEquals(bytes[(totalRead + i) % blockLen], readBuffer[i]);
+            }
+            totalRead += read;
+            simulateWork();
+        }
+        assertEquals(0, in.available());
+    }
+
+    private void simulateWork() throws InterruptedException {
+        double random = Math.random();
+        if (random > 0.95) {
+            Thread.sleep(0, (int) (Math.random() * 999999));
+        } else if (random > 0.7) {
+            Thread.yield();
+        }
+    }
 
     private byte[] createBytes(int len) {
         byte[] bytes = new byte[len];
