@@ -18,8 +18,10 @@ package de.greenrobot.common.io;
 
 /**
  * A circular byte buffer (also called ring buffer) allows putting and and getting bytes in a FIFO way. Typical use
- * cases are (often concurrent/asynchronous) producers and consumers operating on bytes. All put&get methods are
- * non-blocking, and may only operate partially on the given data according to the state of the buffer.
+ * cases are (usually concurrent/asynchronous) producers and consumers operating on bytes. This enables building a
+ * multi-threaded processing pipeline.
+ * <p/>
+ * All put&get methods are non-blocking.
  * <p/>
  * This class is thread-safe.
  */
@@ -40,10 +42,18 @@ public class CircularByteBuffer {
         buffer = new byte[this.capacity];
     }
 
+    /**
+     * Clears all data from the buffer.
+     */
     public synchronized void clear() {
         idxGet = idxPut = available = 0;
     }
 
+    /**
+     * Gets as many of the requested bytes as available from this buffer.
+     *
+     * @return number of bytes actually got from this buffer (0 if no bytes are available)
+     */
     public int get(byte[] dst) {
         return get(dst, 0, dst.length);
     }
@@ -120,6 +130,9 @@ public class CircularByteBuffer {
         return count;
     }
 
+    /**
+     * Return the first byte a <b>get</b> would return or -1 if no data is available.
+     */
     public synchronized int peek() {
         return available > 0 ? buffer[idxGet] : -1;
     }
@@ -139,14 +152,23 @@ public class CircularByteBuffer {
     }
 
 
+    /**
+     * The capacity (size) is the maximum of bytes that can be stored inside this buffer.
+     */
     public int capacity() {
         return capacity;
     }
 
+    /**
+     * Returns the number of bytes available and can be get without additional puts.
+     */
     public synchronized int available() {
         return available;
     }
 
+    /**
+     * Returns the number of free bytes available that can still be put without additional gets.
+     */
     public synchronized int free() {
         return capacity - available;
     }
