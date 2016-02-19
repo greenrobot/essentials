@@ -1,16 +1,16 @@
-greenrobot-common
-=================
-greenrobot-common provides general purpose utilities for Android and Java projects. Having its root in the early days of Android development, the library is minimalistic, tiny in size (jar < 100k), and focuses on efficiency and performance.
+Essentials
+==========
+greenrobot's Essentials library provides general purpose utilities for Android and Java projects. Having its root in the early days of Android development, the library is minimalistic, tiny in size (jar < 100k), and focuses on efficiency and performance.
 
-[![Build Status](https://travis-ci.org/greenrobot/greenrobot-common.svg?branch=master)](https://travis-ci.org/greenrobot/greenrobot-common)
+[![Build Status](https://travis-ci.org/greenrobot/essentials.svg?branch=master)](https://travis-ci.org/greenrobot/essentials)
 
 Features
 --------
 The Utility classes cover [stream-based IO](java-common/src/main/java/de/greenrobot/common/io/IoUtils.java), [files](java-common/src/main/java/de/greenrobot/common/io/FileUtils.java), [strings](java-common/src/main/java/de/greenrobot/common/StringUtils.java), and [date/time](java-common/src/main/java/de/greenrobot/common/DateUtils.java). There are also efficient [hash map](java-common/src/main/java/de/greenrobot/common/LongHashMap.java) and [hash set](java-common/src/main/java/de/greenrobot/common/LongSetMap.java) implementation for primitive long keys.
    
-Another important part of greenrobot-common are [hash functions](hash-functions.md). Our Murmur3A&F implementations are the fastest Java implementations known to us. Murmur3 hash functions are one of today's best hash functions available with excellent properties. At 3,6 GByte/s, we measured our Murmur3F implementation to outperform Guava's by factor 10. Find more information on the [hash functions page](hash-functions.md) or jump directly to our [Java hash function benchmark PDF](web-resources/hash-functions-benchmark.pdf).
+Another important part of Essentials are [hash functions](hash-functions.md). Our Murmur3A&F implementations are the fastest Java implementations known to us. Murmur3 hash functions are one of today's best hash functions available with excellent properties. At 3,6 GByte/s, we measured our Murmur3F implementation to outperform Guava's by factor 10. Find more information on the [hash functions page](hash-functions.md) or jump directly to our [Java hash function benchmark PDF](web-resources/hash-functions-benchmark.pdf).
 
-Speaking of Guava, this project is bare bones compared to a rich menu offered by Guava, or, let's say, Apache Commons. greenrobot-common is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
+Speaking of Guava, this project is bare bones compared to a rich menu offered by Guava or Apache Commons. Essentials is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
 
 How to integrate in your project
 --------------------------------

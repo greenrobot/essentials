@@ -82,18 +82,6 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>com.simpligility.maven.plugins</groupId>
-                    <artifactId>android-maven-plugin</artifactId>
-                    <version>4.4.1</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <sdk>
-                            <platform>17</platform>
-                        </sdk>
-                    </configuration>
-                </plugin>
-
-                <plugin>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
                     <version>${junit-version}</version>
