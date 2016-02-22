@@ -186,8 +186,17 @@ public class StringUtils {
      * case null is returned.
      */
     public static String ellipsize(String text, int maxLength) {
+        return ellipsize(text, maxLength, "...");
+    }
+
+    /**
+     * Cuts the string at the end if it's longer than maxLength and appends the given end string to it. The length of
+     * the resulting string is always less or equal to the given maxLength. It's valid to pass a null text; in this
+     * case null is returned.
+     */
+    public static String ellipsize(String text, int maxLength, String end) {
         if (text != null && text.length() > maxLength) {
-            return text.substring(0, maxLength - 3) + "...";
+            return text.substring(0, maxLength - end.length()) + end;
         }
         return text;
     }
@@ -232,7 +241,7 @@ public class StringUtils {
      *
      * @return the joined string or an empty string if iterable is null
      */
-    public static String join(Iterable<?> iterable, CharSequence separator) {
+    public static String join(Iterable<?> iterable, String separator) {
         if (iterable != null) {
             StringBuilder buf = new StringBuilder();
             Iterator<?> it = iterable.iterator();
@@ -254,12 +263,23 @@ public class StringUtils {
         }
     }
 
-    public static String joinArrayOnComma(int[] array) {
+    /**
+     * Joins the given ints using the given separator into a single string.
+     *
+     * @return the joined string or an empty string if the int array is null
+     */
+    public static String join(int[] array, String separator) {
         if (array != null) {
-            StringBuilder buf = new StringBuilder();
+            StringBuilder buf = new StringBuilder(Math.max(16, (separator.length() + 1) * array.length));
+            char singleChar = separator.length() == 1 ? separator.charAt(0) : 0;
             for (int i = 0; i < array.length; i++) {
                 if (i != 0) {
-                    buf.append(',');
+                    if (singleChar != 0) {
+                        // More efficient
+                        buf.append(singleChar);
+                    } else {
+                        buf.append(separator);
+                    }
                 }
                 buf.append(array[i]);
             }
@@ -269,12 +289,23 @@ public class StringUtils {
         }
     }
 
-    public static String joinArrayOnComma(String[] array) {
+    /**
+     * Joins the given Strings using the given separator into a single string.
+     *
+     * @return the joined string or an empty string if the String array is null
+     */
+    public static String join(String[] array, String separator) {
         if (array != null) {
-            StringBuilder buf = new StringBuilder();
+            StringBuilder buf = new StringBuilder(Math.max(16, (separator.length() + 1) * array.length));
+            char singleChar = separator.length() == 1 ? separator.charAt(0) : 0;
             for (int i = 0; i < array.length; i++) {
                 if (i != 0) {
-                    buf.append(',');
+                    if (singleChar != 0) {
+                        // More efficient
+                        buf.append(singleChar);
+                    } else {
+                        buf.append(separator);
+                    }
                 }
                 buf.append(array[i]);
             }
@@ -282,12 +313,6 @@ public class StringUtils {
         } else {
             return "";
         }
-
     }
-    // /** not really public yet, umlauts!? */
-    // public static boolean __isValidEmail(String email) {
-    // // TODO compile and cache pattern using a ThreadLocal
-    // return Pattern.matches("^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\\.([a-zA-Z])+([a-zA-Z])+", email);
-    // }
 
 }

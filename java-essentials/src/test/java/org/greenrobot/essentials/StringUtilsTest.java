@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class StringUtilsTest extends TestCase {
@@ -71,17 +70,30 @@ public class StringUtilsTest extends TestCase {
     }
 
     public void testJoinIterable() {
-        assertEquals("", StringUtils.join(null, "blub"));
+        assertEquals("", StringUtils.join((Iterable) null, "blub"));
         List<String> fooBarList = Arrays.asList("foo", "bar");
         assertEquals("foo,bar", StringUtils.join(fooBarList, ","));
         assertEquals("foo, bar", StringUtils.join(fooBarList, ", "));
     }
 
+    public void testJoinIntArray() {
+        assertEquals("", StringUtils.join((int[]) null, "blub"));
+        int[] ints = {42, 23};
+        assertEquals("42,23", StringUtils.join(ints, ","));
+        assertEquals("42, 23", StringUtils.join(ints, ", "));
+    }
 
-    // // Not really public so far
-    // public void __testEmail() {
-    // assertTrue(StringUtils.__isValidEmail("test@greenrobot.de"));
-    // assertTrue(StringUtils.__isValidEmail("t_e_s_t_1_2_3_4@greenrobot.de"));
-    // assertFalse(StringUtils.__isValidEmail("de"));
-    // }
+    public void testJoinStringArray() {
+        assertEquals("", StringUtils.join((String[]) null, "blub"));
+        String[] fooBar = {"foo", "bar"};
+        assertEquals("foo,bar", StringUtils.join(fooBar, ","));
+        assertEquals("foo, bar", StringUtils.join(fooBar, ", "));
+    }
+
+    public void testEllipsize() {
+        assertEquals("He...", StringUtils.ellipsize("Hello world", 5));
+        assertEquals("Hell>", StringUtils.ellipsize("Hello world", 5, ">"));
+    }
+
+
 }
