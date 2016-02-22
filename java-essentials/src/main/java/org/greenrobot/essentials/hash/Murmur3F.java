@@ -46,8 +46,8 @@ public class Murmur3F implements Checksum128 {
     }
 
     public Murmur3F(int seed) {
-        this.seed = seed & (0xffffffffL); // unsigned
-        h1 = h2 = seed;
+        this.seed = seed & 0xffffffffL; // unsigned 32 bit -> long
+        h1 = h2 = this.seed;
     }
 
     @Override

@@ -18,7 +18,6 @@ package org.greenrobot.essentials.hash;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -122,6 +121,38 @@ public class Murmur3FTest extends AbstractChecksumTest {
                     break;
                 }
             }
+        }
+    }
+
+    @Test
+    public void testSeedsAgainsGuava() {
+        byte[] bytes = new byte[32];
+        new Random(42).nextBytes(bytes);
+
+        // TODO Negative seeds are interpreted differently than Guava, double check with reference implementation
+        // int[] seeds = {0, 1, -1, 42, -1000, Integer.MIN_VALUE, Integer.MAX_VALUE};
+        int[] seeds = {0, 1, 42, Integer.MAX_VALUE};
+
+        for (int i = 0; i < seeds.length; i++) {
+            HashCode hashCode = Hashing.murmur3_128(seeds[i]).hashBytes(bytes, 0, bytes.length);
+            long expected = hashCode.asLong(); // 64 bit is enough
+
+            Murmur3F murmur3FSeeded = new Murmur3F(seeds[i]);
+            murmur3FSeeded.update(bytes, 0, bytes.length);
+            assertEquals("Iteration " + i, expected, murmur3FSeeded.getValue());
+
+            murmur3FSeeded.reset();
+            murmur3FSeeded.update(bytes, 0, bytes.length);
+            assertEquals("Iteration " + i, expected, murmur3FSeeded.getValue());
+        }
+
+        for (int i = 0; i < bytes.length; i++) {
+            HashCode hashCode = Hashing.murmur3_128().hashBytes(bytes, i, bytes.length - i);
+            long expected = hashCode.asLong(); // 64 bit is enough
+
+            checksum.reset();
+            checksum.update(bytes, i, bytes.length - i);
+            assertEquals("Iteration " + i, expected, checksum.getValue());
         }
     }
 
