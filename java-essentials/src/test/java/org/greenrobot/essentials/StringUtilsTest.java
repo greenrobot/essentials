@@ -19,6 +19,8 @@ package org.greenrobot.essentials;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StringUtilsTest extends TestCase {
@@ -66,6 +68,13 @@ public class StringUtilsTest extends TestCase {
         }
         String concated = StringUtils.concatLines(list);
         assertEquals("Line 1\nLine 2\n\nLine 4\nLine 5\n\nLine 7", concated);
+    }
+
+    public void testJoinIterable() {
+        assertEquals("", StringUtils.join(null, "blub"));
+        List<String> fooBarList = Arrays.asList("foo", "bar");
+        assertEquals("foo,bar", StringUtils.join(fooBarList, ","));
+        assertEquals("foo, bar", StringUtils.join(fooBarList, ", "));
     }
 
 

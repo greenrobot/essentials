@@ -227,14 +227,25 @@ public class StringUtils {
         return builder.toString();
     }
 
-    public static String joinIterableOnComma(Iterable<?> iterable) {
+    /**
+     * Joins the given iterable objects using the given separator into a single string.
+     *
+     * @return the joined string or an empty string if iterable is null
+     */
+    public static String join(Iterable<?> iterable, CharSequence separator) {
         if (iterable != null) {
             StringBuilder buf = new StringBuilder();
             Iterator<?> it = iterable.iterator();
+            char singleChar = separator.length() == 1 ? separator.charAt(0) : 0;
             while (it.hasNext()) {
                 buf.append(it.next());
                 if (it.hasNext()) {
-                    buf.append(',');
+                    if (singleChar != 0) {
+                        // More efficient
+                        buf.append(singleChar);
+                    } else {
+                        buf.append(separator);
+                    }
                 }
             }
             return buf.toString();
