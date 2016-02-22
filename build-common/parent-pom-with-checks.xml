@@ -4,13 +4,13 @@
 
 	<groupId>org.greenrobot</groupId>
 	<artifactId>parent-pom-with-checks</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>org.greenrobot</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>parent-pom.xml</relativePath>
 	</parent>
 
@@ -18,7 +18,7 @@
 		<findbugs-version>3.0.1</findbugs-version>
 		<checkstyle-maven-version>2.17</checkstyle-maven-version>
 		<checkstyle-version>6.15</checkstyle-version>
-		<checkstyle-rules-version>3.0.0</checkstyle-rules-version>
+		<checkstyle-rules-version>3.0.0-SNAPSHOT</checkstyle-rules-version>
 	</properties>
 
 	<build>
