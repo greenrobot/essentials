@@ -66,6 +66,10 @@ public class FileUtils {
         writeChars(file, "UTF-8", text, false);
     }
 
+    public static void appendUtf8(File file, CharSequence text) throws IOException {
+        writeChars(file, "UTF-8", text, true);
+    }
+
     public static void writeChars(File file, String charset, CharSequence text, boolean apppend) throws IOException {
         Writer writer = new OutputStreamWriter(new FileOutputStream(file, apppend), charset);
         IoUtils.writeAllCharsAndClose(writer, text);

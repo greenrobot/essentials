@@ -45,10 +45,10 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testAppendChars() throws IOException {
+    public void testAppendUtf8() throws IOException {
         String text = "Hello";
         FileUtils.writeUtf8(file, text);
-        FileUtils.writeChars(file, "UTF-8", " world", true);
+        FileUtils.appendUtf8(file, " world");
         Assert.assertEquals("Hello world", FileUtils.readUtf8(file));
     }
 
