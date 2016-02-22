@@ -63,11 +63,11 @@ public class FileUtils {
     }
 
     public static void writeUtf8(File file, CharSequence text) throws IOException {
-        writeChars(file, "UTF-8", text);
+        writeChars(file, "UTF-8", text, false);
     }
 
-    public static void writeChars(File file, String charset, CharSequence text) throws IOException {
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file), charset);
+    public static void writeChars(File file, String charset, CharSequence text, boolean apppend) throws IOException {
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file, apppend), charset);
         IoUtils.writeAllCharsAndClose(writer, text);
     }
 

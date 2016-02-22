@@ -41,8 +41,15 @@ public class FileUtilsTest {
     public void testWriteAndReadUtf8() throws IOException {
         String text = "Hello, let's put in some Umlauts: öäüÖÄÜ €";
         FileUtils.writeUtf8(file, text);
-        String text2 = FileUtils.readUtf8(file);
-        Assert.assertEquals(text, text2);
+        Assert.assertEquals(text, FileUtils.readUtf8(file));
+    }
+
+    @Test
+    public void testAppendChars() throws IOException {
+        String text = "Hello";
+        FileUtils.writeUtf8(file, text);
+        FileUtils.writeChars(file, "UTF-8", " world", true);
+        Assert.assertEquals("Hello world", FileUtils.readUtf8(file));
     }
 
     @Test
