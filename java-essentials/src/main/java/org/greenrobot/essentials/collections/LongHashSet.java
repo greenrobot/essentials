@@ -23,7 +23,10 @@ import java.util.Arrays;
  *
  * @author Markus
  */
-public final class LongHashSet {
+public class LongHashSet {
+
+    public static final int DEFAULT_CAPACITY = 16;
+
     final static class Entry {
         final long key;
         Entry next;
@@ -34,14 +37,28 @@ public final class LongHashSet {
         }
     }
 
+    /**
+     * Creates a synchronized (thread-safe) LongHashSet.
+     */
+    public static LongHashSet createSynchronized() {
+        return new Synchronized(DEFAULT_CAPACITY);
+    }
+
+    /**
+     * Creates a synchronized (thread-safe) LongHashSet using the given initial capacity.
+     */
+    public static LongHashSet createSynchronized(int capacity) {
+        return new Synchronized(capacity);
+    }
+
     private Entry[] table;
     private int capacity;
     private int threshold;
-    private int size;
-    private float loadFactor = 1.3f;
+    private volatile int size;
+    private volatile float loadFactor = 1.3f;
 
     public LongHashSet() {
-        this(16);
+        this(DEFAULT_CAPACITY);
     }
 
     @SuppressWarnings("unchecked")
@@ -62,6 +79,11 @@ public final class LongHashSet {
         return false;
     }
 
+    /**
+     * Adds the given value to the set.
+     *
+     * @return true if the value was actually new
+     */
     public boolean add(long key) {
         final int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
         final Entry entryOriginal = table[index];
@@ -78,6 +100,11 @@ public final class LongHashSet {
         return true;
     }
 
+    /**
+     * Removes the given value to the set.
+     *
+     * @return true if the value was actually removed
+     */
     public boolean remove(long key) {
         int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
         Entry previous = null;
@@ -129,10 +156,6 @@ public final class LongHashSet {
         threshold = (int) (newCapacity * loadFactor + 0.5f);
     }
 
-    public float getLoadFactor() {
-        return loadFactor;
-    }
-
     public void setLoadFactor(float loadFactor) {
         this.loadFactor = loadFactor;
     }
@@ -140,6 +163,43 @@ public final class LongHashSet {
     /** Target load: 0,6 */
     public void reserveRoom(int entryCount) {
         setCapacity((int) (entryCount * loadFactor * 1.3f + 0.5f));
+    }
+
+    protected static class Synchronized extends LongHashSet {
+        public Synchronized(int capacity) {
+            super(capacity);
+        }
+
+        @Override
+        public synchronized boolean contains(long key) {
+            return super.contains(key);
+        }
+
+        @Override
+        public synchronized boolean add(long key) {
+            return super.add(key);
+        }
+
+        @Override
+        public synchronized boolean remove(long key) {
+            return super.remove(key);
+        }
+
+        @Override
+        public synchronized void clear() {
+            super.clear();
+        }
+
+        @Override
+        public synchronized void setCapacity(int newCapacity) {
+            super.setCapacity(newCapacity);
+        }
+
+        @Override
+        public synchronized void reserveRoom(int entryCount) {
+            super.reserveRoom(entryCount);
+        }
+
     }
 
 }
