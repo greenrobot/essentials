@@ -18,6 +18,7 @@ package org.greenrobot.essentials;
 
 import junit.framework.TestCase;
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,7 @@ public class StringUtilsTest extends TestCase {
         for (String line : lines) {
             list.add(line);
         }
-        String concated = StringUtils.concatLines(list);
+        String concated = StringUtils.join(list, "\n");
         assertEquals("Line 1\nLine 2\n\nLine 4\nLine 5\n\nLine 7", concated);
     }
 
@@ -95,5 +96,20 @@ public class StringUtilsTest extends TestCase {
         assertEquals("Hell>", StringUtils.ellipsize("Hello world", 5, ">"));
     }
 
+    public void testHex() {
+        assertTrue(Arrays.equals(DatatypeConverter.parseHexBinary("0066FF"), StringUtils.parseHex("0066FF")));
+        assertEquals(-1, StringUtils.parseHex("FF")[0]);
+
+        for (int i = 0; i < 256 * 256; i++) {
+            byte[] bytes = {(byte) (i >> 8), (byte) i};
+            String hexExpected = DatatypeConverter.printHexBinary(bytes);
+            String hex = StringUtils.hex(bytes);
+            assertEquals(hexExpected, hex);
+
+            byte[] bytes2 = StringUtils.parseHex(hex);
+            assertEquals(bytes[0], bytes2[0]);
+            assertEquals(bytes[1], bytes2[1]);
+        }
+    }
 
 }

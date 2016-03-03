@@ -94,13 +94,13 @@ public class IoUtils {
     /** @return MD5 digest (32 characters). */
     public static String getMd5(InputStream in) throws IOException {
         byte[] digest = getDigest(in, "MD5");
-        return StringUtils.toHexString(digest, 32);
+        return StringUtils.hex(digest);
     }
 
     /** @return SHA-1 digest (40 characters). */
     public static String getSha1(InputStream in) throws IOException {
         byte[] digest = getDigest(in, "SHA-1");
-        return StringUtils.toHexString(digest, 40);
+        return StringUtils.hex(digest);
     }
 
     public static byte[] getDigest(InputStream in, String digestAlgo) throws IOException {

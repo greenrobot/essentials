@@ -17,7 +17,6 @@
 package org.greenrobot.essentials;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -27,15 +26,18 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Utilities for working with strings, like splitting, url-encoding, and MD5 digests.
+ * Utilities for working with strings like splitting, joining, url-encoding, hex, and digests.
  *
  * @author markus
  */
 public class StringUtils {
+    private final static char[] HEX_CHARS = {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
 
     /** Splits a String based on a single character, which is usually faster than regex-based String.split(). */
-    public static String[] fastSplit(String string, char delimiter) {
-        List<String> list = new ArrayList<String>();
+    public static String[] split(String string, char delimiter) {
+        List<String> list = new ArrayList<>();
         int size = string.length();
         int start = 0;
         for (int i = 0; i < size; i++) {
@@ -105,50 +107,76 @@ public class StringUtils {
     }
 
     /**
-     * Generates the MD5 digest for a given String based on UTF-8. The digest is padded with zeroes in the front if
-     * necessary.
-     *
-     * @return MD5 digest (32 characters).
+     * Generates the MD5 digest (32 hex characters) for a given String based on UTF-8.
      */
-    public static String generateMD5String(String stringToEncode) {
-        return generateDigestString(stringToEncode, "MD5", "UTF-8", 32);
+    public static String md5(String stringToEncode) {
+        return digest(stringToEncode, "MD5", "UTF-8");
     }
 
     /**
-     * Generates the SHA-1 digest for a given String based on UTF-8. The digest is padded with zeroes in the front if
-     * necessary. The SHA-1 algorithm is considers to produce less collisions than MD5.
+     * Generates the SHA-1 digest (40 hex characters) for a given String based on UTF-8.
+     * The SHA-1 algorithm produces less collisions than MD5.
      *
-     * @return SHA-1 digest (40 characters).
+     * @return SHA-1 digest .
      */
-    public static String generateSHA1String(String stringToEncode) {
-        return generateDigestString(stringToEncode, "SHA-1", "UTF-8", 40);
+    public static String sha1(String stringToEncode) {
+        return digest(stringToEncode, "SHA-1", "UTF-8");
     }
 
-    public static String
-    generateDigestString(String stringToEncode, String digestAlgo, String encoding, int lengthToPad) {
-        // Loosely inspired by http://workbench.cadenhead.org/news/1428/creating-md5-hashed-passwords-java
-        MessageDigest digester;
+    /**
+     * Generates a digest (hex string) for the given string
+     */
+    public static String digest(String string, String digestAlgo, String encoding) {
         try {
-            digester = MessageDigest.getInstance(digestAlgo);
-        } catch (NoSuchAlgorithmException nsae) {
-            throw new RuntimeException(nsae);
-        }
-        try {
-            digester.update(stringToEncode.getBytes(encoding));
-        } catch (UnsupportedEncodingException e) {
+            MessageDigest digester = MessageDigest.getInstance(digestAlgo);
+            digester.update(string.getBytes(encoding));
+            return hex(digester.digest());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        return toHexString(digester.digest(), lengthToPad);
     }
 
-    public static String toHexString(byte[] bytes, int lengthToPad) {
-        BigInteger hash = new BigInteger(1, bytes);
-        String digest = hash.toString(16);
-
-        while (digest.length() < lengthToPad) {
-            digest = "0" + digest;
+    public static String hex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int value = bytes[i] & 0xFF;
+            hexChars[i * 2] = HEX_CHARS[value >>> 4];
+            hexChars[i * 2 + 1] = HEX_CHARS[value & 0x0F];
         }
-        return digest;
+        return new String(hexChars);
+    }
+
+    /**
+     * @throws IllegalArgumentException if the given string is invalid hex
+     */
+    public static byte[] parseHex(String hex) {
+        int length = hex.length();
+        if (length % 2 == 1) {
+            throw new IllegalArgumentException("Illegal string length: " + length);
+        }
+        int bytesLength = length / 2;
+        byte[] bytes = new byte[bytesLength];
+        int idxChar = 0;
+        for (int i = 0; i < bytesLength; i++) {
+            int value = parseHexDigit(hex.charAt(idxChar++)) << 4;
+            value |= parseHexDigit(hex.charAt(idxChar++));
+            bytes[i] = (byte) value;
+        }
+        return bytes;
+    }
+
+    /**
+     * @throws IllegalArgumentException if the given char is invalid hex
+     */
+    public static int parseHexDigit(char c) {
+        if ('0' <= c && c <= '9') {
+            return c - '0';
+        } else if ('A' <= c && c <= 'F') {
+            return c - 'A' + 10;
+        } else if ('a' <= c && c <= 'f') {
+            return c - 'a' + 10;
+        }
+        throw new IllegalArgumentException("Illegal hex digit: " + c);
     }
 
     /**
@@ -211,29 +239,13 @@ public class StringUtils {
 
     public static List<String> findLinesContaining(String text, String searchText) {
         String[] splitLinesSkipEmpty = splitLines(text, true);
-        List<String> matching = new ArrayList<String>();
+        List<String> matching = new ArrayList<>();
         for (String line : splitLinesSkipEmpty) {
             if (line.contains(searchText)) {
                 matching.add(line);
             }
         }
         return matching;
-    }
-
-    /**
-     * Returns a concatenated string consisting of the given lines separated by a new line character \n. The last line
-     * does not have a \n at the end.
-     */
-    public static String concatLines(List<String> lines) {
-        StringBuilder builder = new StringBuilder();
-        int countMinus1 = lines.size() - 1;
-        for (int i = 0; i < countMinus1; i++) {
-            builder.append(lines.get(i)).append('\n');
-        }
-        if (!lines.isEmpty()) {
-            builder.append(lines.get(countMinus1));
-        }
-        return builder.toString();
     }
 
     /**
