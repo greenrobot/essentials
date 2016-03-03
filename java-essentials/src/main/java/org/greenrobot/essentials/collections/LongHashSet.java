@@ -19,7 +19,8 @@ package org.greenrobot.essentials.collections;
 import java.util.Arrays;
 
 /**
- * An minimalistic hash set optimized for long values. Not thread-safe.
+ * An minimalistic hash set optimized for long values. The default implementation is not thread-safe, but you can get a
+ * synchronized variant using one of the static createSynchronized methods.
  *
  * @author Markus
  */

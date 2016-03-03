@@ -19,14 +19,15 @@ package org.greenrobot.essentials.collections;
 import java.util.Arrays;
 
 /**
- * An minimalistic hash map optimized for long keys. Not thread-safe.
- * 
+ * An minimalistic hash map optimized for long keys. The default implementation is not thread-safe, but you can get a
+ * synchronized variant using one of the static createSynchronized methods.
+ *
+ * @param <T> The value class to store.
  * @author Markus
- * 
- * @param <T>
- *            The class to store.
  */
-public final class LongHashMap<T> {
+public class LongHashMap<T> {
+    public static final int DEFAULT_CAPACITY = 16;
+
     final static class Entry<T> {
         final long key;
         T value;
@@ -39,10 +40,25 @@ public final class LongHashMap<T> {
         }
     }
 
+    /**
+     * Creates a synchronized (thread-safe) LongHashSet.
+     */
+    public static <T> LongHashMap<T> createSynchronized() {
+        return new Synchronized(DEFAULT_CAPACITY);
+    }
+
+    /**
+     * Creates a synchronized (thread-safe) LongHashSet using the given initial capacity.
+     */
+    public static <T> LongHashMap<T> createSynchronized(int capacity) {
+        return new Synchronized(capacity);
+    }
+
+
     private Entry<T>[] table;
     private int capacity;
     private int threshold;
-    private int size;
+    private volatile int size;
 
     public LongHashMap() {
         this(16);
@@ -149,5 +165,48 @@ public final class LongHashMap<T> {
     public void reserveRoom(int entryCount) {
         setCapacity(entryCount * 5 / 3);
     }
+
+    protected static class Synchronized<T> extends LongHashMap<T> {
+        public Synchronized(int capacity) {
+            super(capacity);
+        }
+
+        @Override
+        public synchronized boolean containsKey(long key) {
+            return super.containsKey(key);
+        }
+
+        @Override
+        public synchronized T get(long key) {
+            return super.get(key);
+        }
+
+        @Override
+        public synchronized T put(long key, T value) {
+            return super.put(key, value);
+        }
+
+        @Override
+        public synchronized T remove(long key) {
+            return super.remove(key);
+        }
+
+        @Override
+        public synchronized void clear() {
+            super.clear();
+        }
+
+        @Override
+        public synchronized void setCapacity(int newCapacity) {
+            super.setCapacity(newCapacity);
+        }
+
+        @Override
+        public synchronized void reserveRoom(int entryCount) {
+            super.reserveRoom(entryCount);
+        }
+
+    }
+
 
 }

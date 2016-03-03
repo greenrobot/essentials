@@ -34,7 +34,7 @@ public class LongHashMapTest {
 
     @Test
     public void testLongHashMapSimple() {
-        LongHashMap<Object> map = new LongHashMap<Object>();
+        LongHashMap<Object> map = new LongHashMap<>();
 
         map.put(1l << 33, "OK");
         assertNull(map.get(0));
@@ -57,7 +57,17 @@ public class LongHashMapTest {
 
     @Test
     public void testLongHashMapRandom() {
-        LongHashMap<Object> map = new LongHashMap<Object>();
+        LongHashMap<Object> map = new LongHashMap<>();
+        testLongHashMapRandom(map);
+    }
+
+    @Test
+    public void testLongHashMapRandom_Synchronized() {
+        LongHashMap<Object> map = LongHashMap.createSynchronized();
+        testLongHashMapRandom(map);
+    }
+
+    private void testLongHashMapRandom(LongHashMap<Object> map) {
         for (int i = 0; i < 5000; i++) {
             long key = random.nextLong();
             String value = "Value-" + key;
