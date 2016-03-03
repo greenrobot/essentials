@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Utilities for working with strings like splitting, joining, url-encoding, hex, and digests.
+ * See also {@link org.greenrobot.essentials.Base64}.
  *
  * @author markus
  */
@@ -151,7 +152,7 @@ public class StringUtils {
      */
     public static byte[] parseHex(String hex) {
         int length = hex.length();
-        if (length % 2 == 1) {
+        if (length % 2 != 0) {
             throw new IllegalArgumentException("Illegal string length: " + length);
         }
         int bytesLength = length / 2;

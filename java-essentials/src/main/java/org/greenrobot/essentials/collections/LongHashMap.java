@@ -149,6 +149,7 @@ public class LongHashMap<T> {
      * Returns all entries in no particular order.
      */
     public Entry<T>[] entries() {
+        @SuppressWarnings("unchecked")
         Entry<T>[] entries = new Entry[size];
         int idx = 0;
         for (Entry entry : table) {

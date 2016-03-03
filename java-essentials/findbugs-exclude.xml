@@ -10,4 +10,17 @@
         <Class name="org.greenrobot.essentials.io.PipelineOutputStream"/>
         <Bug pattern="WA_NOT_IN_LOOP"/>
     </Match>
+
+    <!-- No strict atomicity required -->
+    <Match>
+        <Class name="org.greenrobot.essentials.collections.LongHashSet"/>
+        <Bug pattern="VO_VOLATILE_INCREMENT"/>
+    </Match>
+
+    <!-- No strict atomicity required -->
+    <Match>
+        <Class name="org.greenrobot.essentials.collections.LongHashMap"/>
+        <Bug pattern="VO_VOLATILE_INCREMENT"/>
+    </Match>
+
 </FindBugsFilter>
