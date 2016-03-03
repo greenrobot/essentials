@@ -18,8 +18,10 @@ package org.greenrobot.essentials.collections;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -77,6 +79,23 @@ public class LongHashSetTest {
             assertFalse(set.remove(key));
             assertFalse(set.remove(keyInt));
         }
+    }
+
+    @Test
+    public void testKeys() {
+        LongHashSet set = new LongHashSet();
+        set.add(0);
+        set.add(-98);
+        set.add(666);
+        set.add(Long.MAX_VALUE);
+        set.remove(666);
+
+        long[] keys = set.keys();
+        assertEquals(3, keys.length);
+        Arrays.sort(keys);
+        assertEquals(-98, keys[0]);
+        assertEquals(0, keys[1]);
+        assertEquals(Long.MAX_VALUE, keys[2]);
     }
 
 }

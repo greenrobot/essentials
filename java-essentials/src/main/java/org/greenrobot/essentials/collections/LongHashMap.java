@@ -26,11 +26,11 @@ import java.util.Arrays;
  * @author Markus
  */
 public class LongHashMap<T> {
-    public static final int DEFAULT_CAPACITY = 16;
+    protected static final int DEFAULT_CAPACITY = 16;
 
-    final static class Entry<T> {
-        final long key;
-        T value;
+    public final static class Entry<T> {
+        public final long key;
+        public T value;
         Entry<T> next;
 
         Entry(long key, T value, Entry<T> next) {
@@ -44,16 +44,15 @@ public class LongHashMap<T> {
      * Creates a synchronized (thread-safe) LongHashSet.
      */
     public static <T> LongHashMap<T> createSynchronized() {
-        return new Synchronized(DEFAULT_CAPACITY);
+        return new Synchronized<>(DEFAULT_CAPACITY);
     }
 
     /**
      * Creates a synchronized (thread-safe) LongHashSet using the given initial capacity.
      */
     public static <T> LongHashMap<T> createSynchronized(int capacity) {
-        return new Synchronized(capacity);
+        return new Synchronized<>(capacity);
     }
-
 
     private Entry<T>[] table;
     private int capacity;
@@ -102,7 +101,7 @@ public class LongHashMap<T> {
                 return oldValue;
             }
         }
-        table[index] = new Entry<T>(key, value, entryOriginal);
+        table[index] = new Entry<>(key, value, entryOriginal);
         size++;
         if (size > threshold) {
             setCapacity(2 * capacity);
@@ -129,6 +128,36 @@ public class LongHashMap<T> {
             entry = next;
         }
         return null;
+    }
+
+    /**
+     * Returns all keys in no particular order.
+     */
+    public long[] keys() {
+        long[] values = new long[size];
+        int idx = 0;
+        for (Entry entry : table) {
+            while (entry != null) {
+                values[idx++] = entry.key;
+                entry = entry.next;
+            }
+        }
+        return values;
+    }
+
+    /**
+     * Returns all entries in no particular order.
+     */
+    public Entry<T>[] entries() {
+        Entry<T>[] entries = new Entry[size];
+        int idx = 0;
+        for (Entry entry : table) {
+            while (entry != null) {
+                entries[idx++] = entry;
+                entry = entry.next;
+            }
+        }
+        return entries;
     }
 
     public void clear() {
@@ -189,6 +218,16 @@ public class LongHashMap<T> {
         @Override
         public synchronized T remove(long key) {
             return super.remove(key);
+        }
+
+        @Override
+        public synchronized long[] keys() {
+            return super.keys();
+        }
+
+        @Override
+        public synchronized Entry<T>[] entries() {
+            return super.entries();
         }
 
         @Override

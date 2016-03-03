@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 public class LongHashSet {
 
-    public static final int DEFAULT_CAPACITY = 16;
+    protected static final int DEFAULT_CAPACITY = 16;
 
     final static class Entry {
         final long key;
@@ -127,6 +127,21 @@ public class LongHashSet {
         return false;
     }
 
+    /**
+     * Returns all keys in no particular order.
+     */
+    public long[] keys() {
+        long[] values = new long[size];
+        int idx = 0;
+        for (Entry entry : table) {
+            while (entry != null) {
+                values[idx++] = entry.key;
+                entry = entry.next;
+            }
+        }
+        return values;
+    }
+
     public void clear() {
         size = 0;
         Arrays.fill(table, null);
@@ -184,6 +199,11 @@ public class LongHashSet {
         @Override
         public synchronized boolean remove(long key) {
             return super.remove(key);
+        }
+
+        @Override
+        public synchronized long[] keys() {
+            return super.keys();
         }
 
         @Override

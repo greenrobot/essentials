@@ -18,6 +18,7 @@ package org.greenrobot.essentials.collections;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -88,6 +89,45 @@ public class LongHashMapTest {
             assertNull(map.get(key));
             assertNull(map.get(keyInt));
         }
+    }
+
+    @Test
+    public void testKeys() {
+        LongHashMap map = new LongHashMap();
+        map.put(0, "a");
+        map.put(-98, "b");
+        map.put(666, "c");
+        map.put(Long.MAX_VALUE, "d");
+        map.remove(666);
+
+        long[] keys = map.keys();
+        assertEquals(3, keys.length);
+        Arrays.sort(keys);
+        assertEquals(-98, keys[0]);
+        assertEquals(0, keys[1]);
+        assertEquals(Long.MAX_VALUE, keys[2]);
+    }
+
+    @Test
+    public void testEntries() {
+        LongHashMap map = new LongHashMap();
+        map.put(0, "a");
+        map.put(-98, "b");
+        map.put(666, "c");
+        map.put(Long.MAX_VALUE, "d");
+        map.remove(666);
+
+        LongHashMap.Entry[] entries = map.entries();
+        assertEquals(3, entries.length);
+
+        String all = "";
+        for (LongHashMap.Entry entry : entries) {
+            all += "(" + entry.key + "=" + entry.value + ")";
+        }
+
+        assertTrue(all, all.contains("(0=a)"));
+        assertTrue(all, all.contains("(-98=b)"));
+        assertTrue(all, all.contains("(" + Long.MAX_VALUE + "=d)"));
     }
 
 }
