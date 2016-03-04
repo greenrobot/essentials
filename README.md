@@ -6,6 +6,8 @@ greenrobot's Essentials library provides general purpose utilities for Android a
 
 Features
 --------
+See [Website](http://greenrobot.org/essentials/features/).
+
 The Utility classes cover [stream-based IO](java-common/src/main/java/de/greenrobot/common/io/IoUtils.java), [files](java-common/src/main/java/de/greenrobot/common/io/FileUtils.java), [strings](java-common/src/main/java/de/greenrobot/common/StringUtils.java), and [date/time](java-common/src/main/java/de/greenrobot/common/DateUtils.java). There are also efficient [hash map](java-common/src/main/java/de/greenrobot/common/LongHashMap.java) and [hash set](java-common/src/main/java/de/greenrobot/common/LongSetMap.java) implementation for primitive long keys.
    
 Another important part of Essentials are [hash functions](hash-functions.md). Our Murmur3A&F implementations are the fastest Java implementations known to us. Murmur3 hash functions are one of today's best hash functions available with excellent properties. At 3,6 GByte/s, we measured our Murmur3F implementation to outperform Guava's by factor 10. Find more information on the [hash functions page](hash-functions.md) or jump directly to our [Java hash function benchmark PDF](web-resources/hash-functions-benchmark.pdf).
@@ -88,6 +90,21 @@ Currently, Maven is used to build greenrobot-common. Inside of [build-common](bu
         <relativePath></relativePath>
     </parent>
 
+Homepage, Links
+---------------
+For more details on greenrobot Essentials please check the [Essentials' website](http://greenrobot.org/essentials/). Here are some direct links you may find useful:
+
+[Features](http://greenrobot.org/essentials/features/)
+
+[Changelog](http://greenrobot.org/essentials/changelog/)
+
+
+License
+-------
+Copyright (C) 2012-2016 Markus Junginger, greenrobot (http://greenrobot.org)
+
+EventBus binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
+
 More Open Source by greenrobot
 ==============================
 [__EventBus__](https://github.com/greenrobot/EventBus) is a central publish/subscribe bus for Android with optional delivery threads, priorities, and sticky events. A great tool to decouple components (e.g. Activities, Fragments, logic components) from each other. 
@@ -96,31 +113,3 @@ More Open Source by greenrobot
 
 [Follow us on Google+](https://plus.google.com/b/114381455741141514652/+GreenrobotDe/posts) to stay up to date.
 
-Changelog
-=========
-Version 2.3.1 (15-Jan-2016)
----------------------------
-* Minor ObjectCache improvements: added statistics (hits, misses, ...), getting removes entries with cleared references proactively
-
-Version 2.3.0 (08-Jan-2016)
----------------------------
-* Improved ObjectCache: now supports soft/weak/strong references, maximum size (clearing the entries putted first), and time-based expiration
-
-Version 2.2.0 (10-Dec-2015)
----------------------------
-* New: Multimaps (ListMap and SetMap)
-
-Version 2.1.0 (23-Nov-2015)
----------------------------
-* Murmur3F: added update methods for long values
-* Added LimitedInputStream: limits bytes that can be read from an InputStream (useful if your stream contains separate sections of known lengths)
-
-Version 2.0.0 (04-Nov-2014)
----------------------------
-First open source release.
-
-Versions before 2.0.0
----------------------
-Used internally only inside greenrobot.
-
-History: The roots go back to 2009 when we started a general purpose library for Android. In 2013, we noticed that parts of our Android library would be useful for some Java projects we do. So we moved the parts that don't depend on Android into a new project. Internally, we referred to this as java-common, which is still the artifact name. In late 2014, we decided to open source it as greenrobot-common.
