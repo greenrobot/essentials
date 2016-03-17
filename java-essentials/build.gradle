@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'checkstyle'
 
 archivesBaseName = 'essentials'
 group = 'org.greenrobot'
@@ -60,6 +61,11 @@ signing {
     } else {
         println "Signing information missing/incomplete for ${project.name}"
     }
+}
+
+checkstyle {
+    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle-greenrobot.xml")
+    configProperties.checkstyleSuppressionsFile = file("checkstyle-suppressions.xml")
 }
 
 uploadArchives {

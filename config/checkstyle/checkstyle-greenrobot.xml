@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<module name="Checker">
+	<property name="charset" value="UTF-8" />
+
+	<!-- http://checkstyle.sourceforge.net/config_sizes.html -->
+	<module name="FileLength">
+		<property name="max" value="1500" />
+	</module>
+
+	<!-- http://checkstyle.sourceforge.net/config_whitespace.html -->
+	<module name="FileTabCharacter" />
+
+	<!-- http://checkstyle.sourceforge.net/config_regexp.html -->
+	<!-- Trailing spaces -->
+	<module name="RegexpSingleline">
+		<property name="format" value="[^\s\*]\s+$" />
+		<property name="message" value="Line has trailing spaces." />
+	</module>
+
+	<!-- Space after 'for' and 'if' -->
+	<module name="RegexpSingleline">
+		<property name="format" value="^\s*(for|if)\(" />
+		<property name="message" value="Space needed before opening parenthesis after for/if." />
+	</module>
+
+	<!-- For each spacing -->
+	<module name="RegexpSingleline">
+		<property name="format" value="^\s*for \(.*?([^ ]:|:[^ ])" />
+		<property name="message" value="Space needed around ':' character." />
+	</module>
+
+	<!-- http://checkstyle.sourceforge.net/config.html -->
+	<module name="SuppressionFilter">
+		<property name="file" value="${checkstyleSuppressionsFile}"/>
+	</module>
+
+	<module name="TreeWalker">
+		<!--<property name="cacheFile" value="${checkstyle.cache.file}" />-->
+
+		<!-- http://checkstyle.sourceforge.net/config_imports.html -->
+		<module name="IllegalImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
+
+
+		<!-- http://checkstyle.sourceforge.net/config_javadoc.html -->
+		<!-- Seems to get confused with annotations: <module name="JavadocType"> 
+			<property name="scope" value="protected" /> </module> -->
+
+
+		<!-- http://checkstyle.sourceforge.net/config_blocks.html -->
+		<module name="EmptyBlock">
+			<property name="option" value="text" />
+		</module>
+		<module name="LeftCurly" />
+		<module name="RightCurly" />
+
+
+		<!-- http://checkstyle.sourceforge.net/config_coding.html -->
+		<module name="CovariantEquals" />
+		<module name="EmptyStatement" />
+		<module name="EqualsHashCode" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="NestedForDepth">
+			<property name="max" value="4" />
+		</module>
+		<module name="NestedIfDepth">
+			<property name="max" value="5" />
+		</module>
+		<module name="NestedTryDepth">
+			<property name="max" value="4" />
+		</module>
+		<module name="IllegalType" />
+		<module name="IllegalThrows" />
+		<module name="ExplicitInitialization" />
+		<module name="DefaultComesLast" />
+		<module name="OneStatementPerLine" />
+		<!-- DeclarationOrder cannot differenciate between static and non-static 
+			methods. Always complains about putting static methods before constructors. -->
+		<!-- <module name="DeclarationOrder" /> -->
+
+
+		<!-- http://checkstyle.sourceforge.net/config_metrics.html -->
+		<module name="BooleanExpressionComplexity">
+			<property name="max" value="5" />
+		</module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="15"/>
+        </module>
+		<module name="NPathComplexity" />
+		<module name="JavaNCSS" />
+
+
+		<!-- http://checkstyle.sourceforge.net/config_misc.html -->
+		<module name="UpperEll" />
+		<module name="ArrayTypeStyle" />
+		<module name="OuterTypeFilename" />
+		<!-- Indentation has problems with line wrapping, and has limited configuration 
+			options. -->
+		<!-- <module name="Indentation"> <property name="caseIndent" value="0" 
+			/> </module> -->
+		<!-- Optional: Check for Author info in comments. -->
+		<!-- Not really a TODO, but TodoComment takes a regex. -->
+		<!-- <module name="TodoComment"> <property name="format" value="[Aa][Uu][Tt][Hh][Oo][Rr]" 
+			/> </module> -->
+
+		<!-- http://checkstyle.sourceforge.net/config_modifier.html -->
+		<module name="RedundantModifier" />
+
+
+		<!-- http://checkstyle.sourceforge.net/config_naming.html -->
+		<module name="LocalFinalVariableName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="MethodName" />
+		<module name="PackageName" />
+		<module name="ParameterName" />
+		<module name="TypeName" />
+
+		<!-- http://checkstyle.sourceforge.net/config_regexp.html -->
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="System\.out\.println" />
+		</module>
+
+		<!-- http://checkstyle.sourceforge.net/config_sizes.html -->
+		<module name="ExecutableStatementCount">
+			<property name="max" value="100" />
+		</module>
+		<module name="LineLength">
+			<property name="max" value="120" />
+		</module>
+		<module name="MethodLength">
+			<property name="max" value="100" />
+		</module>
+		<module name="MethodCount">
+			<property name="maxTotal" value="100" />
+		</module>
+		<module name="OuterTypeNumber" />
+
+
+		<!-- http://checkstyle.sourceforge.net/config_whitespace.html -->
+		<module name="GenericWhitespace" />
+		<module name="EmptyForInitializerPad" />
+		<module name="EmptyForIteratorPad" />
+		<module name="MethodParamPad" />
+		<module name="NoWhitespaceAfter">
+			<property name="tokens"
+				value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS" />
+		</module>
+		<module name="NoWhitespaceBefore" />
+		<module name="ParenPad" />
+		<module name="TypecastParenPad" />
+		<module name="WhitespaceAfter" />
+		<module name="WhitespaceAround" />
+
+	</module>
+</module>
