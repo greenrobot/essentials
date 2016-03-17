@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
 
 archivesBaseName = 'essentials'
 group = 'org.greenrobot'
@@ -66,6 +67,22 @@ signing {
 checkstyle {
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle-greenrobot.xml")
     configProperties.checkstyleSuppressionsFile = file("checkstyle-suppressions.xml")
+}
+
+findbugs {
+    toolVersion = '3.0.1'
+    excludeFilter = file("findbugs-exclude.xml")
+    effort = 'max'
+    reportLevel = 'medium'
+    sourceSets = [sourceSets.main]
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        // switch to html report
+        xml.enabled = false
+        html.enabled = true
+    }
 }
 
 uploadArchives {
