@@ -23,4 +23,19 @@
         <Bug pattern="VO_VOLATILE_INCREMENT"/>
     </Match>
 
+    <!-- Ignore default encoding in 3rd party code -->
+    <Match>
+        <Class name="org.greenrobot.essentials.Base64"/>
+        <Bug pattern="DM_DEFAULT_ENCODING"/>
+    </Match>
+
+    <!-- Ignore no default switch statement -->
+    <Match>
+        <Or>
+            <Class name="org.greenrobot.essentials.hash.Murmur3A"/>
+            <Class name="org.greenrobot.essentials.hash.Murmur3F"/>
+        </Or>
+        <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+    </Match>
+
 </FindBugsFilter>

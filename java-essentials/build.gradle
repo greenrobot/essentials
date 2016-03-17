@@ -67,13 +67,15 @@ signing {
 checkstyle {
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle-greenrobot.xml")
     configProperties.checkstyleSuppressionsFile = file("checkstyle-suppressions.xml")
+    sourceSets = [sourceSets.main]
 }
 
 findbugs {
     toolVersion = '3.0.1'
     excludeFilter = file("findbugs-exclude.xml")
     effort = 'max'
-    reportLevel = 'medium'
+    // use reportLevel='medium' for more issues
+    reportLevel = 'high'
     sourceSets = [sourceSets.main]
 }
 
