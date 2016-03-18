@@ -14,9 +14,14 @@ public class BenchmarkRunner {
         final String className = args[0];
         final int times = Integer.parseInt(args[1]);
         final int warmUpSeconds = Integer.parseInt(args[2]);
+        final boolean useWallTime = args[3].equals("wall");
 
         final Runnable test = (Runnable) Class.forName(className).newInstance();
-        run(test, times, warmUpSeconds);
+        if (useWallTime) {
+            runWallTime(test, times, warmUpSeconds);
+        } else {
+            run(test, times, warmUpSeconds);
+        }
     }
 
     public static void run(Runnable test, int times, int warmUpSeconds) {
@@ -36,6 +41,28 @@ public class BenchmarkRunner {
             final long startCpuTime = threadMXBean.getCurrentThreadCpuTime();
             test.run();
             final long endCpuTime = threadMXBean.getCurrentThreadCpuTime();
+            results.add((endCpuTime - startCpuTime) / 1e6);
+        }
+
+        out.println(testName + ": " + getMedian(results) + " ms");
+    }
+
+    public static void runWallTime(Runnable test, int times, int warmUpSeconds) {
+        final long warmUpNs = warmUpSeconds * 1_000_000_000L;
+        final String testName = getTestName(test);
+        err.println("Running " + testName + " " + times + " times.");
+        err.println("Warming up for " + warmUpSeconds + " seconds...");
+        final long warmStartCpuTime = System.nanoTime();
+        // warm up
+        while (System.nanoTime() < warmStartCpuTime + warmUpNs) {
+            test.run();
+        }
+        err.println("Run testing");
+        final List<Double> results = new ArrayList<>(times);
+        for (int i = 0; i < times; i++) {
+            final long startCpuTime = System.nanoTime();
+            test.run();
+            final long endCpuTime = System.nanoTime();
             results.add((endCpuTime - startCpuTime) / 1e6);
         }
 

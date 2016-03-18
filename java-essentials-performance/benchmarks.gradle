@@ -1,5 +1,5 @@
 /** Runs benchmark in separate JVM */
-def benchmark(className, times, warmUpSeconds) {
+def benchmark(className, times, warmUpSeconds, useWallTime = false) {
     def nullOutputStream = new OutputStream() {
         @Override
         public void write(int b) {}
@@ -7,7 +7,8 @@ def benchmark(className, times, warmUpSeconds) {
     project.javaexec {
         main = 'org.greenrobot.essentials.javaperf.BenchmarkRunner'
         classpath = project.sourceSets.main.runtimeClasspath
-        args = ["org.greenrobot.essentials.javaperf.${className}", "$times", "$warmUpSeconds"]
+        args = ["org.greenrobot.essentials.javaperf.${className}", "$times", "$warmUpSeconds",
+                useWallTime ? "wall" : "nowall"]
         errorOutput = nullOutputStream
     }
 }
@@ -18,6 +19,12 @@ def vs(classNameA, classNameB, times, warmUpSeconds) {
     benchmark classNameB, times, warmUpSeconds
 }
 
+/** Runs each of 2 benchmarks in separate JVM with wall time (for measurement in separate threads) */
+def vsWall(classNameA, classNameB, times, warmUpSeconds) {
+    benchmark classNameA, times, warmUpSeconds, true
+    benchmark classNameB, times, warmUpSeconds, true
+}
+
 task perfLongHashSet(dependsOn: 'classes') << {
     vs 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
     vs 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
@@ -26,4 +33,8 @@ task perfLongHashSet(dependsOn: 'classes') << {
 task perfLongHashMap(dependsOn: 'classes') << {
     vs 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
     vs 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
+}
+
+task perfPipelineStream(dependsOn: 'classes') << {
+    vsWall 'PipelineStreamBenchmark$StdImpl', 'PipelineStreamBenchmark$LibImpl', 100, 10
 }
