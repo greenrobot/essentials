@@ -47,3 +47,8 @@ task perfStringSplit(dependsOn: 'classes') << {
 task perfStringHex(dependsOn: 'classes') << {
     vs 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
 }
+
+task allBenchmarks {
+    dependsOn perfLongHashSet, perfLongHashMap, perfPipelineStream,
+              perfStringSplit, perfStringHex
+}
