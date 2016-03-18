@@ -1,0 +1,29 @@
+/** Runs benchmark in separate JVM */
+def benchmark(className, times, warmUpSeconds) {
+    def nullOutputStream = new OutputStream() {
+        @Override
+        public void write(int b) {}
+    }
+    project.javaexec {
+        main = 'org.greenrobot.essentials.javaperf.BenchmarkRunner'
+        classpath = project.sourceSets.main.runtimeClasspath
+        args = ["org.greenrobot.essentials.javaperf.${className}", "$times", "$warmUpSeconds"]
+        errorOutput = nullOutputStream
+    }
+}
+
+/** Runs each of 2 benchmarks in separate JVM */
+def vs(classNameA, classNameB, times, warmUpSeconds) {
+    benchmark classNameA, times, warmUpSeconds
+    benchmark classNameB, times, warmUpSeconds
+}
+
+task perfLongHashSet(dependsOn: 'classes') << {
+    vs 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
+    vs 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
+}
+
+task perfLongHashMap(dependsOn: 'classes') << {
+    vs 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
+    vs 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
+}
