@@ -38,6 +38,10 @@ android {
         testApplicationId "de.greenrobot.essentials.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 /** Run this task to regenerate tests classes in this project to match tests in the main project */
