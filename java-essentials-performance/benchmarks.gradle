@@ -43,3 +43,7 @@ task perfStringSplit(dependsOn: 'classes') << {
     vs 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
     vs 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
 }
+
+task perfStringHex(dependsOn: 'classes') << {
+    vs 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
+}
