@@ -23,6 +23,8 @@ repositories {
 
 configurations {
     deployerJars
+    // include test classes and their dependencies
+    tests.extendsFrom testRuntime
 }
 
 dependencies {
@@ -49,10 +51,20 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+// build a jar with all test classes to allow usage as dependency in android test project
+// https://discuss.gradle.org/t/how-do-i-declare-a-dependency-on-a-modules-test-code/7172/9
+task testJar(type: Jar) {
+    classifier "test"
+    from sourceSets.test.output
+    // exclude tests which can not run on Android
+    exclude '**/*Jvm*'
+}
+
 artifacts {
     archives jar
     archives javadocJar
     archives sourcesJar
+    tests testJar
 }
 
 signing {
