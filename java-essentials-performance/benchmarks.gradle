@@ -38,3 +38,8 @@ task perfLongHashMap(dependsOn: 'classes') << {
 task perfPipelineStream(dependsOn: 'classes') << {
     vsWall 'PipelineStreamBenchmark$StdImpl', 'PipelineStreamBenchmark$LibImpl', 100, 10
 }
+
+task perfStringSplit(dependsOn: 'classes') << {
+    vs 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
+    vs 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
+}
