@@ -1,0 +1,54 @@
+/** Runs benchmark in separate JVM */
+def benchmark(className, times, warmUpSeconds, useWallTime = false) {
+    def nullOutputStream = new OutputStream() {
+        @Override
+        public void write(int b) {}
+    }
+    project.javaexec {
+        main = 'org.greenrobot.essentials.javaperf.BenchmarkRunner'
+        classpath = project.sourceSets.main.runtimeClasspath
+        args = ["org.greenrobot.essentials.javaperf.${className}", "$times", "$warmUpSeconds",
+                useWallTime ? "wall" : "nowall"]
+        errorOutput = nullOutputStream
+    }
+}
+
+/** Runs each of 2 benchmarks in separate JVM */
+def vs(classNameA, classNameB, times, warmUpSeconds) {
+    benchmark classNameA, times, warmUpSeconds
+    benchmark classNameB, times, warmUpSeconds
+}
+
+/** Runs each of 2 benchmarks in separate JVM with wall time (for measurement in separate threads) */
+def vsWall(classNameA, classNameB, times, warmUpSeconds) {
+    benchmark classNameA, times, warmUpSeconds, true
+    benchmark classNameB, times, warmUpSeconds, true
+}
+
+task perfLongHashSet(dependsOn: 'classes') << {
+    vsWall 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
+    vsWall 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
+}
+
+task perfLongHashMap(dependsOn: 'classes') << {
+    vsWall 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
+    vsWall 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
+}
+
+task perfPipelineStream(dependsOn: 'classes') << {
+    vsWall 'PipelineStreamBenchmark$StdImpl', 'PipelineStreamBenchmark$LibImpl', 100, 10
+}
+
+task perfStringSplit(dependsOn: 'classes') << {
+    vsWall 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
+    vsWall 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
+}
+
+task perfStringHex(dependsOn: 'classes') << {
+    vsWall 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
+}
+
+task allBenchmarks {
+    dependsOn perfLongHashSet, perfLongHashMap, perfPipelineStream,
+              perfStringSplit, perfStringHex
+}
