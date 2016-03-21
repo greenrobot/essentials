@@ -38,3 +38,39 @@ android {
         abortOnError false
     }
 }
+
+ext.reportsDir = file("$buildDir/outputs/androidTest-results/connected")
+ext.outputReportFile = file("$buildDir/reports/android-performance.tsv")
+
+task generateReport {
+    inputs.dir reportsDir
+    outputs.file outputReportFile
+
+    doLast {
+        // take first file from reports directory
+        def xmlFile = fileTree(dir: reportsDir, include: '*.xml').first()
+        def data = new XmlSlurper().parse(xmlFile)
+        def testId = { testName ->
+            def m = testName =~ /performance\[(\w+)\/((\w+)\/)?(\w+)\]/
+            if (m) [name: m[0][1], subname: m[0][3], impl: m[0][4]] else [:]
+        }
+        def results = data.testcase
+                .collect { testId(it.@name) + [time: it.@time.toString().replaceAll('[.]', ',')] }
+                .findAll { it.name != null }
+                .collect { [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time] }
+
+        def allImpl = results*.impl.unique()
+        def header = ([""] + allImpl).join('\t') + "\n"
+        def tsv = header + results.groupBy { it.name }
+            .collect { name, value ->
+                def times = value.collectEntries { [(it.impl): it.time] }
+                [name] + allImpl.collect { times[it] }
+            }
+            .collect { it.join('\t') }
+            .join('\n')
+
+        outputReportFile.write tsv
+    }
+}
+
+task measurePerformance(dependsOn: ['connectedDebugAndroidTest', 'generateReport'])
