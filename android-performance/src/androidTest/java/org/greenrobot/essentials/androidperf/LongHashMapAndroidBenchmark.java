@@ -7,13 +7,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class LongHashMapAndroidBenchmark extends AbstractAndroidBenchmark {
-    @Parameterized.Parameters(name = "{0}")
+    @Parameterized.Parameters(name = "{0}:{1}")
     public static Collection parameters() {
         return Arrays.asList(new Object[][]{
-            {new LongHashMapBenchmark.StdImpl(), 1},
-            {new LongHashMapBenchmark.LibImpl(), 1},
-            {new LongHashMapBenchmark.StdImplPrealloc(), 1},
-            {new LongHashMapBenchmark.LibImplPrealloc(), 1},
+            {new LongHashMapBenchmark.StdImpl(), 10},
+            {new LongHashMapBenchmark.LibImpl(), 10},
+            {new LongHashMapBenchmark.StdImplPrealloc(), 10},
+            {new LongHashMapBenchmark.LibImplPrealloc(), 10},
         });
     }
 }

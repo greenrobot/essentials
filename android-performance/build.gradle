@@ -49,22 +49,24 @@ task generateReport {
     doLast {
         // take first file from reports directory
         def xmlFile = fileTree(dir: reportsDir, include: '*.xml').first()
-        def data = new XmlSlurper().parse(xmlFile)
-        def testId = { testName ->
-            def m = testName =~ /performance\[(\w+)\/((\w+)\/)?(\w+)\]/
-            if (m) [name: m[0][1], subname: m[0][3], impl: m[0][4]] else [:]
+        def suite = new XmlSlurper().parse(xmlFile)
+        def testData = { testName ->
+            def m = testName =~ /performance\[(\w+)\/((\w+)\/)?(\w+)(:(\d+))?]/
+            if (m) [name: m[0][1], subname: m[0][3], impl: m[0][4], runs: (m[0][6] ?: 1) as int] else [:]
         }
-        def results = data.testcase
-                .collect { testId(it.@name) + [time: it.@time.toString().replaceAll('[.]', ',')] }
+        def results = suite.testcase
+                .collect { testData(it.@name) + [time: it.@time.toString() as float] }
                 .findAll { it.name != null }
-                .collect { [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time] }
+                .collect {
+                    [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time / it.runs]
+                }
 
         def allImpl = results*.impl.unique()
         def header = ([""] + allImpl).join('\t') + "\n"
         def tsv = header + results.groupBy { it.name }
             .collect { name, value ->
                 def times = value.collectEntries { [(it.impl): it.time] }
-                [name] + allImpl.collect { times[it] }
+                [name] + allImpl.collect { times[it].trunc(3) }
             }
             .collect { it.join('\t') }
             .join('\n')
