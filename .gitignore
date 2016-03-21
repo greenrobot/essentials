@@ -6,3 +6,4 @@ bin/
 build/
 target/
 *.iml
+.gradle/
