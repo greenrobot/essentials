@@ -30,6 +30,10 @@ android {
     }
 
     defaultConfig {
+        minSdkVersion 8
+        versionCode 1
+        versionName "1.0"
+
         testApplicationId "de.greenrobot.essentials.androidperformance"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
