@@ -3,9 +3,15 @@ package org.greenrobot.essentials.javaperf;
 import org.greenrobot.essentials.StringUtils;
 
 public class StringSplitBenchmark {
+    static int TINY_REPEAT_COUNT = 2000;
     static int SHORT_REPEAT_COUNT = 1000;
+    static String TINY_STRING = "John Doe";
     static String SHORT_STRING = "The quick brown fox jumps over the lazy dog";
     static String LONG_STRING = generateLongString(10000);
+
+    public static void main(String[] args) {
+        BenchmarkRunner.run(new ShortLibImpl(), 100, 3);
+    }
 
     private StringSplitBenchmark() {
     }
@@ -50,6 +56,30 @@ public class StringSplitBenchmark {
         @Override
         public String toString() {
             return "StringSplit/Short/Std";
+        }
+    }
+
+    public static class TinyLibImpl implements Runnable {
+        @Override
+        public void run() {
+            int count = 0;
+            for (int i = 0; i < TINY_REPEAT_COUNT; i++) {
+                final String[] strings = StringUtils.split(TINY_STRING, ' ');
+                count += strings.length;
+            }
+            System.err.println("count: " + count);
+        }
+    }
+
+    public static class TinyStdImpl implements Runnable {
+        @Override
+        public void run() {
+            int count = 0;
+            for (int i = 0; i < TINY_REPEAT_COUNT; i++) {
+                final String[] strings = TINY_STRING.split(" ");
+                count += strings.length;
+            }
+            System.err.println("count: " + count);
         }
     }
 

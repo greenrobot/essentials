@@ -40,6 +40,7 @@ task perfPipelineStream(dependsOn: 'classes') << {
 }
 
 task perfStringSplit(dependsOn: 'classes') << {
+    vsWall 'StringSplitBenchmark$TinyStdImpl', 'StringSplitBenchmark$TinyLibImpl', 10000, 10
     vsWall 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
     vsWall 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
 }
