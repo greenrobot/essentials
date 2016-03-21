@@ -16,6 +16,9 @@ public class LongHashSetBenchmark {
         BenchmarkRunner.runWallTime(new LibImpl(), RUN_COUNT, WARM_UP_TIME_S);
     }
 
+    private LongHashSetBenchmark() {
+    }
+
     public static class LibImpl implements Runnable {
         private final int initialCapacity;
 
@@ -53,6 +56,11 @@ public class LongHashSetBenchmark {
                     set.remove(key);
                 }
             }
+        }
+
+        @Override
+        public String toString() {
+            return "LongHashSet/Dynamic/Lib";
         }
     }
 
@@ -94,17 +102,32 @@ public class LongHashSetBenchmark {
                 }
             }
         }
+
+        @Override
+        public String toString() {
+            return "LongHashSet/Dynamic/Std";
+        }
     }
 
     public static class LibImplPrealloc extends LibImpl {
         public LibImplPrealloc() {
             super(N);
         }
+
+        @Override
+        public String toString() {
+            return "LongHashSet/Prealloc/Lib";
+        }
     }
 
     public static class StdImplPrealloc extends StdImpl {
         public StdImplPrealloc() {
             super(N);
+        }
+
+        @Override
+        public String toString() {
+            return "LongHashSet/Prealloc/Std";
         }
     }
 }

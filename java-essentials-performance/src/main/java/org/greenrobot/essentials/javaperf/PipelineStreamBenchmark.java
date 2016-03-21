@@ -72,11 +72,19 @@ public class PipelineStreamBenchmark {
         }
     }
 
+    private PipelineStreamBenchmark() {
+    }
+
     public static class LibImpl implements Runnable {
         @Override
         public void run() {
             final PipelineOutputStream stream = new PipelineOutputStream();
             transfer(stream.getInputStream(), stream);
+        }
+
+        @Override
+        public String toString() {
+            return "PipelineStream/Lib";
         }
     }
 
@@ -90,6 +98,11 @@ public class PipelineStreamBenchmark {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public String toString() {
+            return "PipelineStream/Std";
         }
     }
 }

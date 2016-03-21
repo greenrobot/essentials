@@ -16,6 +16,9 @@ public class LongHashMapBenchmark {
         BenchmarkRunner.runWallTime(new LibImpl(), RUN_COUNT, WARM_UP_TIME_S);
     }
 
+    private LongHashMapBenchmark() {
+    }
+
     public static class LibImpl implements Runnable {
         private final int initialCapacity;
 
@@ -54,6 +57,11 @@ public class LongHashMapBenchmark {
                     map.remove(key);
                 }
             }
+        }
+
+        @Override
+        public String toString() {
+            return "LongHashMap/Dynamic/Lib";
         }
     }
 
@@ -96,17 +104,32 @@ public class LongHashMapBenchmark {
                 }
             }
         }
+
+        @Override
+        public String toString() {
+            return "LongHashMap/Dynamic/Std";
+        }
     }
 
     public static class LibImplPrealloc extends LibImpl {
         public LibImplPrealloc() {
             super(N);
         }
+
+        @Override
+        public String toString() {
+            return "LongHashMap/Prealloc/Lib";
+        }
     }
 
     public static class StdImplPrealloc extends StdImpl {
         public StdImplPrealloc() {
             super(N);
+        }
+
+        @Override
+        public String toString() {
+            return "LongHashMap/Prealloc/Std";
         }
     }
 }
