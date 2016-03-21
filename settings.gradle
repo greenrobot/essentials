@@ -1,3 +1,4 @@
 include ':java-essentials'
 include ':java-essentials-performance'
 include ':android-test'
+include ':android-performance'
