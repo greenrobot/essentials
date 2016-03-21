@@ -26,13 +26,13 @@ def vsWall(classNameA, classNameB, times, warmUpSeconds) {
 }
 
 task perfLongHashSet(dependsOn: 'classes') << {
-    vs 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
-    vs 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
+    vsWall 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
+    vsWall 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
 }
 
 task perfLongHashMap(dependsOn: 'classes') << {
-    vs 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
-    vs 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
+    vsWall 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
+    vsWall 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
 }
 
 task perfPipelineStream(dependsOn: 'classes') << {
@@ -40,12 +40,12 @@ task perfPipelineStream(dependsOn: 'classes') << {
 }
 
 task perfStringSplit(dependsOn: 'classes') << {
-    vs 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
-    vs 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
+    vsWall 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
+    vsWall 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
 }
 
 task perfStringHex(dependsOn: 'classes') << {
-    vs 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
+    vsWall 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
 }
 
 task allBenchmarks {

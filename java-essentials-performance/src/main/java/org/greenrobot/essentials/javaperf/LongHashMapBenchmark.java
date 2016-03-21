@@ -13,7 +13,7 @@ public class LongHashMapBenchmark {
 
     // this is only for development purposes or to run tests separately. For automated benchmarking use gradle
     public static void main(String[] args) {
-        BenchmarkRunner.run(new LibImpl(), RUN_COUNT, WARM_UP_TIME_S);
+        BenchmarkRunner.runWallTime(new LibImpl(), RUN_COUNT, WARM_UP_TIME_S);
     }
 
     public static class LibImpl implements Runnable {
