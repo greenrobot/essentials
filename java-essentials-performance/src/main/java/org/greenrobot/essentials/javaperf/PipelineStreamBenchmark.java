@@ -55,7 +55,8 @@ public class PipelineStreamBenchmark {
             @Override
             public void run() {
                 try {
-                    while (inputStream.read() != -1);
+                    final byte[] buffer = new byte[SIZES[SIZES.length - 1]];
+                    while (inputStream.read(buffer, 0, buffer.length) != -1);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } finally {
