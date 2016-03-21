@@ -16,16 +16,19 @@
 
 package org.greenrobot.essentials;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StringUtilsTest extends TestCase {
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
+public class StringUtilsTest {
     private final static String LINES = "Line 1\nLine 2\n\nLine 4\r\nLine 5\r\n\r\nLine 7";
 
+    @Test
     public void testSplitLines() {
         String[] lines = StringUtils.splitLines(LINES, false);
         assertEquals(7, lines.length);
@@ -39,6 +42,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("Line 7", lines[6]);
     }
 
+    @Test
     public void testSplitLinesSkipEmptyLines() {
         String[] lines = StringUtils.splitLines(LINES, true);
         assertEquals(5, lines.length);
@@ -50,6 +54,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("Line 7", lines[4]);
     }
 
+    @Test
     public void testFindLinesContaining() {
         String text = "LiXXXne 1\nLine 2\n\nLXXXine 4\r\nLine 5\r\nXXX\r\nLine 7";
         List<String> lines = StringUtils.findLinesContaining(text, "XXX");
@@ -60,6 +65,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("XXX", lines.get(2));
     }
 
+    @Test
     public void testConcatLines() {
         String[] lines = StringUtils.splitLines(LINES, false);
         ArrayList<String> list = new ArrayList<String>();
@@ -70,6 +76,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("Line 1\nLine 2\n\nLine 4\nLine 5\n\nLine 7", concated);
     }
 
+    @Test
     public void testJoinIterable() {
         assertEquals("", StringUtils.join((Iterable) null, "blub"));
         List<String> fooBarList = Arrays.asList("foo", "bar");
@@ -77,6 +84,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("foo, bar", StringUtils.join(fooBarList, ", "));
     }
 
+    @Test
     public void testJoinIntArray() {
         assertEquals("", StringUtils.join((int[]) null, "blub"));
         int[] ints = {42, 23};
@@ -84,6 +92,7 @@ public class StringUtilsTest extends TestCase {
         assertEquals("42, 23", StringUtils.join(ints, ", "));
     }
 
+    @Test
     public void testJoinStringArray() {
         assertEquals("", StringUtils.join((String[]) null, "blub"));
         String[] fooBar = {"foo", "bar"};
@@ -91,25 +100,15 @@ public class StringUtilsTest extends TestCase {
         assertEquals("foo, bar", StringUtils.join(fooBar, ", "));
     }
 
+    @Test
     public void testEllipsize() {
         assertEquals("He...", StringUtils.ellipsize("Hello world", 5));
         assertEquals("Hell>", StringUtils.ellipsize("Hello world", 5, ">"));
     }
 
+    @Test
     public void testHex() {
-        assertTrue(Arrays.equals(DatatypeConverter.parseHexBinary("0066FF"), StringUtils.parseHex("0066FF")));
-        assertEquals(-1, StringUtils.parseHex("FF")[0]);
-
-        for (int i = 0; i < 256 * 256; i++) {
-            byte[] bytes = {(byte) (i >> 8), (byte) i};
-            String hexExpected = DatatypeConverter.printHexBinary(bytes);
-            String hex = StringUtils.hex(bytes);
-            assertEquals(hexExpected, hex);
-
-            byte[] bytes2 = StringUtils.parseHex(hex);
-            assertEquals(bytes[0], bytes2[0]);
-            assertEquals(bytes[1], bytes2[1]);
-        }
+        assertArrayEquals(new byte[] {0, 0x66, -1}, StringUtils.parseHex("0066FF"));
     }
 
 }

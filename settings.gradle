@@ -1,1 +1,2 @@
 include ':java-essentials'
+include ':android-test'

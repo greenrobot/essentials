@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    androidTestCompile project(':java-essentials')
+    androidTestCompile project(path: ':java-essentials', configuration: 'tests')
+    androidTestCompile 'com.android.support.test:runner:0.4.1'
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+}
+
+android {
+    buildToolsVersion '23.0.2' // When updating, don't forget to adjust .travis.yml
+    compileSdkVersion 19
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        minSdkVersion 8
+        versionCode 1
+        versionName "1.0"
+
+        testApplicationId "de.greenrobot.essentials.test"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+}
+
+/** Run this task to regenerate tests classes in this project to match tests in the main project */
+task generateTestsFromJavaProject << {
+    def testsSrcDir = findProject(':java-essentials').file('src/test/java')
+    def tests = fileTree(dir: testsSrcDir, include: '**/*Test.java')
+    def FILTER = { file ->
+        !file.name.contains("Abstract")
+    }
+    tests.filter(FILTER).each { sourceFile ->
+        def className = sourceFile.name[0..<sourceFile.name.lastIndexOf('.java')]
+        def relPath = sourceFile.path.substring(testsSrcDir.path.length())
+        def pkgName = relPath[1..<relPath.lastIndexOf(File.separator)].replace(File.separator, '.')
+        def targetDir = file("src/androidTest/java${relPath}").parentFile
+        targetDir.mkdirs()
+        def targetFile = new File(targetDir, "Android${className}.java")
+        def ignore = sourceFile.name.contains('Speed')
+        println "Found test class $className, pkgName: $pkgName"
+        targetFile.write(
+"""/* automatically generated with gradle generateTestsFromJavaProject task */
+package $pkgName;
+${ignore ? "\n@org.junit.Ignore" : ""}
+public class Android$className extends $className {
+}
+"""
+        )
+    }
+}
