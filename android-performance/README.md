@@ -7,6 +7,6 @@ It's possible to run them in Android Studio/IntelliJ Idea (open statistics windo
 
 If you would like to create a beautiful table, you can run benchmarks and generate complete TSV-report, using:
 
-    ./gradlew android-performance:measure-performance
+    ./gradlew android-performance:measurePerformance
 
 The report can be found then in **android-performance/build/reports/android-performance.tsv** file. It can be imported into Google Spread Sheets, for example.
