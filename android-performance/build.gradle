@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile project(':java-essentials-performance')
+    compile 'com.android.support.test:runner:0.4.1'
+    compile 'com.android.support.test:rules:0.4.1'
+}
+
+android {
+    buildToolsVersion '23.0.2' // When updating, don't forget to adjust .travis.yml
+    compileSdkVersion 19
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        minSdkVersion 8
+        versionCode 1
+        versionName "1.0"
+
+        testApplicationId "de.greenrobot.essentials.androidperformance"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+ext.reportsDir = file("$buildDir/outputs/androidTest-results/connected")
+ext.outputReportFile = file("$buildDir/reports/android-performance.tsv")
+
+task generateReport {
+    inputs.dir reportsDir
+    outputs.file outputReportFile
+
+    doLast {
+        // take first file from reports directory
+        def xmlFile = fileTree(dir: reportsDir, include: '*.xml').first()
+        def suite = new XmlSlurper().parse(xmlFile)
+        def testData = { testName ->
+            def m = testName =~ /performance\[(\w+)\/((\w+)\/)?(\w+)(:(\d+))?]/
+            if (m) [name: m[0][1], subname: m[0][3], impl: m[0][4], runs: (m[0][6] ?: 1) as int] else [:]
+        }
+        def results = suite.testcase
+                .collect { testData(it.@name) + [time: it.@time.toString() as float] }
+                .findAll { it.name != null }
+                .collect {
+                    [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time / it.runs]
+                }
+
+        def allImpl = results*.impl.unique()
+        def header = ([""] + allImpl).join('\t') + "\n"
+        def tsv = header + results.groupBy { it.name }
+            .collect { name, value ->
+                def times = value.collectEntries { [(it.impl): it.time] }
+                [name] + allImpl.collect { times[it].trunc(3) }
+            }
+            .collect { it.join('\t') }
+            .join('\n')
+
+        outputReportFile.write tsv
+    }
+}
+
+task measurePerformance(dependsOn: ['connectedDebugAndroidTest', 'generateReport'])

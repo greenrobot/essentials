@@ -16,12 +16,20 @@ public class StringHexBenchmark {
         return bytes;
     }
 
+    private StringHexBenchmark() {
+    }
+
     public static class LibImpl implements Runnable {
         @Override
         public void run() {
             final String hex = StringUtils.hex(bytes);
             // avoid optimization by HotSpot
             System.err.println("length: " + hex.length());
+        }
+
+        @Override
+        public String toString() {
+            return "StringHex/Lib";
         }
     }
 
@@ -31,6 +39,11 @@ public class StringHexBenchmark {
             final String hex = DatatypeConverter.printHexBinary(bytes);
             // avoid optimization by HotSpot
             System.err.println("length: " + hex.length());
+        }
+
+        @Override
+        public String toString() {
+            return "StringHex/Std";
         }
     }
 }

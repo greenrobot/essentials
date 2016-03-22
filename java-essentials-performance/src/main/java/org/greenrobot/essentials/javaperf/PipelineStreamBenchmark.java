@@ -55,7 +55,8 @@ public class PipelineStreamBenchmark {
             @Override
             public void run() {
                 try {
-                    while (inputStream.read() != -1);
+                    final byte[] buffer = new byte[SIZES[SIZES.length - 1]];
+                    while (inputStream.read(buffer, 0, buffer.length) != -1);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } finally {
@@ -72,11 +73,19 @@ public class PipelineStreamBenchmark {
         }
     }
 
+    private PipelineStreamBenchmark() {
+    }
+
     public static class LibImpl implements Runnable {
         @Override
         public void run() {
             final PipelineOutputStream stream = new PipelineOutputStream();
             transfer(stream.getInputStream(), stream);
+        }
+
+        @Override
+        public String toString() {
+            return "PipelineStream/Lib";
         }
     }
 
@@ -90,6 +99,11 @@ public class PipelineStreamBenchmark {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public String toString() {
+            return "PipelineStream/Std";
         }
     }
 }

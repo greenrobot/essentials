@@ -7,6 +7,9 @@ public class StringSplitBenchmark {
     static String SHORT_STRING = "The quick brown fox jumps over the lazy dog";
     static String LONG_STRING = generateLongString(10000);
 
+    private StringSplitBenchmark() {
+    }
+
     private static String generateLongString(int wordsCount) {
         StringBuilder builder = new StringBuilder();
         String[] words = StringUtils.split(SHORT_STRING, ' ');
@@ -26,6 +29,11 @@ public class StringSplitBenchmark {
             }
             System.err.println("count: " + count);
         }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Short/Lib";
+        }
     }
 
     public static class ShortStdImpl implements Runnable {
@@ -38,6 +46,11 @@ public class StringSplitBenchmark {
             }
             System.err.println("count: " + count);
         }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Short/Std";
+        }
     }
 
     public static class LongLibImpl implements Runnable {
@@ -46,6 +59,11 @@ public class StringSplitBenchmark {
             final String[] strings = StringUtils.split(LONG_STRING, ' ');
             System.err.println("count: " + strings.length);
         }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Long/Lib";
+        }
     }
 
     public static class LongStdImpl implements Runnable {
@@ -53,6 +71,11 @@ public class StringSplitBenchmark {
         public void run() {
             final String[] strings = LONG_STRING.split(" ");
             System.err.println("count: " + strings.length);
+        }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Long/Std";
         }
     }
 }

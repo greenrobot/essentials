@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" package="de.greenrobot.essentials.androidperformanceapp">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="false"
+        android:label="Performance Test" tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
+        <!-- empty application tag -->
+    </application>
+
+</manifest>
