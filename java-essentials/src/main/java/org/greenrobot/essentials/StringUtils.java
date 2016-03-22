@@ -36,26 +36,28 @@ public class StringUtils {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
 
-    /** Splits a String based on a single character, which is usually faster than regex-based String.split(). */
+    /**
+     * Splits a String based on a single character, which is usually faster than regex-based String.split().
+     * NOTE: split("AA;BB;;", ';') == ["AA", "BB", "", ""], this may be different from String.split()
+     *  */
     public static String[] split(String string, char delimiter) {
-        List<String> list = new ArrayList<>();
-        int size = string.length();
+        int delimeterCount = 0;
         int start = 0;
-        for (int i = 0; i < size; i++) {
-            if (string.charAt(i) == delimiter) {
-                if (start < i) {
-                    list.add(string.substring(start, i));
-                } else {
-                    list.add("");
-                }
-                start = i + 1;
-            } else if (i == size - 1) {
-                list.add(string.substring(start, size));
-            }
+        int end;
+        while ((end = string.indexOf(delimiter, start)) != -1) {
+            delimeterCount++;
+            start = end + 1;
         }
-        String[] elements = new String[list.size()];
-        list.toArray(elements);
-        return elements;
+
+        String[] result = new String[delimeterCount + 1];
+        start = 0;
+        for (int i = 0; i < delimeterCount; i++) {
+            end = string.indexOf(delimiter, start);
+            result[i] = string.substring(start, end);
+            start = end + 1;
+        }
+        result[delimeterCount] = string.substring(start, string.length());
+        return result;
     }
 
     /**

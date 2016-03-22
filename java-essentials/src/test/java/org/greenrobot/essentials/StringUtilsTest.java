@@ -55,6 +55,21 @@ public class StringUtilsTest {
     }
 
     @Test
+    public void testSplit() throws Exception {
+        assertArrayEquals(ss("John", "Doe"), StringUtils.split("John Doe", ' '));
+        assertArrayEquals(ss("John", "", "Doe", ""), StringUtils.split("John  Doe ", ' '));
+        assertArrayEquals(ss("", "John", "Doe", ""), StringUtils.split(" John Doe ", ' '));
+        assertArrayEquals(ss("John", "Christoph", "Doe"), StringUtils.split("John Christoph Doe", ' '));
+        assertArrayEquals(ss("John", "", "", "Doe"), StringUtils.split("John,,,Doe", ','));
+        assertArrayEquals(ss("John", "Doe", ""), StringUtils.split("John Doe ", ' '));
+        assertArrayEquals(ss("John", "", "", ""), StringUtils.split("John,,,", ','));
+    }
+
+    private String[] ss(String... values) {
+        return values;
+    }
+
+    @Test
     public void testFindLinesContaining() {
         String text = "LiXXXne 1\nLine 2\n\nLXXXine 4\r\nLine 5\r\nXXX\r\nLine 7";
         List<String> lines = StringUtils.findLinesContaining(text, "XXX");
