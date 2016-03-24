@@ -10,6 +10,8 @@ public class StringSplitAndroidBenchmark extends AbstractAndroidBenchmark {
     @Parameterized.Parameters(name = "{0}")
     public static Collection parameters() {
         return Arrays.asList(new Object[][]{
+            {new StringSplitBenchmark.TinyStdImpl(), 100},
+            {new StringSplitBenchmark.TinyLibImpl(), 100},
             {new StringSplitBenchmark.ShortStdImpl(), 100},
             {new StringSplitBenchmark.ShortLibImpl(), 100},
             {new StringSplitBenchmark.LongStdImpl(), 100},

@@ -69,6 +69,11 @@ public class StringSplitBenchmark {
             }
             System.err.println("count: " + count);
         }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Tiny/Lib";
+        }
     }
 
     public static class TinyStdImpl implements Runnable {
@@ -80,6 +85,11 @@ public class StringSplitBenchmark {
                 count += strings.length;
             }
             System.err.println("count: " + count);
+        }
+
+        @Override
+        public String toString() {
+            return "StringSplit/Tiny/Std";
         }
     }
 
