@@ -12,8 +12,8 @@ public class LongHashMapAndroidBenchmark extends AbstractAndroidBenchmark {
         return Arrays.asList(new Object[][]{
             {new LongHashMapBenchmark.StdImpl(), 10},
             {new LongHashMapBenchmark.LibImpl(), 10},
-            {new LongHashMapBenchmark.StdImplPrealloc(), 10},
-            {new LongHashMapBenchmark.LibImplPrealloc(), 10},
+            {new LongHashMapBenchmark.PreallocStdImpl(), 10},
+            {new LongHashMapBenchmark.PreallocLibImpl(), 10},
         });
     }
 }

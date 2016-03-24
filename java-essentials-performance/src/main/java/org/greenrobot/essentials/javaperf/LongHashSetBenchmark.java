@@ -109,8 +109,8 @@ public class LongHashSetBenchmark {
         }
     }
 
-    public static class LibImplPrealloc extends LibImpl {
-        public LibImplPrealloc() {
+    public static class PreallocLibImpl extends LibImpl {
+        public PreallocLibImpl() {
             super(N);
         }
 
@@ -120,8 +120,8 @@ public class LongHashSetBenchmark {
         }
     }
 
-    public static class StdImplPrealloc extends StdImpl {
-        public StdImplPrealloc() {
+    public static class PreallocStdImpl extends StdImpl {
+        public PreallocStdImpl() {
             super(N);
         }
 
