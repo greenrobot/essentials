@@ -45,10 +45,18 @@ android {
 
 ext.reportsDir = file("$buildDir/outputs/androidTest-results/connected")
 ext.outputReportFile = file("$buildDir/reports/android-performance.tsv")
+if (ext.outputReportFile.exists()) {
+    for (int i = 1; i < 1000; i++) {
+        def f = file("$buildDir/reports/android-performance-${i}.tsv")
+        if (!f.exists()) {
+            ext.outputReportFile = f
+            break;
+        }
+    }
+}
 
 task generateReport {
     inputs.dir reportsDir
-    outputs.file outputReportFile
 
     doLast {
         // take first file from reports directory
