@@ -23,13 +23,14 @@ public class BenchmarkRunner {
         } else {
             median = run(test, times, warmUpSeconds);
         }
-        out.println(test.toString() + ":" + median);
+        out.println(test + ":" + median);
     }
 
     public static double run(Runnable test, int times, int warmUpSeconds) {
         final long warmUpNs = warmUpSeconds * 1_000_000_000L;
         final String testName = getTestName(test);
-        err.println("Running " + testName + " " + times + " times.");
+        err.println("Running " + testName + " " + times + " times on Java " + System.getProperty("java.version") +
+                " (" + System.getProperty("java.vendor") + ")");
         final ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         err.println("Warming up for " + warmUpSeconds + " seconds...");
         final long warmStartCpuTime = threadMXBean.getCurrentThreadCpuTime();
@@ -52,7 +53,8 @@ public class BenchmarkRunner {
     public static double runWallTime(Runnable test, int times, int warmUpSeconds) {
         final long warmUpNs = warmUpSeconds * 1_000_000_000L;
         final String testName = getTestName(test);
-        err.println("Running " + testName + " " + times + " times.");
+        err.println("Running " + testName + " " + times + " times on Java " + System.getProperty("java.version") +
+                " (" + System.getProperty("java.vendor") + ")");
         err.println("Warming up for " + warmUpSeconds + " seconds...");
         final long warmStartCpuTime = System.nanoTime();
         // warm up

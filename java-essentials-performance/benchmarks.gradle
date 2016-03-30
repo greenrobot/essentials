@@ -14,7 +14,8 @@ def benchmark(className, runs, warmUpSeconds, useWallTime = false) {
         classpath = project.sourceSets.main.runtimeClasspath
         args = ["org.greenrobot.essentials.javaperf.${className}", "$runs", "$warmUpSeconds",
                 useWallTime ? "wall" : "nowall"]
-        errorOutput = nullOutputStream
+        // This is odd
+        errorOutput = System.out
         standardOutput = pipe
     }
     def line = input.readLines()[0]
