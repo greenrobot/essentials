@@ -33,6 +33,10 @@ public class SetMap<K, V> extends AbstractMultimap<K, V, Set<V>> {
         this(new HashMap<K, Set<V>>(), false);
     }
 
+    public SetMap( boolean threadSafeSets) {
+        this(new HashMap<K, Set<V>>(), threadSafeSets);
+    }
+
     public SetMap(Map<K, Set<V>> map, boolean threadSafeSets) {
         super(map);
         this.threadSafeSets = threadSafeSets;

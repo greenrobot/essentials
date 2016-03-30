@@ -23,11 +23,10 @@ import java.util.Set;
 /**
  * Combines a Map with List values to provide simple way to store multiple values for a key (multimap).
  * <p>
- * Threading note: methods operating on elements are synchronized because they are not atomic.
+ * Threading note: All methods are synchronized
  */
 public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C> {
     protected Map<K, C> map;
-
 
     public AbstractMultimap(Map<K, C> map) {
         this.map = map;
@@ -41,77 +40,80 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
     }
 
     @Override
-    public int size() {
+    public synchronized int size() {
         return map.size();
     }
 
     @Override
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return map.isEmpty();
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public synchronized boolean containsKey(Object key) {
         return map.containsKey(key);
     }
 
     @Override
-    public boolean containsValue(Object value) {
+    public synchronized boolean containsValue(Object value) {
         return map.containsValue(value);
     }
 
     @Override
-    public C get(Object key) {
+    public synchronized C get(Object key) {
         return map.get(key);
     }
 
-
     @Override
-    public C remove(Object key) {
+    public synchronized C remove(Object key) {
         return map.remove(key);
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
         map.clear();
     }
 
     @Override
-    public Set<K> keySet() {
+    public synchronized Set<K> keySet() {
         return map.keySet();
     }
 
     @Override
-    public Collection<C> values() {
+    public synchronized Collection<C> values() {
         return map.values();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public synchronized boolean equals(Object o) {
         return map.equals(o);
     }
 
     @Override
-    public int hashCode() {
+    public synchronized int hashCode() {
         return map.hashCode();
     }
 
-    public synchronized void putElement(K key, V value) {
+    /**
+     * @return number of elements stored for given key after storing the given value.
+     */
+    public synchronized int putElement(K key, V value) {
         C collection = map.get(key);
         if (collection == null) {
             collection = createNewCollection();
             map.put(key, collection);
         }
         collection.add(value);
+        return collection.size();
     }
 
     @Override
-    public C put(K key, C value) {
+    public synchronized C put(K key, C value) {
         return map.put(key, value);
     }
 
     @Override
-    public Set<Entry<K, C>> entrySet() {
+    public synchronized Set<Entry<K, C>> entrySet() {
         return map.entrySet();
     }
 
@@ -136,6 +138,15 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
                 map.remove(key);
             }
             return removed;
+        }
+    }
+
+    public synchronized int countElements(K key) {
+        C collection = map.get(key);
+        if (collection == null) {
+            return 0;
+        } else {
+            return collection.size();
         }
     }
 

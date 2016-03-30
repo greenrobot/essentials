@@ -33,6 +33,10 @@ public class ListMap<K, V> extends AbstractMultimap<K, V, List<V>> {
         this(new HashMap<K, List<V>>(), false);
     }
 
+    public ListMap(boolean threadSafeLists) {
+        this(new HashMap<K, List<V>>(), threadSafeLists);
+    }
+
     public ListMap(Map<K, List<V>> map, boolean threadSafeLists) {
         super(map);
         this.threadSafeLists = threadSafeLists;
