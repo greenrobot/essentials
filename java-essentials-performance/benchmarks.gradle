@@ -1,16 +1,25 @@
-/** Runs benchmark in separate JVM */
-def benchmark(className, times, warmUpSeconds, useWallTime = false) {
+/**
+ * Runs benchmark in separate JVM
+ * Return output, as a string
+ * */
+def benchmark(className, runs, warmUpSeconds, useWallTime = false) {
     def nullOutputStream = new OutputStream() {
         @Override
         public void write(int b) {}
     }
+    def input = new PipedInputStream()
+    def pipe = new PipedOutputStream(input)
     project.javaexec {
         main = 'org.greenrobot.essentials.javaperf.BenchmarkRunner'
         classpath = project.sourceSets.main.runtimeClasspath
-        args = ["org.greenrobot.essentials.javaperf.${className}", "$times", "$warmUpSeconds",
+        args = ["org.greenrobot.essentials.javaperf.${className}", "$runs", "$warmUpSeconds",
                 useWallTime ? "wall" : "nowall"]
         errorOutput = nullOutputStream
+        standardOutput = pipe
     }
+    def line = input.readLines()[0]
+    println line
+    return line
 }
 
 /** Runs each of 2 benchmarks in separate JVM */
@@ -19,37 +28,60 @@ def vs(classNameA, classNameB, times, warmUpSeconds) {
     benchmark classNameB, times, warmUpSeconds
 }
 
-/** Runs each of 2 benchmarks in separate JVM with wall time (for measurement in separate threads) */
+
 def vsWall(classNameA, classNameB, times, warmUpSeconds) {
     benchmark classNameA, times, warmUpSeconds, true
     benchmark classNameB, times, warmUpSeconds, true
 }
 
-task perfLongHashSet(dependsOn: 'classes') << {
-    vsWall 'LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl', 1000, 5
-    vsWall 'LongHashSetBenchmark$StdImplPrealloc', 'LongHashSetBenchmark$LibImplPrealloc', 1000, 5
-}
+ext.benchmarks = [
+    [tests: ['LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl'], runs: 1000, warmUp: 5],
+    [tests: ['LongHashSetBenchmark$PreallocStdImpl', 'LongHashSetBenchmark$PreallocLibImpl'], runs: 1000, warmUp: 5],
+    [tests: ['LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl'], runs: 1000, warmUp: 5],
+    [tests: ['LongHashMapBenchmark$PreallocStdImpl', 'LongHashMapBenchmark$PreallocLibImpl'], runs: 1000, warmUp: 5],
+    [tests: ['PipelineStreamBenchmark$StdImpl', 'PipelineStreamBenchmark$LibImpl'], runs: 100, warmUp: 10, forceWallTime: true],
+    [tests: ['StringSplitBenchmark$TinyStdImpl', 'StringSplitBenchmark$TinyLibImpl'], runs: 10000, warmUp: 10],
+    [tests: ['StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl'], runs: 10000, warmUp: 10],
+    [tests: ['StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl'], runs: 10000, warmUp: 10],
+    [tests: ['StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl'], runs: 1000, warmUp: 10]
+]
 
-task perfLongHashMap(dependsOn: 'classes') << {
-    vsWall 'LongHashMapBenchmark$StdImpl', 'LongHashMapBenchmark$LibImpl', 1000, 5
-    vsWall 'LongHashMapBenchmark$StdImplPrealloc', 'LongHashMapBenchmark$LibImplPrealloc', 1000, 5
-}
+ext.reportFile = file("$buildDir/reports/performance.tsv")
 
-task perfPipelineStream(dependsOn: 'classes') << {
-    vsWall 'PipelineStreamBenchmark$StdImpl', 'PipelineStreamBenchmark$LibImpl', 100, 10
-}
+// using cpu time for measurements instead of wall time can be specified with -DcpuTime
+ext.useWallTime = !project.hasProperty('cpuTime')
 
-task perfStringSplit(dependsOn: 'classes') << {
-    vsWall 'StringSplitBenchmark$TinyStdImpl', 'StringSplitBenchmark$TinyLibImpl', 10000, 10
-    vsWall 'StringSplitBenchmark$ShortStdImpl', 'StringSplitBenchmark$ShortLibImpl', 10000, 10
-    vsWall 'StringSplitBenchmark$LongStdImpl', 'StringSplitBenchmark$LongLibImpl', 10000, 10
-}
-
-task perfStringHex(dependsOn: 'classes') << {
-    vsWall 'StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl', 1000, 10
-}
-
+/** Runs each of benchmarks in separate JVM with wall time */
 task allBenchmarks {
-    dependsOn perfLongHashSet, perfLongHashMap, perfPipelineStream,
-              perfStringSplit, perfStringHex
+    dependsOn compileJava
+    inputs.sourceDir sourceSets.main.java.srcDirs.first()
+    outputs.file reportFile
+
+    doLast {
+        println "Using ${useWallTime ? 'wall' : 'cpu'} time for benchmarks"
+        def lineResults = benchmarks.collect { bm ->
+            bm.tests.collect { benchmark(it, bm.runs, bm.warmUp, useWallTime || bm.forceWallTime) }
+        }.flatten()
+
+        def testData = { lineResult ->
+            def m = lineResult =~ /(\w+)\/((\w+)\/)?(\w+):([0-9.,]+)/
+            if (m) {
+                def name = m[0][1] + (m[0][3] ? " (${m[0][3]})" : "")
+                [name: name, impl: m[0][4], time: m[0][5] as float]
+            } else [:]
+        }
+        def results = lineResults.collect(testData).findAll{it.name != null}
+        def allImpl = results*.impl.unique()
+        def header = ([""] + allImpl).join('\t') + "\n"
+        def tsv = header +
+            results.groupBy { it.name }
+                .collect { name, value ->
+                    def times = value.collectEntries { [(it.impl): it.time] }
+                    [name] + allImpl.collect { times[it].trunc(3).toString().replaceAll('[.]', ',') }
+                }
+                .collect { it.join('\t') }
+                .join('\n')
+
+        reportFile.write tsv
+    }
 }

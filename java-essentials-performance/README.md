@@ -10,6 +10,13 @@ Running
 
 To run all benchmarks from the root project use:
 
-    ./gradlew java-essentials-performance:allBenchmarks    
+    ./gradlew java-essentials-performance:allBenchmarks
 
-It's possible to run each benchmark separately with corresponding task. See [benchmarks.gradle](benchmarks.gradle) for the list of benchmarks.
+Report
+------
+After running benchmarks you can find report in `java-essentials-performance/build/reports/performance.tsv`
+
+Configuration
+-------------
+To change number of runs or time for warming up see [benchmarks.gradle](benchmarks.gradle).
+

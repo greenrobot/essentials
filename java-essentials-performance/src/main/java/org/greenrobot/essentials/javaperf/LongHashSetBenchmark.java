@@ -9,7 +9,6 @@ public class LongHashSetBenchmark {
     static final int N = 100000;
     static final int WARM_UP_TIME_S = 5;
     static final int RUN_COUNT = 100;
-    static final long SEED = 657483918;
 
     // this is only for development purposes or to run tests separately. For automated benchmarking use gradle
     public static void main(String[] args) {
@@ -19,7 +18,19 @@ public class LongHashSetBenchmark {
     private LongHashSetBenchmark() {
     }
 
-    public static class LibImpl implements Runnable {
+    private static class BaseImpl {
+        final long[] values;
+
+        public BaseImpl() {
+            values = new long[N];
+            final Random random = new Random(657483918);
+            for (int i = 0; i < N; i++) {
+                values[i] = random.nextLong();
+            }
+        }
+    }
+
+    public static class LibImpl extends BaseImpl implements Runnable {
         private final int initialCapacity;
 
         public LibImpl(int initialCapacity) {
@@ -34,24 +45,21 @@ public class LongHashSetBenchmark {
         public void run() {
             final LongHashSet set = new LongHashSet(initialCapacity);
 
-            final Random random1 = new Random(SEED);
-            final Random random2 = new Random(SEED);
-            final Random random3 = new Random(SEED);
+            final long[] values = this.values;
 
             for (int i = 0; i < N; i++) {
-                final long key = random1.nextLong();
-                set.add(key);
+                set.add(values[i]);
             }
             // check contains on every second key and remove it
             for (int i = 0; i < N; i++) {
-                final long key = random2.nextLong() + i % 2;
+                final long key = values[i] + i % 2;
                 if (set.contains(key)) {
                     set.remove(key);
                 }
             }
             // remove the rest
             for (int i = 0; i < N; i++) {
-                final long key = random3.nextLong();
+                final long key = values[i];
                 if (set.contains(key)) {
                     set.remove(key);
                 }
@@ -64,7 +72,7 @@ public class LongHashSetBenchmark {
         }
     }
 
-    public static class StdImpl implements Runnable {
+    public static class StdImpl extends BaseImpl implements Runnable {
         private final int initialCapacity;
 
         public StdImpl(int initialCapacity) {
@@ -79,24 +87,21 @@ public class LongHashSetBenchmark {
         public void run() {
             final HashSet<Long> set = new HashSet<>(initialCapacity);
 
-            final Random random1 = new Random(SEED);
-            final Random random2 = new Random(SEED);
-            final Random random3 = new Random(SEED);
+            final long[] values = this.values;
 
             for (int i = 0; i < N; i++) {
-                final long key = random1.nextLong();
-                set.add(key);
+                set.add(values[i]);
             }
             // check contains on every second key and remove it
             for (int i = 0; i < N; i++) {
-                final long key = random2.nextLong() + i % 2;
+                final long key = values[i] + i % 2;
                 if (set.contains(key)) {
                     set.remove(key);
                 }
             }
             // remove the rest
             for (int i = 0; i < N; i++) {
-                final long key = random3.nextLong();
+                final long key = values[i];
                 if (set.contains(key)) {
                     set.remove(key);
                 }
@@ -109,8 +114,8 @@ public class LongHashSetBenchmark {
         }
     }
 
-    public static class LibImplPrealloc extends LibImpl {
-        public LibImplPrealloc() {
+    public static class PreallocLibImpl extends LibImpl {
+        public PreallocLibImpl() {
             super(N);
         }
 
@@ -120,8 +125,8 @@ public class LongHashSetBenchmark {
         }
     }
 
-    public static class StdImplPrealloc extends StdImpl {
-        public StdImplPrealloc() {
+    public static class PreallocStdImpl extends StdImpl {
+        public PreallocStdImpl() {
             super(N);
         }
 

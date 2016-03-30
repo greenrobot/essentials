@@ -17,14 +17,16 @@ public class BenchmarkRunner {
         final boolean useWallTime = args[3].equals("wall");
 
         final Runnable test = (Runnable) Class.forName(className).newInstance();
+        final double median;
         if (useWallTime) {
-            runWallTime(test, times, warmUpSeconds);
+            median = runWallTime(test, times, warmUpSeconds);
         } else {
-            run(test, times, warmUpSeconds);
+            median = run(test, times, warmUpSeconds);
         }
+        out.println(test.toString() + ":" + median);
     }
 
-    public static void run(Runnable test, int times, int warmUpSeconds) {
+    public static double run(Runnable test, int times, int warmUpSeconds) {
         final long warmUpNs = warmUpSeconds * 1_000_000_000L;
         final String testName = getTestName(test);
         err.println("Running " + testName + " " + times + " times.");
@@ -44,10 +46,10 @@ public class BenchmarkRunner {
             results.add((endCpuTime - startCpuTime) / 1e6);
         }
 
-        out.println(testName + ": " + getMedian(results) + " ms");
+        return getMedian(results);
     }
 
-    public static void runWallTime(Runnable test, int times, int warmUpSeconds) {
+    public static double runWallTime(Runnable test, int times, int warmUpSeconds) {
         final long warmUpNs = warmUpSeconds * 1_000_000_000L;
         final String testName = getTestName(test);
         err.println("Running " + testName + " " + times + " times.");
@@ -66,7 +68,7 @@ public class BenchmarkRunner {
             results.add((endCpuTime - startCpuTime) / 1e6);
         }
 
-        out.println(testName + ": " + getMedian(results) + " ms");
+        return getMedian(results);
     }
 
     private static String getTestName(Runnable test) {

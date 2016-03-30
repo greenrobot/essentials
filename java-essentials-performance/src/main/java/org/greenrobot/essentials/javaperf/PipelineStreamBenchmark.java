@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import static java.lang.System.err;
@@ -32,12 +31,12 @@ public class PipelineStreamBenchmark {
                     final int sizesLength = sizes.length;
                     final byte[] buffer = new byte[sizes[sizesLength - 1]];
 
-                    final Random random = new Random(838324890);
-
+                    int sizeIndex = 0;
                     for (int position = 0; position < STREAM_LENGTH; ) {
-                        final int nextLength = Math.min(sizes[random.nextInt(sizesLength)], STREAM_LENGTH - position);
+                        final int nextLength = Math.min(sizes[sizeIndex], STREAM_LENGTH - position);
                         outputStream.write(buffer, 0, nextLength);
                         position += nextLength;
+                        sizeIndex = (sizeIndex  + 1) % sizes.length;
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
