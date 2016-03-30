@@ -33,7 +33,6 @@ public class StringSplitBenchmark {
                 final String[] strings = StringUtils.split(SHORT_STRING, ' ');
                 count += strings.length;
             }
-            System.err.println("count: " + count);
         }
 
         @Override
@@ -50,7 +49,6 @@ public class StringSplitBenchmark {
                 final String[] strings = SHORT_STRING.split(" ");
                 count += strings.length;
             }
-            System.err.println("count: " + count);
         }
 
         @Override
@@ -67,7 +65,6 @@ public class StringSplitBenchmark {
                 final String[] strings = StringUtils.split(TINY_STRING, ' ');
                 count += strings.length;
             }
-            System.err.println("count: " + count);
         }
 
         @Override
@@ -84,7 +81,6 @@ public class StringSplitBenchmark {
                 final String[] strings = TINY_STRING.split(" ");
                 count += strings.length;
             }
-            System.err.println("count: " + count);
         }
 
         @Override
@@ -97,7 +93,6 @@ public class StringSplitBenchmark {
         @Override
         public void run() {
             final String[] strings = StringUtils.split(LONG_STRING, ' ');
-            System.err.println("count: " + strings.length);
         }
 
         @Override
@@ -110,7 +105,6 @@ public class StringSplitBenchmark {
         @Override
         public void run() {
             final String[] strings = LONG_STRING.split(" ");
-            System.err.println("count: " + strings.length);
         }
 
         @Override

@@ -2,8 +2,9 @@ package org.greenrobot.essentials.javaperf;
 
 import org.greenrobot.essentials.StringUtils;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.Random;
+
+import javax.xml.bind.DatatypeConverter;
 
 public class StringHexBenchmark {
     static final int BYTES_COUNT = 1024 * 1024; // 1 MB
@@ -24,7 +25,9 @@ public class StringHexBenchmark {
         public void run() {
             final String hex = StringUtils.hex(bytes);
             // avoid optimization by HotSpot
-            System.err.println("length: " + hex.length());
+            if (hex.length() != bytes.length * 2) {
+                throw new RuntimeException();
+            }
         }
 
         @Override
@@ -38,7 +41,9 @@ public class StringHexBenchmark {
         public void run() {
             final String hex = DatatypeConverter.printHexBinary(bytes);
             // avoid optimization by HotSpot
-            System.err.println("length: " + hex.length());
+            if (hex.length() != bytes.length * 2) {
+                throw new RuntimeException();
+            }
         }
 
         @Override

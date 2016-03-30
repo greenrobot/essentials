@@ -66,7 +66,6 @@ public class PipelineStreamBenchmark {
 
         try {
             latch.await();
-            err.println("Done");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
