@@ -23,6 +23,9 @@ import java.lang.reflect.Method;
 import java.nio.ByteOrder;
 import java.util.NoSuchElementException;
 
+/**
+ * Retrieves int and long values from byte arrays using sun.misc.Unsafe for fast access.
+ */
 // TODO Test on a big endian machine with Unsafe
 public abstract class PrimitiveArrayUtils {
     private final static PrimitiveArrayUtils instance;
