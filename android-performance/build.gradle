@@ -44,7 +44,7 @@ android {
 }
 
 ext.reportsDir = file("$buildDir/outputs/androidTest-results/connected")
-ext.outputReportFile = file("$buildDir/reports/android-performance.tsv")
+ext.outputReportFile = file("$buildDir/reports/android-performance-0.tsv")
 if (ext.outputReportFile.exists()) {
     for (int i = 1; i < 1000; i++) {
         def f = file("$buildDir/reports/android-performance-${i}.tsv")
@@ -70,7 +70,7 @@ task generateReport {
                 .collect { testData(it.@name) + [time: it.@time.toString() as float] }
                 .findAll { it.name != null }
                 .collect {
-                    [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time / it.runs]
+                    [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time * 1000 / it.runs]
                 }
 
         def allImpl = results*.impl.unique()
@@ -78,7 +78,7 @@ task generateReport {
         def tsv = header + results.groupBy { it.name }
             .collect { name, value ->
                 def times = value.collectEntries { [(it.impl): it.time] }
-                [name] + allImpl.collect { times[it].trunc(3) }
+                [name] + allImpl.collect { times[it].trunc(3).toString().replaceAll('[.]', ',') }
             }
             .collect { it.join('\t') }
             .join('\n')
