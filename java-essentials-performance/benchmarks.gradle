@@ -23,18 +23,6 @@ def benchmark(className, runs, warmUpSeconds, useWallTime = false) {
     return line
 }
 
-/** Runs each of 2 benchmarks in separate JVM */
-def vs(classNameA, classNameB, times, warmUpSeconds) {
-    benchmark classNameA, times, warmUpSeconds
-    benchmark classNameB, times, warmUpSeconds
-}
-
-
-def vsWall(classNameA, classNameB, times, warmUpSeconds) {
-    benchmark classNameA, times, warmUpSeconds, true
-    benchmark classNameB, times, warmUpSeconds, true
-}
-
 ext.benchmarks = [
     [tests: ['LongHashSetBenchmark$StdImpl', 'LongHashSetBenchmark$LibImpl'], runs: 1000, warmUp: 5],
     [tests: ['LongHashSetBenchmark$PreallocStdImpl', 'LongHashSetBenchmark$PreallocLibImpl'], runs: 1000, warmUp: 5],
@@ -47,7 +35,7 @@ ext.benchmarks = [
     [tests: ['StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl'], runs: 1000, warmUp: 10]
 ]
 
-ext.reportFile = file("$buildDir/reports/performance.tsv")
+ext.reportFile = reportFile(file("$buildDir/reports"), "performance-%index%.tsv")
 
 // using cpu time for measurements instead of wall time can be specified with -DcpuTime
 ext.useWallTime = !project.hasProperty('cpuTime')
@@ -56,7 +44,10 @@ ext.useWallTime = !project.hasProperty('cpuTime')
 task allBenchmarks {
     dependsOn compileJava
     inputs.sourceDir sourceSets.main.java.srcDirs.first()
-    outputs.file reportFile
+
+    doFirst {
+        reportFile.parentFile.mkdirs()
+    }
 
     doLast {
         println "Using ${useWallTime ? 'wall' : 'cpu'} time for benchmarks"
@@ -65,10 +56,9 @@ task allBenchmarks {
         }.flatten()
 
         def testData = { lineResult ->
-            def m = lineResult =~ /(\w+)\/((\w+)\/)?(\w+):([0-9.,]+)/
+            def m = lineResult =~ /([^\/]+)\/(\w+):([0-9.,]+)/
             if (m) {
-                def name = m[0][1] + (m[0][3] ? " (${m[0][3]})" : "")
-                [name: name, impl: m[0][4], time: m[0][5] as float]
+                [name: m[0][1], impl: m[0][2], time: m[0][3] as float]
             } else [:]
         }
         def results = lineResults.collect(testData).findAll{it.name != null}

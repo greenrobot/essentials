@@ -69,7 +69,7 @@ public class LongHashMapBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashMap/Dynamic/Lib";
+            return "LongHashMap (Dynamic)/Lib";
         }
     }
 
@@ -112,7 +112,7 @@ public class LongHashMapBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashMap/Dynamic/Std";
+            return "LongHashMap (Dynamic)/Std";
         }
     }
 
@@ -123,7 +123,7 @@ public class LongHashMapBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashMap/Prealloc/Lib";
+            return "LongHashMap (Prealloc)/Lib";
         }
     }
 
@@ -134,7 +134,7 @@ public class LongHashMapBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashMap/Prealloc/Std";
+            return "LongHashMap (Prealloc)/Std";
         }
     }
 }
