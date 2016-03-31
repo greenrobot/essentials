@@ -3,11 +3,12 @@ package org.greenrobot.essentials.javaperf;
 import org.greenrobot.essentials.StringUtils;
 
 public class StringSplitBenchmark {
-    static int TINY_REPEAT_COUNT = 2000;
-    static int SHORT_REPEAT_COUNT = 1000;
+    static final int TINY_REPEAT_COUNT = 2000;
+    static final int SHORT_REPEAT_COUNT = 1000;
+    static final int LONG_STRING_WORDS_COUNT = 10000;
     static String TINY_STRING = "John Doe";
     static String SHORT_STRING = "The quick brown fox jumps over the lazy dog";
-    static String LONG_STRING = generateLongString(10000);
+    static String LONG_STRING = generateLongString(LONG_STRING_WORDS_COUNT);
 
     public static void main(String[] args) {
         BenchmarkRunner.run(new ShortLibImpl(), 100, 3);
@@ -33,6 +34,9 @@ public class StringSplitBenchmark {
                 final String[] strings = StringUtils.split(SHORT_STRING, ' ');
                 count += strings.length;
             }
+            if (count != 9 * SHORT_REPEAT_COUNT) {
+                throw new RuntimeException("Check test condition");
+            }
         }
 
         @Override
@@ -48,6 +52,9 @@ public class StringSplitBenchmark {
             for (int i = 0; i < SHORT_REPEAT_COUNT; i++) {
                 final String[] strings = SHORT_STRING.split(" ");
                 count += strings.length;
+            }
+            if (count != 9 * SHORT_REPEAT_COUNT) {
+                throw new RuntimeException("Check test condition");
             }
         }
 
@@ -65,6 +72,9 @@ public class StringSplitBenchmark {
                 final String[] strings = StringUtils.split(TINY_STRING, ' ');
                 count += strings.length;
             }
+            if (count != 2 * TINY_REPEAT_COUNT) {
+                throw new RuntimeException("Check test condition");
+            }
         }
 
         @Override
@@ -81,6 +91,9 @@ public class StringSplitBenchmark {
                 final String[] strings = TINY_STRING.split(" ");
                 count += strings.length;
             }
+            if (count != 2 * TINY_REPEAT_COUNT) {
+                throw new RuntimeException("Check test condition");
+            }
         }
 
         @Override
@@ -93,6 +106,9 @@ public class StringSplitBenchmark {
         @Override
         public void run() {
             final String[] strings = StringUtils.split(LONG_STRING, ' ');
+            if (strings.length != LONG_STRING_WORDS_COUNT + 1) { // "+ 1" for the last closing space
+                throw new RuntimeException("Check test condition");
+            }
         }
 
         @Override
@@ -105,6 +121,9 @@ public class StringSplitBenchmark {
         @Override
         public void run() {
             final String[] strings = LONG_STRING.split(" ");
+            if (strings.length != LONG_STRING_WORDS_COUNT) {
+                throw new RuntimeException("Check test condition");
+            }
         }
 
         @Override
