@@ -57,10 +57,9 @@ task allBenchmarks {
         }.flatten()
 
         def testData = { lineResult ->
-            def m = lineResult =~ /(\w+)\/((\w+)\/)?(\w+):([0-9.,]+)/
+            def m = lineResult =~ /([^\/]+)\/(\w+):([0-9.,]+)/
             if (m) {
-                def name = m[0][1] + (m[0][3] ? " (${m[0][3]})" : "")
-                [name: name, impl: m[0][4], time: m[0][5] as float]
+                [name: m[0][1], impl: m[0][2], time: m[0][3] as float]
             } else [:]
         }
         def results = lineResults.collect(testData).findAll{it.name != null}

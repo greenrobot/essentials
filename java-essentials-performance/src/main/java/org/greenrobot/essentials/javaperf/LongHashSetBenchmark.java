@@ -68,7 +68,7 @@ public class LongHashSetBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashSet/Dynamic/Lib";
+            return "LongHashSet (Dynamic)/Lib";
         }
     }
 
@@ -110,7 +110,7 @@ public class LongHashSetBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashSet/Dynamic/Std";
+            return "LongHashSet (Dynamic)/Std";
         }
     }
 
@@ -121,7 +121,7 @@ public class LongHashSetBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashSet/Prealloc/Lib";
+            return "LongHashSet (Prealloc)/Lib";
         }
     }
 
@@ -132,7 +132,7 @@ public class LongHashSetBenchmark {
 
         @Override
         public String toString() {
-            return "LongHashSet/Prealloc/Std";
+            return "LongHashSet (Prealloc)/Std";
         }
     }
 }

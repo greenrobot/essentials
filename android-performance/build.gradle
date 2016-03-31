@@ -62,15 +62,23 @@ task generateReport {
         // take first file from reports directory
         def xmlFile = fileTree(dir: reportsDir, include: '*.xml').first()
         def suite = new XmlSlurper().parse(xmlFile)
-        def testData = { testName ->
-            def m = testName =~ /performance\[(\w+)\/((\w+)\/)?(\w+)(:(\d+))?]/
-            if (m) [name: m[0][1], subname: m[0][3], impl: m[0][4], runs: (m[0][6] ?: 1) as int] else [:]
+        def testData = { String caseName ->
+            def m = caseName =~ /performance\[(.+)\]/
+            if (m) {
+                def (name, impl, runs) = m[0][1].split("[/:]") + [null]
+                runs = runs ? runs.replaceAll("[^0-9]", "") as int : 1
+                [name: name, impl: impl, runs: runs]
+            } else {
+                System.err.println "Can't parse data from test name '$caseName'"
+                [:]
+            }
+
         }
         def results = suite.testcase
-                .collect { testData(it.@name) + [time: it.@time.toString() as float] }
+                .collect { testData(it.@name.toString()) + [time: it.@time.toString() as float] }
                 .findAll { it.name != null }
                 .collect {
-                    [name: it.name + (it.subname ? " ($it.subname)" : ""), impl: it.impl, time: it.time * 1000 / it.runs]
+                    [name: it.name, impl: it.impl, time: it.time * 1000 / it.runs]
                 }
 
         def allImpl = results*.impl.unique()
