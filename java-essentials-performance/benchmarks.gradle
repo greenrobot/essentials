@@ -35,7 +35,7 @@ ext.benchmarks = [
     [tests: ['StringHexBenchmark$StdImpl', 'StringHexBenchmark$LibImpl'], runs: 1000, warmUp: 10]
 ]
 
-ext.reportFile = file("$buildDir/reports/performance.tsv")
+ext.reportFile = reportFile(file("$buildDir/reports"), "performance-%index%.tsv")
 
 // using cpu time for measurements instead of wall time can be specified with -DcpuTime
 ext.useWallTime = !project.hasProperty('cpuTime')
@@ -44,7 +44,6 @@ ext.useWallTime = !project.hasProperty('cpuTime')
 task allBenchmarks {
     dependsOn compileJava
     inputs.sourceDir sourceSets.main.java.srcDirs.first()
-    outputs.file reportFile
 
     doFirst {
         reportFile.parentFile.mkdirs()

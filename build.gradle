@@ -10,3 +10,13 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
 
+def reportFile(File parentDir, String templateName) {
+    def file
+    for (int i = 0; i < 1000; i++) {
+        file = new File(parentDir, templateName.replaceAll('%index%', i as String))
+        if (!file.exists()) {
+            return file;
+        }
+    }
+    return file
+}
