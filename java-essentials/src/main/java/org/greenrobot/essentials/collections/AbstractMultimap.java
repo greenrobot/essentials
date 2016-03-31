@@ -22,14 +22,17 @@ import java.util.Set;
 
 /**
  * Combines a Map with List values to provide simple way to store multiple values for a key (multimap).
- * <p>
+ * <p/>
  * Threading note: All methods are synchronized
  */
 public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C> {
-    protected Map<K, C> map;
 
-    public AbstractMultimap(Map<K, C> map) {
+    protected Map<K, C> map;
+    protected final boolean threadSafeCollections;
+
+    protected AbstractMultimap(Map<K, C> map, boolean threadSafeCollections) {
         this.map = map;
+        this.threadSafeCollections = threadSafeCollections;
     }
 
     abstract protected C createNewCollection();

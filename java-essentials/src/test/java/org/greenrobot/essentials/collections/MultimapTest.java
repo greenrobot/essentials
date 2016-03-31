@@ -33,7 +33,12 @@ public class MultimapTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[]{new ListMap()}, new Object[]{new SetMap()});
+        return Arrays.asList(
+                new Object[]{Multimap.create()},
+                new Object[]{Multimap.createWithThreadSafeLists()},
+                new Object[]{MultimapSet.create()},
+                new Object[]{MultimapSet.createWithThreadSafeLists()}
+        );
     }
 
     @Parameterized.Parameter
