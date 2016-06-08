@@ -227,7 +227,7 @@ public class ObjectCache<KEY, VALUE> {
 
     /**
      * Iterates over all entries to check for obsolete ones (time expired or reference cleared).
-     * <p>
+     * <p/>
      * Note: Usually you don't need to call this method explicitly, because it is called internally in certain
      * conditions when space has to be reclaimed.
      */
@@ -237,17 +237,17 @@ public class ObjectCache<KEY, VALUE> {
 
         int countCleaned = 0;
         long timeLimit = isExpiring ? System.currentTimeMillis() - expirationMillis : 0;
-        Set<Entry<KEY, CacheEntry<VALUE>>> entries = values.entrySet();
-        for (Entry<KEY, CacheEntry<VALUE>> entry : entries) {
-            CacheEntry<VALUE> cacheEntry = entry.getValue();
+        Iterator<CacheEntry<VALUE>> iterator = values.values().iterator();
+        while (iterator.hasNext()) {
+            CacheEntry<VALUE> cacheEntry = iterator.next();
             if (!isStrongReference && cacheEntry.reference == null) {
                 countRefCleared++;
                 countCleaned++;
-                values.remove(entry.getKey());
+                iterator.remove();
             } else if (cacheEntry.timeCreated < timeLimit) {
                 countExpired++;
                 countCleaned++;
-                values.remove(entry.getKey());
+                iterator.remove();
             }
         }
         return countCleaned;

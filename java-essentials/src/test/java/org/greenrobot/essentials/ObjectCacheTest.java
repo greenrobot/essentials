@@ -49,7 +49,7 @@ public class ObjectCacheTest {
 
     @Test
     public void testMaxSize() {
-        ObjectCache<String, String> cache = createCacheWith4Entries();
+        ObjectCache<String, String> cache = createCacheWith4Entries(0);
         cache.put("5", "e");
         assertEquals(4, cache.size());
         assertNull(cache.get("1"));
@@ -59,7 +59,7 @@ public class ObjectCacheTest {
 
     @Test
     public void testEvictToTargetSize() {
-        ObjectCache<String, String> cache = createCacheWith4Entries();
+        ObjectCache<String, String> cache = createCacheWith4Entries(0);
         cache.evictToTargetSize(2);
         assertEquals(2, cache.size());
         assertEquals(cache.get("3"), "c");
@@ -81,12 +81,12 @@ public class ObjectCacheTest {
 
     @Test
     public void testCleanUpObsoleteEntries() throws InterruptedException {
-        ObjectCache<String, String> cache = new ObjectCache(ObjectCache.ReferenceType.STRONG, 4, 1);
-        cache.put("1", "a");
+        // Use more than one entry to detect ConcurrentModificationException
+        ObjectCache<String, String> cache = createCacheWith4Entries(1);
         Thread.sleep(3);
         cache.checkCleanUpObsoleteEntries();
         assertEquals(0, cache.size());
-        assertEquals(1, cache.getCountExpired());
+        assertEquals(4, cache.getCountExpired());
     }
 
     @Test
@@ -98,8 +98,8 @@ public class ObjectCacheTest {
         assertEquals(0, cache.getCountExpired());
     }
 
-    private ObjectCache<String, String> createCacheWith4Entries() {
-        ObjectCache<String, String> cache = new ObjectCache(ObjectCache.ReferenceType.STRONG, 4, 0);
+    private ObjectCache<String, String> createCacheWith4Entries(int expirationMillis) {
+        ObjectCache<String, String> cache = new ObjectCache(ObjectCache.ReferenceType.STRONG, 4, expirationMillis);
         cache.put("1", "a");
         cache.put("2", "b");
         cache.put("3", "c");
