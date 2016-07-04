@@ -1,21 +1,37 @@
-Essentials
-==========
-greenrobot's Essentials library provides general purpose utilities for Android and Java projects. Having its root in the early days of Android development, the library is minimalistic, tiny in size (jar < 100k), and focuses on efficiency and performance.
+# Essentials
 
-[![Build Status](https://travis-ci.org/greenrobot/essentials.svg?branch=master)](https://travis-ci.org/greenrobot/essentials)
+[![Build Status](https://travis-ci.org/greenrobot/essentials.svg?branch=master)](https://travis-ci.org/greenrobot/essentials) 
 
-Features
---------
-See [Website](http://greenrobot.org/essentials/features/).
+Essentials are a collection of general-purpose classes we found useful in many occasions.
 
-The Utility classes cover [stream-based IO](java-common/src/main/java/de/greenrobot/common/io/IoUtils.java), [files](java-common/src/main/java/de/greenrobot/common/io/FileUtils.java), [strings](java-common/src/main/java/de/greenrobot/common/StringUtils.java), and [date/time](java-common/src/main/java/de/greenrobot/common/DateUtils.java). There are also efficient [hash map](java-common/src/main/java/de/greenrobot/common/LongHashMap.java) and [hash set](java-common/src/main/java/de/greenrobot/common/LongSetMap.java) implementation for primitive long keys.
-   
-Another important part of Essentials are [hash functions](hash-functions.md). Our Murmur3A&F implementations are the fastest Java implementations known to us. Murmur3 hash functions are one of today's best hash functions available with excellent properties. At 3,6 GByte/s, we measured our Murmur3F implementation to outperform Guava's by factor 10. Find more information on the [hash functions page](hash-functions.md) or jump directly to our [Java hash function benchmark PDF](web-resources/hash-functions-benchmark.pdf).
+- Write less code in your projects
+- Specialized implementations for better performance compared to standard APIs
+- Super light weight: < 100k in size
+- Compatible with Android and Java
 
-Speaking of Guava, this project is bare bones compared to a rich menu offered by Guava or Apache Commons. Essentials is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
+This project is bare bones compared to a rich menu offered by Guava or Apache Commons. Essentials is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
 
-How to integrate in your project
---------------------------------
+[Website][1]
+
+[Changelog][13]
+
+## Features
+
+- [IO utilities][2] help with streams (byte and character based) and digests (e.g. MD5 and SHA-1).
+- [File utilities][3] simplify reading and writing strings/bytes/objects from or to files. Also includes getting hashes from files and copying files.
+- [String utilities][4] allow efficient splitting and joining of strings, hex and MD5 creation, and other useful string helpers.
+- [Date utilities][5].
+- [Better hash functions][12]: our Murmur3 implementation provides superior hash quality and outperforms standard [Java hash functions](web-resources/hash-functions-benchmark.pdf)
+- Specialized Streams: for example an optimized [PipedOutputStream replacement][8] (based on a circular byte buffer)
+- [Hash set][6] and [map][7] for primitive long keys outperform the generic versions of the Java Collection APIs
+- [Multimaps][9] provide a map of lists or sets to simplify storing multiple values for a single key
+- [Object cache][10] with powerful configuration options: soft/weak/strong references, maximum size, and time-based expiration
+- [Base64][11] implementation (bundled from iharder.net) for lower versions of Java & Android (includes input/output streams)
+
+Read more on our [website][14].
+
+## Download
+
 Just grab it from Maven Central (or jCenter). For Gradle, add the following dependency:
 
     compile 'de.greenrobot:java-common:2.3.1'
@@ -28,8 +44,8 @@ And for Maven:
         <version>2.3.1</version>
     </dependency>
 
-Code samples
-============
+## Code samples
+
 Example code on how to use some of the utility classes: 
 
 ```Java
@@ -53,7 +69,7 @@ multimap.putElement("a", "3");
 List<String> strings = multimap.get("a"); // Contains "1", "2", and "3"
 ```
 
-[Our hash functions](hash-functions.md) implement [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html), so this code might look familiar to you:
+[Our hash functions][12] implement [java.util.zip.Checksum](http://docs.oracle.com/javase/8/docs/api/java/util/zip/Checksum.html), so this code might look familiar to you:
 
 ```Java
 Murmur3A murmur = new Murmur3A();
@@ -77,10 +93,10 @@ murmur.updateUtf8("And strings, of course");
 hash = murmur.getValue();
 ```
  
-We may not write a lot of documentation for this project. The utility classes are straight forward and don't have dependencies, so you should be fine to grasp them by having a look at their source code. Most of the method names should be self-explaining, and often you'll find JavaDocs where needed. Code is the best documentation, right? 
+The utility classes are straight forward and don't have dependencies, so you should be fine to grasp them by having a look at their source code. Most of the method names should be self-explaining, and often you'll find JavaDocs where needed.
 
-Build setup
-===========
+## Build setup
+
 Currently, Maven is used to build greenrobot-common. Inside of [build-common](build-common), there are two parent POMs defined that might be useful: parent-pom and parent-pom-with-checks. The latter integrates FindBugs and Checkstyle in your build. Use it like this: 
 
     <parent>
@@ -90,26 +106,32 @@ Currently, Maven is used to build greenrobot-common. Inside of [build-common](bu
         <relativePath></relativePath>
     </parent>
 
-Homepage, Links
----------------
-For more details on greenrobot Essentials please check the [Essentials' website](http://greenrobot.org/essentials/). Here are some direct links you may find useful:
+## License
 
-[Features](http://greenrobot.org/essentials/features/)
-
-[Changelog](http://greenrobot.org/essentials/changelog/)
-
-
-License
--------
 Copyright (C) 2012-2016 Markus Junginger, greenrobot (http://greenrobot.org)
 
 EventBus binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
 
-More Open Source by greenrobot
-==============================
+# More Open Source by greenrobot
+
 [__EventBus__](https://github.com/greenrobot/EventBus) is a central publish/subscribe bus for Android with optional delivery threads, priorities, and sticky events. A great tool to decouple components (e.g. Activities, Fragments, logic components) from each other. 
  
 [__greenDAO__](https://github.com/greenrobot/greenDAO) is an ORM optimized for Android: it maps database tables to Java objects and uses code generation for optimal speed.
 
 [Follow us on Google+](https://plus.google.com/b/114381455741141514652/+GreenrobotDe/posts) to stay up to date.
 
+
+[1]: http://greenrobot.org/essentials
+[2]: java-essentials/src/main/java/org/greenrobot/essentials/io/IoUtils.java
+[3]: java-essentials/src/main/java/org/greenrobot/essentials/io/FileUtils.java
+[4]: java-essentials/src/main/java/org/greenrobot/essentials/StringUtils.java
+[5]: java-essentials/src/main/java/org/greenrobot/essentials/DateUtils.java
+[6]: java-essentials/src/main/java/org/greenrobot/essentials/collections/LongHashSet.java
+[7]: java-essentials/src/main/java/org/greenrobot/essentials/collections/LongHashMap.java
+[8]: java-essentials/src/main/java/org/greenrobot/essentials/io/PipelineOutputStream.java
+[9]: java-essentials/src/main/java/org/greenrobot/essentials/collections/Multimap.java
+[10]: java-essentials/src/main/java/org/greenrobot/essentials/ObjectCache.java
+[11]: java-essentials/src/main/java/org/greenrobot/essentials/Base64.java
+[12]: hash-functions.md
+[13]: http://greenrobot.org/essentials/changelog
+[14]: http://greenrobot.org/essentials/features
