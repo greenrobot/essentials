@@ -132,6 +132,6 @@ EventBus binaries and source code can be used according to the [Apache License, 
 [9]: java-essentials/src/main/java/org/greenrobot/essentials/collections/Multimap.java
 [10]: java-essentials/src/main/java/org/greenrobot/essentials/ObjectCache.java
 [11]: java-essentials/src/main/java/org/greenrobot/essentials/Base64.java
-[12]: hash-functions.md
+[12]: http://greenrobot.org/essentials/features/performant-hash-functions-for-java/
 [13]: http://greenrobot.org/essentials/changelog
 [14]: http://greenrobot.org/essentials/features
