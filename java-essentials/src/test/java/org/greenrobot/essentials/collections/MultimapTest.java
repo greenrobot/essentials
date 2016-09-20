@@ -106,4 +106,15 @@ public class MultimapTest {
         assertTrue(allStrings.contains("10"));
     }
 
+    @Test
+    public void testCountElements() {
+        multimap.putElement("b", "10");
+        multimap.putElement("b", "11");
+
+        assertEquals(5, multimap.countElements());
+        assertEquals(3, multimap.countElements("a"));
+        assertEquals(2, multimap.countElements("b"));
+        assertEquals(0, multimap.countElements("c"));
+    }
+
 }

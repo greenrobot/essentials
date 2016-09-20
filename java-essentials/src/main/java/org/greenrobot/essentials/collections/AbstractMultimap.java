@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * Combines a Map with List values to provide simple way to store multiple values for a key (multimap).
- * <p/>
+ * <p>
  * Threading note: All methods are synchronized
  */
 public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C> {
@@ -151,6 +151,14 @@ public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements
         } else {
             return collection.size();
         }
+    }
+
+    public synchronized int countElements() {
+        int count = 0;
+        for (C collection : map.values()) {
+            count += collection.size();
+        }
+        return count;
     }
 
     public synchronized boolean containsElement(K key, V value) {
