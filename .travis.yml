@@ -3,7 +3,7 @@ language: android
 jdk:
 #  - oraclejdk9
   - oraclejdk8
-  - oraclejdk7
+#  - oraclejdk7
 
 # http://docs.travis-ci.com/user/languages/android/
 android:
