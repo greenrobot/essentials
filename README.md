@@ -13,6 +13,8 @@ This project is bare bones compared to a rich menu offered by Guava or Apache Co
 
 [Website][1]
 
+[JavaDoc (3.0 release candidate)](http://greenrobot.org/files/essentials/javadoc/3.0/)
+
 [Changelog][13]
 
 ## Features
@@ -30,9 +32,13 @@ This project is bare bones compared to a rich menu offered by Guava or Apache Co
 
 Read more on our [website][14].
 
-## Download
+## Add the dependency to your project
 
-Just grab it from Maven Central (or jCenter). For Gradle, add the following dependency:
+You may also try the 3.0 release candidate with additional features and a cleaned up API:
+ 
+    compile 'org.greenrobot:essentials:3.0.0-RC1'
+
+Or, grab the older version:
 
     compile 'de.greenrobot:java-common:2.3.1'
 
@@ -44,7 +50,7 @@ And for Maven:
         <version>2.3.1</version>
     </dependency>
 
-## Code samples
+## Code samples (V2.3.1)
 
 Example code on how to use some of the utility classes: 
 
