@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Markus Junginger, greenrobot (http://greenrobot.de)
+ * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,9 @@ import java.util.Set;
 public abstract class AbstractMultimap<K, V, C extends Collection<V>> implements Map<K, C> {
 
     protected Map<K, C> map;
-    protected final boolean threadSafeCollections;
 
-    protected AbstractMultimap(Map<K, C> map, boolean threadSafeCollections) {
+    protected AbstractMultimap(Map<K, C> map) {
         this.map = map;
-        this.threadSafeCollections = threadSafeCollections;
     }
 
     abstract protected C createNewCollection();

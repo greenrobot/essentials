@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Markus Junginger, greenrobot (http://greenrobot.de)
+ * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package org.greenrobot.essentials.collections;
 
+import org.greenrobot.essentials.collections.Multimap.ListType;
+import org.greenrobot.essentials.collections.MultimapSet.SetType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,9 +37,10 @@ public class MultimapTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(
                 new Object[]{Multimap.create()},
-                new Object[]{Multimap.createWithThreadSafeLists()},
+                new Object[]{Multimap.create(ListType.THREAD_SAFE)},
+                new Object[]{Multimap.create(ListType.LINKED)},
                 new Object[]{MultimapSet.create()},
-                new Object[]{MultimapSet.createWithThreadSafeLists()}
+                new Object[]{MultimapSet.create(SetType.THREAD_SAFE)}
         );
     }
 
