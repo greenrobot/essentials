@@ -6,7 +6,7 @@ apply plugin: 'findbugs'
 
 archivesBaseName = 'essentials'
 group = 'org.greenrobot'
-version = '3.0.0-SNAPSHOT'
+version = '3.0.0-RC1'
 sourceCompatibility = 1.7
 
 def isSnapshot = version.endsWith('-SNAPSHOT')
