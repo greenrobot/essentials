@@ -7,7 +7,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.4.1'
 }
 
 def reportFile(File parentDir, String templateName) {
