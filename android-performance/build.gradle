@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
     }
 }
 
@@ -16,12 +16,12 @@ repositories {
 
 dependencies {
     compile project(':java-essentials-performance')
-    compile 'com.android.support.test:runner:0.4.1'
-    compile 'com.android.support.test:rules:0.4.1'
+    compile 'com.android.support.test:runner:0.5'
+    compile 'com.android.support.test:rules:0.5'
 }
 
 android {
-    buildToolsVersion '23.0.2' // When updating, don't forget to adjust .travis.yml
+    buildToolsVersion '25.0.2' // When updating, don't forget to adjust .travis.yml
     compileSdkVersion 19
 
     compileOptions {
