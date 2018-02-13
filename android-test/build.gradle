@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':java-essentials')
     androidTestCompile project(':java-essentials')
     androidTestCompile project(path: ':java-essentials', configuration: 'tests')
     androidTestCompile 'com.android.support.test:runner:0.5'
