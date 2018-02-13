@@ -9,10 +9,14 @@ jdk:
 android:
   components:
     - tools
-    - build-tools-25.0.2
+    - build-tools-27.0.3
     - android-10
-    - android-25
+    - android-27
     - extra-android-m2repository
+
+before_install:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
 
 before_script:
   - chmod +x gradlew
