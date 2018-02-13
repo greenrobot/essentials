@@ -7,7 +7,9 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+    group = "build setup"
+    gradleVersion = '4.5.1'
+    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 }
 
 def reportFile(File parentDir, String templateName) {

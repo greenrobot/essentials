@@ -43,7 +43,7 @@ ext.useWallTime = !project.hasProperty('cpuTime')
 /** Runs each of benchmarks in separate JVM with wall time */
 task allBenchmarks {
     dependsOn compileJava
-    inputs.sourceDir sourceSets.main.java.srcDirs.first()
+    inputs.dir(sourceSets.main.java.srcDirs.first()).skipWhenEmpty()
 
     doFirst {
         reportFile.parentFile.mkdirs()
