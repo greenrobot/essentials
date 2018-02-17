@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /** Implicitly tests some of IoUtils. */
 public class FileUtilsTest {
 
@@ -94,6 +97,27 @@ public class FileUtilsTest {
         murmur3F.reset();
         FileUtils.updateChecksum(file, murmur3F);
         Assert.assertEquals(hash, murmur3F.getValueHexString());
+    }
+
+    @Test
+    public void testDeleteDir() throws IOException {
+        testDeleteDir(true);
+        testDeleteDir(false);
+    }
+
+    private void testDeleteDir(boolean failFast) throws IOException {
+        file.delete();
+        assertTrue(file.mkdir());
+        File subDir = new File(file, "mysub");
+        assertTrue(subDir.mkdir());
+        assertTrue(File.createTempFile("foo", "bar", subDir).exists());
+        if (failFast) {
+            FileUtils.deleteDirRecursive(file);
+        } else {
+            assertTrue(FileUtils.deleteDirRecursiveBestEffort(file));
+        }
+        assertFalse(subDir.exists());
+        assertFalse(file.exists());
     }
 
 }

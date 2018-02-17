@@ -150,4 +150,59 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Deletes all files within the given directory recursively (including subdirectories).
+     * This method fails fast with an IOException on the first file that could not be deleted.
+     */
+    public static void deleteDirRecursive(File dir) throws IOException {
+        File failed = deleteDirRecursiveInternal(dir, true);
+        if (failed != null) {
+            throw new IOException("Could not delete file: " + failed.getPath());
+        }
+    }
+
+    /**
+     * Deletes all files within the given directory recursively (including subdirectories).
+     * It will try to delete as many files as possible (best effort) and will not fail on files that couldn't be
+     * deleted.
+     *
+     * @return true if the given dir does not exist anymore on completion of this method
+     */
+    public static boolean deleteDirRecursiveBestEffort(File dir) {
+        deleteDirRecursiveInternal(dir, false);
+        return !dir.exists();
+    }
+
+    /**
+     * @return File that could not be deleted (fail fast mode only)
+     */
+    private static File deleteDirRecursiveInternal(File dir, boolean failFast) {
+        if (!dir.exists()) {
+            return null;
+        }
+
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return null;
+        }
+        for (File file : files) {
+            if (file.isDirectory()) {
+                File failed = deleteDirRecursiveInternal(file, failFast);
+                if (failFast && failed != null) {
+                    return failed;
+                }
+            }
+            if (!file.delete()) {
+                if (failFast && file.exists()) { // OK if file does not exist anymore (e.g. concurrent deletion)
+                    return file;
+                }
+            }
+        }
+        if (!dir.delete()) {
+            if (failFast && dir.exists()) { // OK if file does not exist anymore (e.g. concurrent deletion)
+                return dir;
+            }
+        }
+        return null;
+    }
 }
