@@ -4,7 +4,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-    compile project(':java-essentials')
+    implementation project(':java-essentials')
 }
 
 apply from: 'benchmarks.gradle'

@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.android.tools.build:gradle:4.0.2'  // 4.1 not yet supported by IntelliJ
     }
 }
 
@@ -17,11 +17,11 @@ repositories {
 }
 
 dependencies {
-    compile project(':java-essentials')
-    androidTestCompile project(':java-essentials')
-    androidTestCompile project(path: ':java-essentials', configuration: 'tests')
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
+    implementation project(':java-essentials')
+    androidTestImplementation project(':java-essentials')
+    androidTestImplementation project(path: ':java-essentials', configuration: 'tests')
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
 
 android {
@@ -34,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         versionCode 1
         versionName "1.0"
 
