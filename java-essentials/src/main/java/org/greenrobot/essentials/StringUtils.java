@@ -140,11 +140,14 @@ public class StringUtils {
     }
 
     public static String hex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int i = 0; i < bytes.length; i++) {
-            int value = bytes[i] & 0xFF;
-            hexChars[i * 2] = HEX_CHARS[value >>> 4];
-            hexChars[i * 2 + 1] = HEX_CHARS[value & 0x0F];
+        int hexCharCount = bytes.length * 2;
+        char[] hexChars = new char[hexCharCount];
+
+        int srcIdx = 0;
+        for (int dstIdx = 0; dstIdx < hexCharCount; ) {
+            int value = bytes[srcIdx++] & 0xFF;
+            hexChars[dstIdx++] = HEX_CHARS[value >>> 4];
+            hexChars[dstIdx++] = HEX_CHARS[value & 0x0F];
         }
         return new String(hexChars);
     }
