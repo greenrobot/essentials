@@ -1,8 +1,11 @@
+plugins {
+    id "com.github.spotbugs" version "4.5.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'checkstyle'
-//apply plugin: 'findbugs'
 
 archivesBaseName = 'essentials'
 group = 'org.greenrobot'
@@ -90,7 +93,7 @@ checkstyle {
     sourceSets = [sourceSets.main]
 }
 
-/*
+/* Todo port settings to spotbugs
 findbugs {
     toolVersion = '3.0.1'
     excludeFilter = file("findbugs-exclude.xml")
@@ -100,15 +103,25 @@ findbugs {
     sourceSets = [sourceSets.main]
 }
 
+*/
 
-tasks.withType(FindBugs) {
+spotbugsMain {
+    ignoreFailures = true
     reports {
         // switch to html report
         xml.enabled = false
         html.enabled = true
     }
 }
-*/
+
+spotbugsTest {
+    ignoreFailures = true
+    reports {
+        html {
+            enabled = true
+        }
+    }
+}
 
 uploadArchives {
     repositories {
