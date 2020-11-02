@@ -24,28 +24,41 @@ import java.nio.ByteOrder;
 import java.util.NoSuchElementException;
 
 /**
- * Retrieves int and long values from byte arrays using sun.misc.Unsafe for fast access.
+ * Retrieves int and long values from byte arrays. By default it uses a "safe" implementation (plain Java).
+ * By calling {@link #initUnsafeInstance()}, you can switch to sun.misc.Unsafe (deprecated) for fast access.
  */
 // TODO Test on a big endian machine with Unsafe
 public abstract class PrimitiveArrayUtils {
-    private final static PrimitiveArrayUtils instance;
-    private final static PrimitiveArrayUtils instanceSafe;
-
-    static {
-        instanceSafe = new SafeImpl();
-        PrimitiveArrayUtils unsafeImpl = null;
-        try {
-            if (UnsafeImpl.UNSAFE != null) {
-                unsafeImpl = new UnsafeImpl();
-            }
-        } catch (Throwable th) {
-            // Ignore
-        }
-        instance = unsafeImpl != null ? unsafeImpl : instanceSafe;
-    }
+    private volatile static PrimitiveArrayUtils instanceUnsafe;
+    private final static PrimitiveArrayUtils instanceSafe = new SafeImpl();
 
     public static PrimitiveArrayUtils getInstance() {
+        PrimitiveArrayUtils instance = PrimitiveArrayUtils.instanceUnsafe;
+        if (instance == null) instance = instanceSafe;
         return instance;
+    }
+
+    /**
+     * If sun.misc.Unsafe is available, this will init the static instance with a fast implementation.
+     *
+     * @return true if an unsafe implementation is available - future calls to {@link #getInstance()} will return it.
+     */
+    public static boolean initUnsafeInstance() {
+        if (instanceUnsafe == null && UnsafeImpl.UNSAFE != null) {
+            synchronized (PrimitiveArrayUtils.class) {
+                if (instanceUnsafe != null) {
+                    return true;
+                } else {
+                    try {
+                        instanceUnsafe = new UnsafeImpl();
+                        return true;
+                    } catch (Throwable th) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static PrimitiveArrayUtils getInstanceSafe() {
@@ -78,8 +91,13 @@ public abstract class PrimitiveArrayUtils {
 
             if (UNALIGNED) {
                 UNSAFE = initUnsafe();
-                BYTE_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
-                CHAR_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(char[].class);
+                if (UNSAFE != null) {
+                    BYTE_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
+                    CHAR_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(char[].class);
+                } else {
+                    BYTE_ARRAY_OFFSET = 0;
+                    CHAR_ARRAY_OFFSET = 0;
+                }
             } else {
                 UNSAFE = null;
                 BYTE_ARRAY_OFFSET = 0;

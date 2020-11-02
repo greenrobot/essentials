@@ -18,6 +18,7 @@ package org.greenrobot.essentials;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;
@@ -29,8 +30,15 @@ public class PrimitiveArrayUtilsTest {
     private ByteBuffer byteBufferLE;
     private ByteBuffer byteBufferBE;
 
-    PrimitiveArrayUtils primitiveArrayUtils = PrimitiveArrayUtils.getInstance();
+    static PrimitiveArrayUtils primitiveArrayUtilsPotentiallyUnsafe;
     PrimitiveArrayUtils primitiveArrayUtilsSafe = PrimitiveArrayUtils.getInstanceSafe();
+
+    @BeforeClass
+    public static void setupBytes() {
+        boolean hasUnsafe = PrimitiveArrayUtils.initUnsafeInstance();
+        System.out.println("Unsafe available: " + hasUnsafe);
+        primitiveArrayUtilsPotentiallyUnsafe = PrimitiveArrayUtils.getInstance();
+    }
 
     @Before
     public void setUp() {
@@ -46,7 +54,7 @@ public class PrimitiveArrayUtilsTest {
     public void testGetIntLE() {
         for (int i = 0; i < bytes.length - 3; i++) {
             int expected = byteBufferLE.getInt(i);
-            int value = primitiveArrayUtils.getIntLE(bytes, i);
+            int value = primitiveArrayUtilsPotentiallyUnsafe.getIntLE(bytes, i);
             Assert.assertEquals(expected, value);
         }
     }
@@ -64,7 +72,7 @@ public class PrimitiveArrayUtilsTest {
     public void testGetLongLE() {
         for (int i = 0; i < bytes.length - 7; i++) {
             long expected = byteBufferLE.getLong(i);
-            long value = primitiveArrayUtils.getLongLE(bytes, i);
+            long value = primitiveArrayUtilsPotentiallyUnsafe.getLongLE(bytes, i);
             Assert.assertEquals(expected, value);
         }
     }
@@ -82,7 +90,7 @@ public class PrimitiveArrayUtilsTest {
     public void testGetIntBE() {
         for (int i = 0; i < bytes.length - 3; i++) {
             int expected = byteBufferBE.getInt(i);
-            int value = primitiveArrayUtils.getIntBE(bytes, i);
+            int value = primitiveArrayUtilsPotentiallyUnsafe.getIntBE(bytes, i);
             Assert.assertEquals(expected, value);
         }
     }
@@ -100,7 +108,7 @@ public class PrimitiveArrayUtilsTest {
     public void testGetLongBE() {
         for (int i = 0; i < bytes.length - 7; i++) {
             long expected = byteBufferBE.getLong(i);
-            long value = primitiveArrayUtils.getLongBE(bytes, i);
+            long value = primitiveArrayUtilsPotentiallyUnsafe.getLongBE(bytes, i);
             Assert.assertEquals(expected, value);
         }
     }
