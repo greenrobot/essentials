@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
+ * Copyright (C) 2014-2020 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,9 +154,8 @@ public class LongHashSet {
     public void setCapacity(int newCapacity) {
         @SuppressWarnings("unchecked")
         Entry[] newTable = new Entry[newCapacity];
-        int length = table.length;
-        for (int i = 0; i < length; i++) {
-            Entry entry = table[i];
+        for (Entry value : table) {
+            Entry entry = value;
             while (entry != null) {
                 long key = entry.key;
                 int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % newCapacity;

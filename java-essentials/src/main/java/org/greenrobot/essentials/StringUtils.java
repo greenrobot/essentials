@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
+ * Copyright (C) 2014-2020 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class StringUtils {
             result[i] = string.substring(start, end);
             start = end + 1;
         }
-        result[delimeterCount] = string.substring(start, string.length());
+        result[delimeterCount] = string.substring(start);
         return result;
     }
 
@@ -144,7 +144,7 @@ public class StringUtils {
         char[] hexChars = new char[hexCharCount];
 
         int srcIdx = 0;
-        for (int dstIdx = 0; dstIdx < hexCharCount; ) {
+        for (int dstIdx = 0; dstIdx < hexCharCount;) {
             int value = bytes[srcIdx++] & 0xFF;
             hexChars[dstIdx++] = HEX_CHARS[value >>> 4];
             hexChars[dstIdx++] = HEX_CHARS[value & 0x0F];

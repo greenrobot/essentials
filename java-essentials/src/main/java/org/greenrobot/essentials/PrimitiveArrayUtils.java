@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Markus Junginger, greenrobot (http://greenrobot.org)
+ * Copyright (C) 2014-2020 Markus Junginger, greenrobot (http://greenrobot.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ public abstract class PrimitiveArrayUtils {
         private static boolean initUnaligned() {
             // http://developer.android.com/reference/java/lang/System.html#getProperty(java.lang.String)
             String javaVendor = System.getProperty("java.vendor");
-            boolean isAndroid = javaVendor != null ? javaVendor.contains("Android") : false;
+            boolean isAndroid = javaVendor != null && javaVendor.contains("Android");
             if (isAndroid) {
                 // java.nio.Bits is a Java-only internal class, avoid it: some Genymotion VM did SIGSEGV on querying it
                 return guessUnalignedFromOsArch();
