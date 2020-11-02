@@ -1,6 +1,6 @@
 # Essentials
 
-[![Build Status](https://travis-ci.org/greenrobot/essentials.svg?branch=master)](https://travis-ci.org/greenrobot/essentials) 
+[![Build Status](https://travis-ci.org/greenrobot/essentials.svg?branch=main)](https://travis-ci.org/greenrobot/essentials) 
 
 Essentials are a collection of general-purpose classes we found useful in many occasions.
 
