@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * Utilities for working with strings like splitting, joining, url-encoding, hex, and digests.
- * See also {@link org.greenrobot.essentials.Base64}.
  *
  * @author markus
  */

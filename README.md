@@ -24,7 +24,6 @@ This project is bare bones compared to a rich menu offered by Guava or Apache Co
 - [Hash set][6] and [map][7] for primitive long keys outperform the generic versions of the Java Collection APIs
 - [Multimaps][9] provide a map of lists or sets to simplify storing multiple values for a single key
 - [Object cache][10] with powerful configuration options: soft/weak/strong references, maximum size, and time-based expiration
-- [Base64][11] implementation (bundled from iharder.net) for lower versions of Java & Android (includes input/output streams)
 
 Read more on our [website][14].
 
@@ -144,7 +143,6 @@ EventBus binaries and source code can be used according to the [Apache License, 
 [8]: java-essentials/src/main/java/org/greenrobot/essentials/io/PipelineOutputStream.java
 [9]: java-essentials/src/main/java/org/greenrobot/essentials/collections/Multimap.java
 [10]: java-essentials/src/main/java/org/greenrobot/essentials/ObjectCache.java
-[11]: java-essentials/src/main/java/org/greenrobot/essentials/Base64.java
 [12]: https://greenrobot.org/essentials/features/performant-hash-functions-for-java/
 [13]: https://greenrobot.org/essentials/changelog
 [14]: https://greenrobot.org/essentials/features
