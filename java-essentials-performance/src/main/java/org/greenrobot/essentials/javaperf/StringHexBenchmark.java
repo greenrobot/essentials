@@ -1,5 +1,6 @@
 package org.greenrobot.essentials.javaperf;
 
+import com.google.common.hash.HashCode;
 import org.greenrobot.essentials.StringUtils;
 
 import java.util.Random;
@@ -37,7 +38,7 @@ public class StringHexBenchmark {
     public static class StdImpl implements Runnable {
         @Override
         public void run() {
-            final String hex = "removed API";  // javax.xml.bind.DatatypeConverter.printHexBinary(bytes);
+            final String hex = HashCode.fromBytes(bytes).toString();
             // avoid optimization by HotSpot
             if (hex.length() != bytes.length * 2) {
                 throw new RuntimeException();

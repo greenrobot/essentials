@@ -16,9 +16,8 @@
 
 package org.greenrobot.essentials;
 
+import com.google.common.hash.HashCode;
 import org.junit.Test;
-
-import javax.xml.bind.DatatypeConverter;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +26,8 @@ public class StringUtilsJvmTest {
     public void testHexBig() {
         for (int i = 0; i < 256 * 256; i++) {
             byte[] bytes = {(byte) (i >> 8), (byte) i};
-            String hexExpected = DatatypeConverter.printHexBinary(bytes);
+
+            String hexExpected = HashCode.fromBytes(bytes).toString().toUpperCase();
             String hex = StringUtils.hex(bytes);
             assertEquals(hexExpected, hex);
 

@@ -3,8 +3,13 @@ apply plugin: 'java'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation project(':java-essentials')
+    implementation 'com.google.guava:guava:30.0-jre'
 }
 
 apply from: 'benchmarks.gradle'
