@@ -11,11 +11,7 @@ Essentials are a collection of general-purpose classes we found useful in many o
 
 This project is bare bones compared to a rich menu offered by Guava or Apache Commons. Essentials is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
 
-[Website][1]
-
-[JavaDoc (3.0 release candidate)](http://greenrobot.org/files/essentials/javadoc/3.0/)
-
-[Changelog][13]
+[Website][1] | [JavaDoc](http://greenrobot.org/files/essentials/javadoc/3.0/) | [Changelog][13]
 
 ## Features
 
@@ -32,22 +28,37 @@ This project is bare bones compared to a rich menu offered by Guava or Apache Co
 
 Read more on our [website][14].
 
+## Performance
+
+Some classes where motivated by less than optimal performance offered by standard Java.
+
+For long keys (also works for int), Essentials provides a specialized implementation, that can be twice as fast.
+
+Here are some (completely non-scientific) benchmarking results running on Ubuntu 20.04 LTS using OpenJDK 11.0.9:   
+
+| Essentials Class        | Java (seconds) | Essentials (seconds)  |
+|-------------------------|---------------:|----------------------:|
+| LongHashSet (Dynamic)   |         19.756 |                13.079 |
+| LongHashSet (Prealloc)  |         16.480 |                 8.171 |
+| LongHashMap (Dynamic)   |         20.311 |                14.659 |
+| LongHashMap (Prealloc)  |         17.496 |                 8.677 |
+| PipelineStream (1024KB) |          8.036 |                 1.424 |
+| StringHex               |          6.849 |                 3.732 | 
+
+The benchmarking sources are available in the java-essentials-performance directory.
+
 ## Add the dependency to your project
 
-You may also try the 3.0 release candidate with additional features and a cleaned up API:
+For Gradle, you add this dependency (from repository `mavenCentral()`):
  
-    compile 'org.greenrobot:essentials:3.0.0-RC1'
-
-Or, grab the older version:
-
-    compile 'de.greenrobot:java-common:2.3.1'
+    implementaion 'org.greenrobot:essentials:3.0.0'
 
 And for Maven:
     
     <dependency>
-        <groupId>de.greenrobot</groupId>
-        <artifactId>java-common</artifactId>
-        <version>2.3.1</version>
+        <groupId>org.greenrobot</groupId>
+        <artifactId>essentials</artifactId>
+        <version>3.0.0</version>
     </dependency>
 
 ## Code samples
