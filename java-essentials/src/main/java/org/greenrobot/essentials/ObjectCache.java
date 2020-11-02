@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * An in-memory object cache supporting soft/weak/strong references, maximum size (clearing the entries putted
+ * An in-memory object cache supporting soft/weak/strong references, maximum size (clearing the entries that were put
  * first), and time-based expiration.
  *
  * @author markus

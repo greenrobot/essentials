@@ -39,7 +39,7 @@ public class StringUtils {
     /**
      * Splits a String based on a single character, which is usually faster than regex-based String.split().
      * NOTE: split("AA;BB;;", ';') == ["AA", "BB", "", ""], this may be different from String.split()
-     *  */
+     */
     public static String[] split(String string, char delimiter) {
         int delimeterCount = 0;
         int start = 0;
@@ -183,7 +183,7 @@ public class StringUtils {
     }
 
     /**
-     * Simple HTML/XML entity resolving: Only supports unicode enitities and a very limited number text represented
+     * Simple HTML/XML entity resolving: Only supports unicode entities and a very limited number text represented
      * entities (apos, quot, gt, lt, and amp). There are many more: http://www.w3.org/TR/REC-html40/sgml/dtd.html
      *
      * @param entity The entity name without & and ; (null throws NPE)
