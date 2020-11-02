@@ -201,4 +201,28 @@ public class CircularByteBuffer {
     public synchronized int free() {
         return capacity - available;
     }
+
+    /**
+     * Usually you should prefer one of the get() methods.
+     * If you still want direct access (less safe) you can use this method in combination with {@link #rawIndexGet()}
+     * and {@link #rawIndexPut()}.
+     */
+    public synchronized byte[] rawBuffer() {
+        return buffer;
+    }
+
+    /**
+     * The index to get (read) from.
+     */
+    public synchronized int rawIndexGet() {
+        return idxGet;
+    }
+
+    /**
+     * The index to put (write) to.
+     */
+    public synchronized int rawIndexPut() {
+        return idxPut;
+    }
+
 }
