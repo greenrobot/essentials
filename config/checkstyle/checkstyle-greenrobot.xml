@@ -11,6 +11,10 @@
 		<property name="max" value="1500" />
 	</module>
 
+	<module name="LineLength">
+		<property name="max" value="120" />
+	</module>
+
 	<!-- http://checkstyle.sourceforge.net/config_whitespace.html -->
 	<module name="FileTabCharacter" />
 
@@ -93,7 +97,9 @@
         <module name="CyclomaticComplexity">
             <property name="max" value="15"/>
         </module>
-		<module name="NPathComplexity" />
+		<module name="NPathComplexity">
+			<property name="max" value="300"/> <!-- default is 200 -->
+		</module>
 		<module name="JavaNCSS" />
 
 
@@ -132,9 +138,7 @@
 		<module name="ExecutableStatementCount">
 			<property name="max" value="100" />
 		</module>
-		<module name="LineLength">
-			<property name="max" value="120" />
-		</module>
+
 		<module name="MethodLength">
 			<property name="max" value="100" />
 		</module>
