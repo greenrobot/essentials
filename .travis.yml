@@ -1,9 +1,11 @@
 sudo: false
 language: android
 jdk:
-#  - oraclejdk9
+# https://docs.travis-ci.com/user/languages/java/#testing-against-multiple-jdks
+  - openjdk8
   - oraclejdk8
-#  - oraclejdk7
+  - oraclejdk11
+  - openjdk11
 
 # http://docs.travis-ci.com/user/languages/android/
 android:
