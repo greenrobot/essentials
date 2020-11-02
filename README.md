@@ -36,14 +36,14 @@ For long keys (also works for int), Essentials provides a specialized implementa
 
 Here are some (completely non-scientific) benchmarking results running on Ubuntu 20.04 LTS using OpenJDK 11.0.9:   
 
-| Essentials Class        | Java (seconds) | Essentials (seconds)  |
-|-------------------------|---------------:|----------------------:|
-| LongHashSet (Dynamic)   |         19.756 |                13.079 |
-| LongHashSet (Prealloc)  |         16.480 |                 8.171 |
-| LongHashMap (Dynamic)   |         20.311 |                14.659 |
-| LongHashMap (Prealloc)  |         17.496 |                 8.677 |
-| PipelineStream (1024KB) |          8.036 |                 1.424 |
-| StringHex               |          6.849 |                 3.732 | 
+| Essentials Class        | Java (seconds) | Essentials (seconds)  | Speed up |
+|-------------------------|---------------:|----------------------:|:--------:|
+| LongHashSet (Dynamic)   |         19.756 |                13.079 |   + 51%  |
+| LongHashSet (Prealloc)  |         16.480 |                 8.171 |  + 102%  |
+| LongHashMap (Dynamic)   |         20.311 |                14.659 |   + 39%  |
+| LongHashMap (Prealloc)  |         17.496 |                 8.677 |  + 102%  |
+| PipelineStream (1024KB) |          8.036 |                 1.424 |  + 564%  |
+| StringHex               |          6.849 |                 3.732 |   + 84%  |
 
 The benchmarking sources are available in the java-essentials-performance directory.
 
