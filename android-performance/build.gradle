@@ -1,16 +1,18 @@
 buildscript {
     repositories {
+        google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:4.0.0'
     }
 }
 
 apply plugin: 'com.android.application'
 
 repositories {
+    google()
     jcenter()
 }
 
@@ -21,8 +23,8 @@ dependencies {
 }
 
 android {
-    buildToolsVersion '27.0.3' // When updating, don't forget to adjust .travis.yml
-    compileSdkVersion 27
+    //buildToolsVersion '27.0.3' // When updating, don't forget to adjust .travis.yml
+    compileSdkVersion 28
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_7

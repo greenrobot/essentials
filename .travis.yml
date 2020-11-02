@@ -9,7 +9,7 @@ jdk:
 android:
   components:
     - tools
-    - build-tools-27.0.3
+#    - build-tools-27.0.3
     - android-10
     - android-27
     - extra-android-m2repository
