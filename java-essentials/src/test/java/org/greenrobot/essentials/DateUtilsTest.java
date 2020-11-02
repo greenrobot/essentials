@@ -34,7 +34,7 @@ public class DateUtilsTest {
         DateUtils.setTime(calendar, 12, 0, 0, 0);
         int today = DateUtils.getDayAsReadableInt(calendar);
         for (int i = 1; i <= 5000; i++) {
-            DateUtils.addDays(calendar, sign * 1);
+            DateUtils.addDays(calendar, sign);
             int day = DateUtils.getDayAsReadableInt(calendar);
             int diff = DateUtils.getDayDifferenceOfReadableInts(today, day);
             Assert.assertEquals(sign * i, diff);
