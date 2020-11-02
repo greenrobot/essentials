@@ -50,9 +50,9 @@ And for Maven:
         <version>2.3.1</version>
     </dependency>
 
-## Code samples (V2.3.1)
+## Code samples
 
-Example code on how to use some of the utility classes: 
+Example code for some of the utility classes: 
 
 ```Java
 // Get all bytes from stream and close the stream safely
@@ -66,7 +66,7 @@ long time2 = DateUtils.getTimeForDay(2015, 12, 31);
 int daysToNewYear = DateUtils.getDayDifference(time, time2);
 ```
 
-Multimaps (added in V2.2):
+Multimaps:
 ```Java
 ListMap<String,String> multimap = new ListMap<>();
 multimap.putElement("a", "1");
@@ -93,8 +93,6 @@ murmur.updateLong(42L);
 // Varargs and arrays are supported natively, too  
 murmur.updateInt(2014, 2015, 2016);
 
-murmur.updateUtf8("And strings, of course");
-
 // Hash for the previous update calls. No conversion to byte[] necessary.
 hash = murmur.getValue();
 ```
@@ -103,7 +101,8 @@ The utility classes are straight forward and don't have dependencies, so you sho
 
 ## Build setup
 
-Currently, Maven is used to build greenrobot-common. Inside of [build-common](build-common), there are two parent POMs defined that might be useful: parent-pom and parent-pom-with-checks. The latter integrates FindBugs and Checkstyle in your build. Use it like this: 
+We use Gradle as a primary build system.
+Previously, Maven is used to build greenrobot-common. Inside of [build-common](build-common), there are two parent POMs defined that might be useful: parent-pom and parent-pom-with-checks. The latter integrates FindBugs and Checkstyle in your build. Use it like this: 
 
     <parent>
         <groupId>de.greenrobot</groupId>
@@ -114,20 +113,17 @@ Currently, Maven is used to build greenrobot-common. Inside of [build-common](bu
 
 ## License
 
-Copyright (C) 2012-2016 Markus Junginger, greenrobot (http://greenrobot.org)
+Copyright (C) 2012-2020 Markus Junginger, greenrobot (https://greenrobot.org)
 
 EventBus binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
 
-# More Open Source by greenrobot
+# More by greenrobot
 
 [__EventBus__](https://github.com/greenrobot/EventBus) is a central publish/subscribe bus for Android with optional delivery threads, priorities, and sticky events. A great tool to decouple components (e.g. Activities, Fragments, logic components) from each other. 
  
-[__greenDAO__](https://github.com/greenrobot/greenDAO) is an ORM optimized for Android: it maps database tables to Java objects and uses code generation for optimal speed.
+[__ObjectBox__](https://github.com/objectbox/objectbox-java) super-fast object database.
 
-[Follow us on Google+](https://plus.google.com/b/114381455741141514652/+GreenrobotDe/posts) to stay up to date.
-
-
-[1]: http://greenrobot.org/essentials
+[1]: https://greenrobot.org/essentials
 [2]: java-essentials/src/main/java/org/greenrobot/essentials/io/IoUtils.java
 [3]: java-essentials/src/main/java/org/greenrobot/essentials/io/FileUtils.java
 [4]: java-essentials/src/main/java/org/greenrobot/essentials/StringUtils.java
@@ -138,6 +134,6 @@ EventBus binaries and source code can be used according to the [Apache License, 
 [9]: java-essentials/src/main/java/org/greenrobot/essentials/collections/Multimap.java
 [10]: java-essentials/src/main/java/org/greenrobot/essentials/ObjectCache.java
 [11]: java-essentials/src/main/java/org/greenrobot/essentials/Base64.java
-[12]: http://greenrobot.org/essentials/features/performant-hash-functions-for-java/
-[13]: http://greenrobot.org/essentials/changelog
-[14]: http://greenrobot.org/essentials/features
+[12]: https://greenrobot.org/essentials/features/performant-hash-functions-for-java/
+[13]: https://greenrobot.org/essentials/changelog
+[14]: https://greenrobot.org/essentials/features

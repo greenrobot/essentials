@@ -9,7 +9,7 @@ apply plugin: 'checkstyle'
 
 archivesBaseName = 'essentials'
 group = 'org.greenrobot'
-version = '3.0.0-RC1'
+version = '3.0.0'
 
 sourceCompatibility = 1.7
 targetCompatibility = '1.7'
@@ -43,7 +43,7 @@ dependencies {
 javadoc {
     failOnError = false
     title = "Essentials ${version} API"
-    options.bottom = 'Available under the Apache License, Version 2.0 - <i>Copyright &#169; 2012-2016 <a href="http://greenrobot.org">greenrobot.org</a>. All Rights Reserved.</i>'
+    options.bottom = 'Available under the Apache License, Version 2.0 - <i>Copyright &#169; 2012-2020 <a href="https://greenrobot.org">greenrobot.org</a>. All Rights Reserved.</i>'
     doLast {
         copy {
             from '../javadoc-style'
@@ -144,7 +144,7 @@ uploadArchives {
                 name 'greenrobot-essentials'
                 packaging 'jar'
                 description 'Essentials for high-performance Android and Java projects'
-                url 'http://greenrobot.org/essentials/'
+                url 'https://greenrobot.org/essentials/'
 
                 scm {
                     url 'https://github.com/greenrobot/essentials'
@@ -174,7 +174,7 @@ uploadArchives {
 
                 organization {
                     name 'greenrobot'
-                    url 'http://greenrobot.org'
+                    url 'https://greenrobot.org'
                 }
             }
         }
