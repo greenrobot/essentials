@@ -91,15 +91,21 @@ public class IoUtils {
         }
     }
 
-    /** @return MD5 digest (32 characters). */
+    /** @return MD5 digest (32 hex characters). */
     public static String getMd5(InputStream in) throws IOException {
         byte[] digest = getDigest(in, "MD5");
         return StringUtils.hex(digest);
     }
 
-    /** @return SHA-1 digest (40 characters). */
+    /** @return SHA-1 digest (40 hex characters). */
     public static String getSha1(InputStream in) throws IOException {
         byte[] digest = getDigest(in, "SHA-1");
+        return StringUtils.hex(digest);
+    }
+
+    /** @return SHA-256 digest (64 hex characters). */
+    public static String getSha256(InputStream in) throws IOException {
+        byte[] digest = getDigest(in, "SHA-256");
         return StringUtils.hex(digest);
     }
 

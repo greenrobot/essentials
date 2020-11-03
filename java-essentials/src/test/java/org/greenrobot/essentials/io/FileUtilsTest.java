@@ -70,17 +70,19 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testDigestMd5AndSha1() throws IOException, ClassNotFoundException {
+    public void testDigestMd5AndSha1() throws IOException {
         byte[] content = new byte[33333];
         new Random(42).nextBytes(content);
         FileUtils.writeBytes(file, content);
 
-        Assert.assertEquals("E4DB2A1C03CA891DDDCE45150570ABEB", FileUtils.getMd5(file).toUpperCase());
-        Assert.assertEquals("5123C97498170FFA46056190D9439DA203E5234C", FileUtils.getSha1(file).toUpperCase());
+        Assert.assertEquals("E4DB2A1C03CA891DDDCE45150570ABEB", FileUtils.getMd5(file));
+        Assert.assertEquals("5123C97498170FFA46056190D9439DA203E5234C", FileUtils.getSha1(file));
+        Assert.assertEquals("B098145996F6AF622C8B4373A590039A94890E79482B6E97D800C49943915975",
+                FileUtils.getSha256(file));
     }
 
     @Test
-    public void testUpdateChecksumAndCopy() throws IOException, ClassNotFoundException {
+    public void testUpdateChecksumAndCopy() throws IOException {
         byte[] content = new byte[33333];
         new Random().nextBytes(content);
 

@@ -121,7 +121,7 @@ public class FileUtils {
         }
     }
 
-    /** @return MD5 digest (32 characters). */
+    /** @return MD5 digest (32 hex characters). */
     public static String getMd5(File file) throws IOException {
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         try {
@@ -131,11 +131,21 @@ public class FileUtils {
         }
     }
 
-    /** @return SHA-1 digest (40 characters). */
+    /** @return SHA-1 digest (40 hex characters). */
     public static String getSha1(File file) throws IOException {
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         try {
             return IoUtils.getSha1(in);
+        } finally {
+            IoUtils.safeClose(in);
+        }
+    }
+
+    /** @return SHA-256 digest (64 hex characters). */
+    public static String getSha256(File file) throws IOException {
+        InputStream in = new BufferedInputStream(new FileInputStream(file));
+        try {
+            return IoUtils.getSha256(in);
         } finally {
             IoUtils.safeClose(in);
         }

@@ -126,4 +126,13 @@ public class StringUtilsTest {
         assertArrayEquals(new byte[] {0, 0x66, -1}, StringUtils.parseHex("0066FF"));
     }
 
+    @Test
+    public void testDigests() {
+        String text = "The quick brown fox jumps over the lazy dog";
+        assertEquals("9E107D9D372BB6826BD81D3542A419D6", StringUtils.md5(text));
+        assertEquals("2FD4E1C67A2D28FCED849EE1BB76E7391B93EB12", StringUtils.sha1(text));
+        assertEquals("D7A8FBB307D7809469CA9ABCB0082E4F8D5651E46D3CDB762D02D0BF37C9E592",
+                StringUtils.sha256(text));
+    }
+
 }

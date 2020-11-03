@@ -119,10 +119,20 @@ public class StringUtils {
      * Generates the SHA-1 digest (40 hex characters) for a given String based on UTF-8.
      * The SHA-1 algorithm produces less collisions than MD5.
      *
-     * @return SHA-1 digest .
+     * @return SHA-1 digest
      */
     public static String sha1(String stringToEncode) {
         return digest(stringToEncode, "SHA-1", "UTF-8");
+    }
+
+    /**
+     * Generates the SHA-256 digest (64 hex characters) for a given String based on UTF-8.
+     * The SHA-256 algorithm is less broken than SHA-1.
+     *
+     * @return SHA-256 digest
+     */
+    public static String sha256(String stringToEncode) {
+        return digest(stringToEncode, "SHA-256", "UTF-8");
     }
 
     /**
