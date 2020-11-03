@@ -1,3 +1,9 @@
+buildscript {
+    ext {
+        guavaVersion = '30.0'
+    }
+}
+
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
         tasks.withType(Javadoc) {

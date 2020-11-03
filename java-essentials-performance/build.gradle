@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation project(':java-essentials')
-    implementation 'com.google.guava:guava:30.0-jre'
+    implementation "com.google.guava:guava:$guavaVersion-jre"
 }
 
 apply from: 'benchmarks.gradle'
