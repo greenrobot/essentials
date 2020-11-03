@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,15 +44,19 @@ public class StringUtils {
         int delimeterCount = 0;
         int start = 0;
         int end;
+        int[] delimiterIndexes = new int[32];
         while ((end = string.indexOf(delimiter, start)) != -1) {
-            delimeterCount++;
+            if (delimeterCount == delimiterIndexes.length) {
+                delimiterIndexes = Arrays.copyOf(delimiterIndexes, delimiterIndexes.length * 2);
+            }
+            delimiterIndexes[delimeterCount++] = end;
             start = end + 1;
         }
 
         String[] result = new String[delimeterCount + 1];
         start = 0;
         for (int i = 0; i < delimeterCount; i++) {
-            end = string.indexOf(delimiter, start);
+            end = delimiterIndexes[i];
             result[i] = string.substring(start, end);
             start = end + 1;
         }
