@@ -44,24 +44,17 @@ public class StringUtils {
         int delimeterCount = 0;
         int start = 0;
         int end;
-        int[] delimiterIndexes = new int[32];
+        String[] strings = new String[32];
         while ((end = string.indexOf(delimiter, start)) != -1) {
-            if (delimeterCount == delimiterIndexes.length) {
-                delimiterIndexes = Arrays.copyOf(delimiterIndexes, delimiterIndexes.length * 2);
+            if (delimeterCount == strings.length) {
+                strings = Arrays.copyOf(strings, strings.length * 2);
             }
-            delimiterIndexes[delimeterCount++] = end;
+            strings[delimeterCount++] = string.substring(start, end);
             start = end + 1;
         }
-
-        String[] result = new String[delimeterCount + 1];
-        start = 0;
-        for (int i = 0; i < delimeterCount; i++) {
-            end = delimiterIndexes[i];
-            result[i] = string.substring(start, end);
-            start = end + 1;
-        }
-        result[delimeterCount] = string.substring(start);
-        return result;
+        strings = Arrays.copyOf(strings, delimeterCount + 1);
+        strings[delimeterCount] = string.substring(start);
+        return strings;
     }
 
     /**
@@ -158,7 +151,7 @@ public class StringUtils {
         char[] hexChars = new char[hexCharCount];
 
         int srcIdx = 0;
-        for (int dstIdx = 0; dstIdx < hexCharCount;) {
+        for (int dstIdx = 0; dstIdx < hexCharCount; ) {
             int value = bytes[srcIdx++] & 0xFF;
             hexChars[dstIdx++] = HEX_CHARS[value >>> 4];
             hexChars[dstIdx++] = HEX_CHARS[value & 0x0F];
