@@ -13,7 +13,8 @@ public class StringSplitBenchmark {
     static final int SHORT_WORDS_COUNT = StringUtils.split(SHORT_STRING, ' ').length;
 
     public static void main(String[] args) {
-        BenchmarkRunner.run(new ShortLibImpl(), 100, 3);
+        double result = BenchmarkRunner.run(new LongLibImpl(), 1000, 3);
+        System.out.println("Result (median): " + result + " seconds");
     }
 
     static String name(int wordsCount, int times, String impl) {
