@@ -3,9 +3,6 @@
     "-//Puppy Crawl//DTD Suppressions 1.1//EN"
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <!-- Don't mess with 3rd party code -->
-	<suppress checks=".*" files="Base64.java" />
-
     <!-- Murmur3F.update has lots of case switches for performance -->
     <suppress checks="CyclomaticComplexity" files="Murmur3F.java"/>
     <suppress checks="JavaNCSS" files="Murmur3F.java"/>
@@ -15,4 +12,7 @@
 
     <!-- Optional Unsafe -->
     <suppress checks="IllegalImport" files="PrimitiveArrayUtils.java"/>
+
+    <!-- Incompatible with IntelliJ formatting -->
+    <suppress checks="EmptyForIteratorPadCheck" files="StringUtils.java"/>
 </suppressions>
