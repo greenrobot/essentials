@@ -4,9 +4,10 @@
 
 Essentials are a collection of general-purpose classes we found useful in many occasions.
 
-- Write less code in your projects
-- Specialized implementations for better performance compared to standard APIs
-- Super light weight: < 100k in size
+- Beats standard Java API performance, e.g. `LongHashMap` can be twice as fast as `HashMap<Long, Object>`.
+- Adds missing pieces without pulling in heavy-weights like Guava  
+- Improved convenience: do more with less code
+- Super lightweight: < 100k in size
 - Compatible with Android and Java
 
 This project is bare bones compared to a rich menu offered by Guava or Apache Commons. Essentials is not a framework, it's rather a small set of utilities to make Java standard approaches more convenient or more efficient.
@@ -15,15 +16,15 @@ This project is bare bones compared to a rich menu offered by Guava or Apache Co
 
 ## Features
 
-- [IO utilities][2] help with streams (byte and character based) and digests (e.g. MD5 and SHA-1).
-- [File utilities][3] simplify reading and writing strings/bytes/objects from or to files. Also includes getting hashes from files and copying files.
-- [String utilities][4] allow efficient splitting and joining of strings, hex and MD5 creation, and other useful string helpers.
-- [Date utilities][5].
-- [Better hash functions][12]: our Murmur3 implementation provides superior hash quality and outperforms standard [Java hash functions](web-resources/hash-functions-benchmark.pdf)
-- Specialized Streams: for example an optimized [PipedOutputStream replacement][8] (based on a circular byte buffer)
 - [Hash set][6] and [map][7] for primitive long keys outperform the generic versions of the Java Collection APIs
 - [Multimaps][9] provide a map of lists or sets to simplify storing multiple values for a single key
 - [Object cache][10] with powerful configuration options: soft/weak/strong references, maximum size, and time-based expiration
+- [IO utilities][2] help with streams (byte and character based)
+- [File utilities][3] simplify reading and writing strings/bytes/objects from or to files. Also includes getting hashes from files and copying files.
+- [String utilities][4] allow efficient splitting and joining of strings, fast hex creation, and other useful string helpers.
+- [Date utilities][5]
+- [Better hash functions][12]: our Murmur3 implementation provides superior hash quality and outperforms standard [Java hash functions](web-resources/hash-functions-benchmark.pdf)
+- Specialized Streams: for example an optimized [PipedOutputStream replacement][8] (based on a circular byte buffer)
 
 Read more on our [website][14].
 
@@ -42,7 +43,7 @@ Here are some (completely non-scientific) benchmarking results running on Ubuntu
 | LongHashMap (Dynamic)   |         20.311 |                14.659 |   + 39%  |
 | LongHashMap (Prealloc)  |         17.496 |                 8.677 |  + 102%  |
 | PipelineStream (1024KB) |          8.036 |                 1.424 |  + 564%  |
-| StringHex               |          6.849 |                 3.732 |   + 84%  |
+| StringHex (vs. Guava)   |          6.849 |                 3.732 |   + 84%  |
 
 The benchmarking sources are available in the java-essentials-performance directory.
 
@@ -50,14 +51,14 @@ The benchmarking sources are available in the java-essentials-performance direct
 
 For Gradle, you add this dependency (from repository `mavenCentral()`):
  
-    implementaion 'org.greenrobot:essentials:3.0.0'
+    implementaion 'org.greenrobot:essentials:3.1.0'
 
 And for Maven:
     
     <dependency>
         <groupId>org.greenrobot</groupId>
         <artifactId>essentials</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
     </dependency>
 
 ## Code samples
