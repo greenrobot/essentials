@@ -96,12 +96,13 @@ public class FileUtils {
     }
 
     /** To read an object in a quick & dirty way. Prepare to handle failures when object serialization changes! */
-    public static Object readObject(File file) throws IOException,
+    @SuppressWarnings("unchecked")
+    public static <T> T readObject(File file) throws IOException,
             ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(fileIn));
         try {
-            return in.readObject();
+            return (T) in.readObject();
         } finally {
             IoUtils.safeClose(in);
         }

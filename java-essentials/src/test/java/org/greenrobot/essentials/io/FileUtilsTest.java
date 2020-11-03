@@ -59,11 +59,11 @@ public class FileUtilsTest {
     public void testWriteAndReadObject() throws Exception {
         String text = "Hello, let's put in some Umlauts: öäüÖÄÜ €";
         String text2 = "And one more";
-        ArrayList<String> strings = new ArrayList<String>();
+        ArrayList<String> strings = new ArrayList<>();
         strings.add(text);
         strings.add(text2);
         FileUtils.writeObject(file, strings);
-        ArrayList<String> strings2 = (ArrayList<String>) FileUtils.readObject(file);
+        ArrayList<String> strings2 = FileUtils.readObject(file);
         Assert.assertEquals(strings.size(), strings2.size());
         Assert.assertEquals(text, strings2.get(0));
         Assert.assertEquals(text2, strings2.get(1));
