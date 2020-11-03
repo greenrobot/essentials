@@ -1,4 +1,5 @@
 include ':java-essentials'
 include ':java-essentials-performance'
+include ':kotlin-essentials'
 include ':android-test'
 include ':android-performance'
