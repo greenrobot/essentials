@@ -51,7 +51,7 @@ The benchmarking sources are available in the java-essentials-performance direct
 
 For Gradle, you add this dependency (from repository `mavenCentral()`):
  
-    implementaion 'org.greenrobot:essentials:3.1.0'
+    implementation 'org.greenrobot:essentials:3.1.0'
 
 And for Maven:
     
