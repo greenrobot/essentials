@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class LimitedInputStreamTest {
     @Test
@@ -37,5 +38,48 @@ public class LimitedInputStreamTest {
         assertEquals(2, buffered.read(readBuffer));
         assertArrayEquals(new byte[]{1, 2, 0, 0}, readBuffer);
         assertEquals(-1, buffered.read());
+    }
+
+    @Test
+    public void zeroLengthReadsAtLimit() throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(new byte[]{1, 2});
+        LimitedInputStream limited = new LimitedInputStream(in, 1);
+        assertEquals(1, limited.read());
+        assertEquals(0, limited.read(new byte[0]));
+        assertEquals(0, limited.read(new byte[2], 2, 0));
+        assertEquals(-1, limited.read(new byte[1]));
+        assertEquals(2, in.read());
+    }
+
+    @Test
+    public void invalidReadRangesAreCheckedBeforeLimiting() throws IOException {
+        LimitedInputStream limited = new LimitedInputStream(new ByteArrayInputStream(new byte[]{1, 2}), 1);
+        assertInvalidReadRange(limited, 0, 2);
+        assertEquals(1, limited.getBytesLeft());
+        assertEquals(1, limited.read());
+    }
+
+    @Test
+    public void invalidReadArgumentsAtLimit() throws IOException {
+        LimitedInputStream limited = new LimitedInputStream(new ByteArrayInputStream(new byte[0]), 0);
+        assertInvalidReadRange(limited, -1, 0);
+        assertInvalidReadRange(limited, 0, -1);
+        assertInvalidReadRange(limited, 2, 0);
+        assertInvalidReadRange(limited, 1, Integer.MAX_VALUE);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullReadBufferAtLimit() throws IOException {
+        LimitedInputStream limited = new LimitedInputStream(new ByteArrayInputStream(new byte[0]), 0);
+        fail("Null read buffer returned " + limited.read(null, 0, 0));
+    }
+
+    private void assertInvalidReadRange(LimitedInputStream limited, int offset, int count) throws IOException {
+        try {
+            int read = limited.read(new byte[1], offset, count);
+            fail("Invalid read range returned " + read);
+        } catch (IndexOutOfBoundsException expected) {
+            // Expected, even when the byte limit has been reached.
+        }
     }
 }

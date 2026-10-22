@@ -63,6 +63,15 @@ public class LimitedInputStream extends InputStream {
 
     @Override
     public int read(byte[] buffer, int offset, int count) throws IOException {
+        if (buffer == null) {
+            throw new NullPointerException();
+        }
+        if (offset < 0 || count < 0 || offset > buffer.length - count) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (count == 0) {
+            return 0;
+        }
         if (bytesLeft <= 0) {
             return -1;
         }
